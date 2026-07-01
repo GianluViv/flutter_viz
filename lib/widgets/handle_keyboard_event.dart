@@ -1,9 +1,8 @@
-import 'dart:html';
-
 import 'package:flutter_viz/utils/AppCommon.dart';
 import 'package:flutter_viz/utils/AppCommonApiCall.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
 import 'package:flutter_viz/utils/AppFunctions.dart';
+import 'package:flutter_viz/utils/web_interop/web_interop.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -106,6 +105,6 @@ void handleKeyboardEvent(KeyEvent event, BuildContext context) async {
 
 tabKeyEvent(FocusScopeNode _node) {
   if (kIsWeb) {
-    document.addEventListener('keydown', (event) => {if (event.type == 'tab') _node.nextFocus()});
+    addTabKeyListener(_node);
   }
 }

@@ -25,7 +25,6 @@ import 'package:flutter_viz/widgetsClass/container_class.dart';
 import 'package:flutter_viz/widgetsClass/credit_card_view_class.dart';
 import 'package:flutter_viz/widgetsClass/divider_class.dart';
 import 'package:flutter_viz/widgetsClass/drop_down_class.dart';
-import 'package:flutter_viz/widgetsClass/google_map_class.dart';
 import 'package:flutter_viz/widgetsClass/grid_view_class.dart';
 import 'package:flutter_viz/widgetsClass/icon_button_class.dart';
 import 'package:flutter_viz/widgetsClass/image_icon_class.dart';
@@ -256,18 +255,6 @@ getWidgets(String? subType) {
       displayWidget: getDisplayWidget(getWidgetsIcon(WidgetTypeText), getWidgetTitle(WidgetTypeText)),
       widgetSubType: WidgetTypeText,
       widgetViewModel: TextClass(),
-      widgetType: WidgetTypeNormal,
-    );
-  } else if (subType == WidgetTypeGoogleMap) {
-    /// Google Map View
-    return WidgetModel(
-      id: getWidgetId(),
-      title: getWidgetTitle(WidgetTypeGoogleMap),
-      displayWidget: getDisplayWidget(getWidgetsIcon(WidgetTypeGoogleMap), getWidgetTitle(WidgetTypeGoogleMap)),
-      widgetSubType: WidgetTypeGoogleMap,
-      widgetViewModel: GoogleMapClass(),
-      yamlLibName: GoogleMapClass().getYamlLib(),
-      headerImport: GoogleMapClass().getHeaderClassFiles(),
       widgetType: WidgetTypeNormal,
     );
   } else if (subType == WidgetTypeSlider) {
@@ -1724,15 +1711,6 @@ getWidgetsClassData(
     } else if (isPropertyJsonData) {
       return (widgetModel.widgetViewModel as SliderClass).toJson();
     }
-  } else if (widgetModel.widgetSubType == WidgetTypeGoogleMap) {
-    /// Google Map View
-    if (isChildData) {
-      return (widgetModel.widgetViewModel as GoogleMapClass).getGoogleMapWidget();
-    } else if (isCodeAsString) {
-      return (widgetModel.widgetViewModel as GoogleMapClass).getCodeAsString();
-    } else if (isPropertyJsonData) {
-      return (widgetModel.widgetViewModel as GoogleMapClass).toJson();
-    }
   } else if (widgetModel.widgetSubType == WidgetTypePageView) {
     /// PageView View
     if (isChildData) {
@@ -2247,8 +2225,6 @@ getWidgetJsonData(ScreenJsonData childData) {
     return childData.webViewClass;
   } else if (childData.subType == WidgetTypeChipView) {
     return childData.chipViewClass;
-  } else if (childData.subType == WidgetTypeGoogleMap) {
-    return childData.googleMapClass;
   } else if (childData.subType == WidgetTypeSlider) {
     return childData.sliderClass;
   } else if (childData.subType == WidgetTypeRatingBar) {
@@ -2355,8 +2331,6 @@ String getWidgetTitle(String? subType) {
     return language!.titleStack;
   } else if (subType == WidgetTypeChipView) {
     return language!.titleChip;
-  } else if (subType == WidgetTypeGoogleMap) {
-    return language!.titleGoogleMap;
   } else if (subType == WidgetTypeYoutubePlayer) {
     return language!.titleYoutubePlayer;
   } else if (subType == WidgetTypeSlider) {

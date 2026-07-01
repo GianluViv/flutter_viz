@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:flutter_viz/main.dart';
+import 'package:flutter_viz/utils/web_interop/web_interop.dart';
 import 'package:flutter_viz/model/widget_model.dart';
 import 'package:flutter_viz/utils/AppColors.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
@@ -30,7 +29,7 @@ class DashboardPreviewComponentState extends State<DashboardPreviewComponent> {
   @override
   void initState() {
     super.initState();
-    document.onContextMenu.listen((event) => event.preventDefault());
+    suppressBrowserContextMenu();
   }
 
   @override

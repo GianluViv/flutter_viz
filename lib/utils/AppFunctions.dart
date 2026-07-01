@@ -30,7 +30,6 @@ import 'package:flutter_viz/widgetsClass/container_class.dart';
 import 'package:flutter_viz/widgetsClass/credit_card_view_class.dart';
 import 'package:flutter_viz/widgetsClass/divider_class.dart';
 import 'package:flutter_viz/widgetsClass/drop_down_class.dart';
-import 'package:flutter_viz/widgetsClass/google_map_class.dart';
 import 'package:flutter_viz/widgetsClass/grid_view_class.dart';
 import 'package:flutter_viz/widgetsClass/icon_button_class.dart';
 import 'package:flutter_viz/widgetsClass/image_icon_class.dart';
@@ -530,8 +529,6 @@ getWidgetCasting(WidgetModel widgetModel) {
     return widgetModel.widgetViewModel as WebViewClass?;
   } else if (widgetModel.widgetSubType == WidgetTypeCircleImage) {
     return widgetModel.widgetViewModel as CircleImageClass?;
-  } else if (widgetModel.widgetSubType == WidgetTypeGoogleMap) {
-    return widgetModel.widgetViewModel as GoogleMapClass?;
   } else if (widgetModel.widgetSubType == WidgetTypeYoutubePlayer) {
     return widgetModel.widgetViewModel as YoutubePlayerClass?;
   } else if (widgetModel.widgetSubType == WidgetTypeSlider) {

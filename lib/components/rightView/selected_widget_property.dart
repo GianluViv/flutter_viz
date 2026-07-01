@@ -19,7 +19,6 @@ import 'package:flutter_viz/widgetsProperty/container_property_view.dart';
 import 'package:flutter_viz/widgetsProperty/credit_card_view_property_view.dart';
 import 'package:flutter_viz/widgetsProperty/divider_property_view.dart';
 import 'package:flutter_viz/widgetsProperty/drop_down_property_view.dart';
-import 'package:flutter_viz/widgetsProperty/google_map_property_view.dart';
 import 'package:flutter_viz/widgetsProperty/grid_view_property_view.dart';
 import 'package:flutter_viz/widgetsProperty/icon_button_property_view.dart';
 import 'package:flutter_viz/widgetsProperty/icon_property_view.dart';
@@ -126,8 +125,6 @@ class _SelectedWidgetPropertyState extends State<SelectedWidgetProperty> {
       return WebViewPropertyView();
     else if (appStore.currentSelectedWidget!.widgetSubType == WidgetTypeCircleImage)
       return CircleImagePropertyView();
-    else if (appStore.currentSelectedWidget!.widgetSubType == WidgetTypeGoogleMap)
-      return GoogleMapPropertyView();
     else if (appStore.currentSelectedWidget!.widgetSubType == WidgetTypeSlider)
       return SliderPropertyView();
     else if (appStore.currentSelectedWidget!.widgetSubType == WidgetTypeRatingBar)

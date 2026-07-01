@@ -15,7 +15,6 @@ import 'package:flutter_viz/widgetsClass/container_class.dart';
 import 'package:flutter_viz/widgetsClass/credit_card_view_class.dart';
 import 'package:flutter_viz/widgetsClass/divider_class.dart';
 import 'package:flutter_viz/widgetsClass/drop_down_class.dart';
-import 'package:flutter_viz/widgetsClass/google_map_class.dart';
 import 'package:flutter_viz/widgetsClass/grid_view_class.dart';
 import 'package:flutter_viz/widgetsClass/icon_button_class.dart';
 import 'package:flutter_viz/widgetsClass/Icon_class.dart';
@@ -81,7 +80,6 @@ class ScreenJsonData {
   CircleImageClass? circleImageClass;
   ChipViewClass? chipViewClass;
   WebViewClass? webViewClass;
-  GoogleMapClass? googleMapClass;
   SliderClass? sliderClass;
   RatingBarClass? ratingBarClass;
   RotatedBoxClass? rotatedBoxClass;
@@ -147,7 +145,6 @@ class ScreenJsonData {
     circleImageClass = json[WidgetTypeCircleImage] != null ? new CircleImageClass.fromJson(json[WidgetTypeCircleImage]) : null;
     chipViewClass = json[WidgetTypeChipView] != null ? new ChipViewClass.fromJson(json[WidgetTypeChipView]) : null;
     webViewClass = json[WidgetTypeWebView] != null ? new WebViewClass.fromJson(json[WidgetTypeWebView]) : null;
-    googleMapClass = json[WidgetTypeGoogleMap] != null ? new GoogleMapClass.fromJson(json[WidgetTypeGoogleMap]) : null;
     sliderClass = json[WidgetTypeSlider] != null ? new SliderClass.fromJson(json[WidgetTypeSlider]) : null;
     ratingBarClass = json[WidgetTypeRatingBar] != null ? new RatingBarClass.fromJson(json[WidgetTypeRatingBar]) : null;
     rotatedBoxClass = json[WidgetTypeRotatedBox] != null ? new RotatedBoxClass.fromJson(json[WidgetTypeRotatedBox]) : null;
@@ -259,9 +256,6 @@ class ScreenJsonData {
     }
     if (this.chipViewClass != null) {
       data[WidgetTypeChipView] = this.chipViewClass!.toJson();
-    }
-    if (this.googleMapClass != null) {
-      data[WidgetTypeGoogleMap] = this.googleMapClass!.toJson();
     }
     if (this.sliderClass != null) {
       data[WidgetTypeSlider] = this.sliderClass!.toJson();

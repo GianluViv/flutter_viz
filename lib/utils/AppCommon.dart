@@ -108,8 +108,6 @@ String getWidgetsIcon(String? widgetType) {
     return getPath("ListTile.svg");
   } else if (widgetType == WidgetTypeStack) {
     return getPath("Stack.svg");
-  } else if (widgetType == WidgetTypeGoogleMap) {
-    return getPath("location.svg");
   } else if (widgetType == WidgetTypeSlider) {
     return getPath("Slider.svg");
   } else if (widgetType == WidgetTypeYoutubePlayer) {
@@ -169,23 +167,23 @@ String getPath(String iconName) {
 
 List<String> fullHeightWidgetTypeList = [WidgetTypeList, WidgetTypeGrid];
 
-getMenuWidth(BuildContext context, {bool isExpanded = true}) {
+double getMenuWidth(BuildContext context, {bool isExpanded = true}) {
   return isExpanded ? 200 : 70;
 }
 
-getChildWidgetsWidth(BuildContext context, {bool isExpanded = true}) {
+double getChildWidgetsWidth(BuildContext context, {bool isExpanded = true}) {
   return MediaQuery.of(context).size.width - getMenuWidth(context, isExpanded: isExpanded);
 }
 
-getLeftWidgetsWidth(BuildContext context) {
+double getLeftWidgetsWidth(BuildContext context) {
   return 340;
 }
 
-getCenterScreenWidth(BuildContext context, {bool isExpanded = true}) {
+double getCenterScreenWidth(BuildContext context, {bool isExpanded = true}) {
   return getChildWidgetsWidth(context, isExpanded: isExpanded) - getLeftWidgetsWidth(context) - getRightPropertyViewWidth(context);
 }
 
-getRightPropertyViewWidth(BuildContext context) {
+double getRightPropertyViewWidth(BuildContext context) {
   return 360;
 }
 

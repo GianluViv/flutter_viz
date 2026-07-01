@@ -1,7 +1,6 @@
-import 'package:web/web.dart' as web;
-
 import 'package:flutter_viz/local/app_localizations.dart';
 import 'package:flutter_viz/local/languages.dart';
+import 'package:flutter_viz/screen/dashboard_screen.dart';
 import 'package:flutter_viz/screen/login_screen.dart';
 import 'package:flutter_viz/screen/register_screen.dart';
 import 'package:flutter_viz/store/AppStore.dart';
@@ -13,6 +12,7 @@ import 'package:flutter_viz/utils/AppTheme.dart';
 import 'package:flutter_viz/widgets/handle_keyboard_event.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -45,9 +45,13 @@ ScreenshotController screenshotController = ScreenshotController();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  /// Firebase is only configured for the web target today (see firebase_options.dart).
+  /// TODO(local-desktop-plan Fase 4): remove Firebase entirely once auth is dropped.
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
 
   await initialize(aLocaleLanguageList: languageList());
 
@@ -56,6 +60,7 @@ void main() async {
   /// Print Error
   FlutterError.onError = ((k) {
     printLogData(k.exceptionAsString());
+    printLogData(k.stack.toString());
   });
 
   defaultRadius = 6;
@@ -88,18 +93,6 @@ void main() async {
 
   await dotenv.load(fileName: ".env");
 
-  // Load Google Maps script dynamically
-  final mapKey = dotenv.env['GOOGLE_MAPS_API_KEY'];
-  if (mapKey != null && mapKey.isNotEmpty) {
-    final script = web.Document().createElement('script') as web.HTMLScriptElement;
-    script.src = 'https://maps.googleapis.com/maps/api/js?key=$mapKey';
-    script.defer = true;
-    web.document.head!.append(script);
-  }
-  else {
-    print("⚠️ GOOGLE_MAPS_API_KEY is missing or empty in .env");
-  }
-
   runApp(MyApp());
 }
 
@@ -127,7 +120,10 @@ class _MyAppState extends State<MyApp> {
           darkTheme: AppTheme.darkTheme,
           themeMode: appStore.isDarkMode ? ThemeMode.dark : ThemeMode.light,
           navigatorKey: navigatorKey,
-          home: LoginScreen(),
+          // TODO(local-desktop-plan Fase 0->4): temporary bypass of Login/Welcome so the editor
+          // is reachable without a backend. Fase 4 replaces this with a real
+          // "recent projects / new / open" start screen.
+          home: DashboardScreen(),
           routes: <String, WidgetBuilder>{
             LoginScreen.tag: (_) => LoginScreen(),
             RegisterScreen.tag: (_) => RegisterScreen(),

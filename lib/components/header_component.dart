@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html' as webFile;
 
 import 'package:flutter_viz/components/add_page_dialog.dart';
 import 'package:flutter_viz/externalClasses/on_hover.dart';
@@ -15,6 +14,7 @@ import 'package:flutter_viz/utils/AppCommonApiCall.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
 import 'package:flutter_viz/utils/AppFunctions.dart';
 import 'package:flutter_viz/utils/AppWidget.dart';
+import 'package:flutter_viz/utils/web_interop/web_interop.dart';
 import 'package:flutter_viz/widgets/screen_json_parser_class.dart';
 import 'package:flutter_viz/widgets/widgets.dart';
 import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
@@ -94,11 +94,7 @@ class _HeaderComponentState extends State<HeaderComponent> {
 
       trackUserEvent(DOWNLOAD_PROJECT_CODE);
       appStore.setProjectDownloading(false);
-      webFile.AnchorElement(
-        href: value.url,
-      )
-        ..setAttribute("download", "${appStore.projectName}")
-        ..click();
+      downloadUrlInBrowser(value.url, "${appStore.projectName}");
     }).catchError((e) {
       appStore.setProjectDownloading(false);
       log("latest project download here$e");
@@ -254,11 +250,7 @@ class _HeaderComponentState extends State<HeaderComponent> {
         if (index == appStore.screenList.length - 1 && value.url!.isNotEmpty) {
           trackUserEvent(DOWNLOAD_PROJECT_CODE);
           appStore.setProjectDownloading(false);
-          webFile.AnchorElement(
-            href: value.url,
-          )
-            ..setAttribute("download", "${appStore.projectName}")
-            ..click();
+          downloadUrlInBrowser(value.url, "${appStore.projectName}");
         } else {
           int newIndex = index + 1;
           if (appStore.screenList.length > newIndex) {

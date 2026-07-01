@@ -1,10 +1,9 @@
-import 'dart:html' as webFile;
-
 import 'package:flutter_viz/externalClasses/on_hover.dart';
 import 'package:flutter_viz/utils/AppCommon.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
 import 'package:flutter_viz/utils/AppFunctions.dart';
 import 'package:flutter_viz/utils/AppWidget.dart';
+import 'package:flutter_viz/utils/web_interop/web_interop.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -66,11 +65,6 @@ class _CodeViewHeaderComponentState extends State<CodeViewHeaderComponent> {
     filesContent.add(language!.copyrightInformation);
     filesContent.addAll(appStore.codeViewData);
 
-    var blob = webFile.Blob(filesContent, 'text/plain', 'native');
-    webFile.AnchorElement(
-      href: webFile.Url.createObjectUrlFromBlob(blob).toString(),
-    )
-      ..setAttribute("download", "${getFileName()}.dart")
-      ..click();
+    downloadTextFileInBrowser(filesContent, "${getFileName()}.dart");
   }
 }

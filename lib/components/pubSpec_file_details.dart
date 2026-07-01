@@ -1,9 +1,8 @@
-import 'dart:html' as webFile;
-
 import 'package:flutter_viz/utils/AppColors.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
 import 'package:flutter_viz/utils/AppFunctions.dart';
 import 'package:flutter_viz/utils/syntax_highlighter.dart';
+import 'package:flutter_viz/utils/web_interop/web_interop.dart';
 import 'package:flutter_viz/widgets/widgets.dart';
 import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
@@ -50,12 +49,7 @@ class _PubSpecFileDetailsState extends State<PubSpecFileDetails> {
     files.add(language!.copyrightInformation);
     files.add(fileContent);
 
-    var blob = webFile.Blob(files, 'text/plain', 'native');
-    webFile.AnchorElement(
-      href: webFile.Url.createObjectUrlFromBlob(blob).toString(),
-    )
-      ..setAttribute("download", "$fileName")
-      ..click();
+    downloadTextFileInBrowser(files, fileName);
   }
 
   @override
