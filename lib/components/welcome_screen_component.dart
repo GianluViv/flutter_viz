@@ -1,8 +1,6 @@
-import 'package:flutter_viz/model/user_project_list_model.dart';
-import 'package:flutter_viz/network/rest_apis.dart';
+import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/screen/dashboard_screen.dart';
 import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
 import 'package:flutter_viz/utils/AppFunctions.dart';
 import 'package:flutter_viz/utils/AppWidget.dart';
@@ -11,77 +9,35 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../main.dart';
-import 'add_clone_project_dialog.dart';
 
 class WelcomeScreenComponent extends StatefulWidget {
   static String tag = '/WelcomeScreenComponent';
-  final List<UserProjectData>? userProjectList;
+  final List<RecentProjectEntry> recentProjectList;
+  final Future<void> Function() onUpdate;
 
-  WelcomeScreenComponent({this.userProjectList});
+  WelcomeScreenComponent({required this.recentProjectList, required this.onUpdate});
 
   @override
   WelcomeScreenComponentState createState() => WelcomeScreenComponentState();
 }
 
 class WelcomeScreenComponentState extends State<WelcomeScreenComponent> {
-  @override
-  void initState() {
-    super.initState();
-    init();
-  }
-
-  Future<void> init() async {
-    projectListApi();
-  }
-
-  ///project list api call
-  Future<void> projectListApi() async {
-    appStore.setLoading(true);
-
-    await getUserProjectList(userId: getIntAsync(USER_ID)).then((value) async {
-      appStore.setLoading(false);
-      widget.userProjectList!.clear();
-      widget.userProjectList!.addAll(value.data!);
-
-      setState(() {});
-    }).catchError((e) {
+  Future<void> openProject(RecentProjectEntry entry) async {
+    try {
+      final project = await locator<LocalProjectService>().openFromPath(entry.path);
+      appStore.loadProject(project);
+      appStore.selectedMenu = WIDGETS_INDEX;
+      DashboardScreen().launch(context, isNewTask: true);
+    } catch (e) {
       getToast(e.toString());
-      appStore.setLoading(false);
-    });
+      await locator<LocalProjectService>().removeRecent(entry.path);
+      await widget.onUpdate();
+    }
   }
 
-  ///delete project list api call
-  Future<void> deleteProjectList(id) async {
-    appStore.setLoading(true);
-    Map req = {
-      "id": id,
-    };
-    await deleteUserProjectList(req).then((value) {
-      trackUserEvent(DELETE_PROJECT);
-      appStore.setLoading(false);
-      setState(() {});
-      getToast(value.message!);
-    }).catchError((e) {
-      appStore.setLoading(false);
-      getToast(e.toString());
-    });
-  }
-
-  ///delete project list api call
-  Future<void> updateProjectTimeApi(id) async {
-    Map req = {
-      "project_id": id,
-    };
-    await updateProjectTime(req).then((value) async {
-      printLogData(value.message.toString());
-    }).catchError((e) {
-      printLogData(e.toString());
-    });
-  }
-
-  @override
-  void setState(fn) {
-    if (mounted) super.setState(fn);
+  Future<void> forgetProject(RecentProjectEntry entry) async {
+    await locator<LocalProjectService>().removeRecent(entry.path);
+    await widget.onUpdate();
   }
 
   @override
@@ -96,9 +52,9 @@ class WelcomeScreenComponentState extends State<WelcomeScreenComponent> {
           physics: ScrollPhysics(),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: widget.userProjectList!.length,
+          itemCount: widget.recentProjectList.length,
           itemBuilder: (context, index) {
-            UserProjectData mData = widget.userProjectList![index];
+            RecentProjectEntry entry = widget.recentProjectList[index];
             return HoverWidget(
               builder: (context, isHovering) {
                 return AnimatedContainer(
@@ -126,73 +82,27 @@ class WelcomeScreenComponentState extends State<WelcomeScreenComponent> {
                         children: [
                           Row(
                             children: [
-                              Text(mData.name.validate(), style: primaryTextStyle(size: 18)).expand(),
+                              Text(entry.name.validate(), style: primaryTextStyle(size: 18)).expand(),
                               8.width,
-                              editIcon(context, () async {
-                                ifNotTester(() async {
-                                  await showInDialog(
-                                    context,
-                                    backgroundColor: context.scaffoldBackgroundColor,
-                                    contentPadding: EdgeInsets.all(16),
-                                    builder: (context) => AddCloneProjectDialog(
-                                      projectId: mData.id,
-                                      projectName: mData.name,
-                                      isEdit: true,
-                                      onUpdate: () {
-                                        projectListApi();
-                                      },
-                                    ),
-                                  );
-                                });
-                              }),
-                              16.width,
-                              cloneIcon(context).onTap(() async {
-                                ifNotTester(() async {
-                                  if (widget.userProjectList!.length >= getIntAsync(NO_OF_PROJECT, defaultValue: 3)) {
-                                    createProjectMaxLimitDialog(context);
-                                  } else {
-                                    await showInDialog(
-                                      context,
-                                      backgroundColor: context.scaffoldBackgroundColor,
-                                      contentPadding: EdgeInsets.all(16),
-                                      builder: (context) => AddCloneProjectDialog(
-                                        projectId: mData.id,
-                                        onUpdate: () {
-                                          projectListApi();
-                                        },
-                                      ),
-                                    );
-                                  }
-                                });
-                              }),
-                              16.width,
                               deleteIcon(context).onTap(() async {
-                                ifNotTester(() async {
-                                  deleteConfirmationDialog(
-                                    context: context,
-                                    messageText: language!.areYouSureWantToDeleteProject,
-                                    onAccept: () async {
-                                      finish(context);
-                                      await deleteProjectList(mData.id.validate());
-                                      widget.userProjectList!.remove(mData);
-                                    },
-                                  );
-                                });
+                                deleteConfirmationDialog(
+                                  context: context,
+                                  messageText: language!.areYouSureWantToDeleteProject,
+                                  onAccept: () async {
+                                    finish(context);
+                                    await forgetProject(entry);
+                                  },
+                                );
                               }),
                             ],
                           ),
                           8.height,
-                          Text('${language!.lastEdited} : ${getLastLogin(updateTimeString: mData.updatedAt!)}', style: secondaryTextStyle(size: 12)),
+                          Text('${language!.lastEdited} : ${getLastLogin(updateTimeString: entry.lastOpenedAt.toString())}', style: secondaryTextStyle(size: 12)),
                         ],
                       ),
                     ),
                   ).onTap(() {
-                    appStore.setProjectId(mData.id);
-                    appStore.setProjectName(mData.name);
-                    appStore.selectedMenu = WIDGETS_INDEX;
-                    updateProjectTimeApi(mData.id);
-
-                    DashboardScreen().launch(context, isNewTask: true);
+                    openProject(entry);
                   }),
                 );
               },

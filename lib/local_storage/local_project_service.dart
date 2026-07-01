@@ -112,6 +112,15 @@ class LocalProjectService {
     await file.writeAsString(jsonEncode(entries.map((e) => e.toJson()).toList()));
   }
 
+  /// Removes a project from the recent-projects index without touching its files on disk.
+  Future<void> removeRecent(String path) async {
+    final entries = await listRecentProjects();
+    entries.removeWhere((e) => e.path == path);
+    final file = await _recentIndexFile();
+    await file.parent.create(recursive: true);
+    await file.writeAsString(jsonEncode(entries.map((e) => e.toJson()).toList()));
+  }
+
   // ---------------------------------------------------------------------
   // Screen CRUD — mirrors the operations previously done via addScreen()/
   // deleteScreen()/getScreenList() in lib/network/rest_apis.dart.

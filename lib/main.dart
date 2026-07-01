@@ -1,9 +1,9 @@
 import 'package:flutter_viz/local/app_localizations.dart';
 import 'package:flutter_viz/local/languages.dart';
 import 'package:flutter_viz/local_storage/local_project_service.dart';
-import 'package:flutter_viz/screen/dashboard_screen.dart';
 import 'package:flutter_viz/screen/login_screen.dart';
 import 'package:flutter_viz/screen/register_screen.dart';
+import 'package:flutter_viz/screen/welcome_screen.dart';
 import 'package:flutter_viz/store/AppStore.dart';
 import 'package:flutter_viz/utils/AnalyticsService.dart';
 import 'package:flutter_viz/utils/AppColors.dart';
@@ -121,10 +121,9 @@ class _MyAppState extends State<MyApp> {
           darkTheme: AppTheme.darkTheme,
           themeMode: appStore.isDarkMode ? ThemeMode.dark : ThemeMode.light,
           navigatorKey: navigatorKey,
-          // TODO(local-desktop-plan Fase 0->4): temporary bypass of Login/Welcome so the editor
-          // is reachable without a backend. Fase 4 replaces this with a real
-          // "recent projects / new / open" start screen.
-          home: DashboardScreen(),
+          // Fase 3: WelcomeScreen is now the local "recent projects / new / open" picker
+          // (LocalProjectService-backed). Fase 4 removes the remaining Login/Register routes below.
+          home: WelcomeScreen(),
           routes: <String, WidgetBuilder>{
             LoginScreen.tag: (_) => LoginScreen(),
             RegisterScreen.tag: (_) => RegisterScreen(),

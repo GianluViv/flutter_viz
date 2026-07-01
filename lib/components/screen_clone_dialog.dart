@@ -1,12 +1,10 @@
 import 'dart:convert';
 
-import 'package:flutter_viz/model/screen_list_response.dart';
-import 'package:flutter_viz/network/rest_apis.dart';
+import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
 import 'package:flutter_viz/utils/AppFunctions.dart';
 import 'package:flutter_viz/utils/AppWidget.dart';
 import 'package:flutter_viz/widgets/screen_json_parser_class.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -44,7 +42,7 @@ class ScreenCloneDialogState extends State<ScreenCloneDialog> {
     if (mounted) super.setState(fn);
   }
 
-  ///add screen api call
+  ///add screen — local equivalent of the old addScreen() REST call.
   Future<void> addScreenApi() async {
     trackUserEvent(SAVE_SCREEN);
     if (screenController.text.trim().isEmpty)
@@ -53,49 +51,50 @@ class ScreenCloneDialogState extends State<ScreenCloneDialog> {
     hideKeyboard(context);
     appStore.setLoading(true);
 
-    String? screenImage;
-    screenshotController.capture(delay: Duration(milliseconds: 10)).then((capturedImage) async {
-      screenImage = base64.encode(capturedImage!);
-
-      Map<String, dynamic> rootScreenDataJson = await widgetClassToJsonData();
-      Map req;
-      if (widget.isEdit) {
-        req = {
-          'user_id': (IS_TESTING_MODE) ? DUMMY_USER_ID : getIntAsync(USER_ID),
-          'name': screenController.text,
-          'id': appStore.selectedScreenId,
-        };
-      } else {
-        trackUserEvent(SCREEN_CLONE);
-        req = {
-          'user_id': getIntAsync(USER_ID),
-          'name': screenController.text,
-          'data': json.encode(rootScreenDataJson),
-          'project_id': appStore.projectId,
-          'screen_image': screenImage,
-        };
-      }
-      await addScreen(req).then((value) {
+    if (widget.isEdit) {
+      try {
+        await locator<LocalProjectService>().renameScreen(appStore.currentProject!, appStore.selectedScreenId!, screenController.text);
         appStore.setLoading(false);
-        getToast(value.message!);
-        if (widget.isEdit) {
-          appStore.updateScreenName(screenController.text, appStore.selectedScreenId);
-          appStore.fileName = screenController.text;
-        } else {
-          appStore.screenList.add(ScreenListData(id: value.data!.id, name: req['name'], screenJsonData: req['data'], screenImage: screenImage));
-
-          /// Showing added screen data
-          appStore.selectedDropdownScreen = appStore.screenList[appStore.screenList.length - 1];
-          appStore.setScreenDetails(appStore.screenList[appStore.screenList.length - 1]);
-          applyScreenJsonToView(appStore.screenList[appStore.screenList.length - 1].screenJsonData);
-        }
+        appStore.updateScreenName(screenController.text, appStore.selectedScreenId);
+        appStore.fileName = screenController.text;
         LiveStream().emit(updateScreenList);
         finish(context);
-      }).catchError((e) {
+      } catch (e) {
         appStore.setLoading(false);
         finish(context);
         getToast(e.toString());
-      });
+      }
+      return;
+    }
+
+    trackUserEvent(SCREEN_CLONE);
+    screenshotController.capture(delay: Duration(milliseconds: 10)).then((capturedImage) async {
+      String screenImage = base64.encode(capturedImage!);
+      Map<String, dynamic> rootScreenDataJson = await widgetClassToJsonData();
+
+      try {
+        final service = locator<LocalProjectService>();
+        final screen = await service.addScreen(
+          appStore.currentProject!,
+          name: screenController.text,
+          screenJsonData: json.encode(rootScreenDataJson),
+        );
+        await service.updateScreenData(appStore.currentProject!, screen.id!, screenImage: screenImage);
+        screen.screenImage = screenImage;
+        appStore.setLoading(false);
+        appStore.screenList.add(screen);
+
+        /// Showing added screen data
+        appStore.selectedDropdownScreen = appStore.screenList[appStore.screenList.length - 1];
+        appStore.setScreenDetails(appStore.screenList[appStore.screenList.length - 1]);
+        applyScreenJsonToView(appStore.screenList[appStore.screenList.length - 1].screenJsonData);
+        LiveStream().emit(updateScreenList);
+        finish(context);
+      } catch (e) {
+        appStore.setLoading(false);
+        finish(context);
+        getToast(e.toString());
+      }
     }).catchError((onError) {
       print(onError);
     });

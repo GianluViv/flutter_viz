@@ -1,12 +1,11 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_viz/components/create_project_dialog.dart';
 import 'package:flutter_viz/components/welcome_screen_component.dart';
-import 'package:flutter_viz/externalClasses/on_hover.dart';
+import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/model/user_project_list_model.dart';
-import 'package:flutter_viz/network/rest_apis.dart';
+import 'package:flutter_viz/screen/dashboard_screen.dart';
 import 'package:flutter_viz/screen/mobile_view_screen.dart';
 import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
 import 'package:flutter_viz/utils/AppFunctions.dart';
 import 'package:flutter_viz/utils/AppWidget.dart';
@@ -22,7 +21,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class WelcomeScreenState extends State<WelcomeScreen> {
-  List<UserProjectData> userProjectList = [];
+  List<RecentProjectEntry> recentProjectList = [];
 
   @override
   void initState() {
@@ -31,21 +30,30 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   Future<void> init() async {
-    projectListApi();
+    await loadRecentProjects();
   }
 
-  ///project list api call
-  Future<void> projectListApi() async {
+  /// Reads the local "recent projects" index instead of calling getUserProjectList().
+  Future<void> loadRecentProjects() async {
     appStore.setLoading(true);
-    await getUserProjectList(userId: getIntAsync(USER_ID)).then((value) async {
-      appStore.setLoading(false);
-      userProjectList.clear();
-      userProjectList.addAll(value.data!);
-      setState(() {});
-    }).catchError((e) {
+    List<RecentProjectEntry> entries = await locator<LocalProjectService>().listRecentProjects();
+    appStore.setLoading(false);
+    recentProjectList.clear();
+    recentProjectList.addAll(entries);
+    setState(() {});
+  }
+
+  Future<void> openProjectFromFolder() async {
+    String? path = await FilePicker.platform.getDirectoryPath(dialogTitle: "Select Project Folder");
+    if (path == null) return;
+    try {
+      final project = await locator<LocalProjectService>().openFromPath(path);
+      appStore.loadProject(project);
+      appStore.selectedMenu = WIDGETS_INDEX;
+      DashboardScreen().launch(context, isNewTask: true);
+    } catch (e) {
       getToast(e.toString());
-      appStore.setLoading(false);
-    });
+    }
   }
 
   @override
@@ -71,18 +79,6 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                       children: [
                         getHeaderLogoImage(),
                         darkModeSwitchWidget(),
-                        16.width,
-                        OnHover(builder: (isHovered) {
-                          return elevationButtonWithIcon(
-                            isHovered: isHovered,
-                            toolTipMessage: language!.logout,
-                            title: language!.logout,
-                            icon: Icons.logout,
-                            onPressed: () {
-                              logoutConfirmationDialog(context);
-                            },
-                          );
-                        }),
                       ],
                     ),
                   ),
@@ -96,35 +92,35 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                       children: [
                         Align(
                           alignment: Alignment.topRight,
-                          child: FittedBox(
-                            child: elevationButtonWithIcon(
-                              toolTipMessage: language!.createNewProject,
-                              title: language!.createNewProject,
-                              icon: Icons.add,
-                              onPressed: () async {
-                                ifNotTester(() async {
-                                  if (userProjectList.length >= getIntAsync(NO_OF_PROJECT, defaultValue: 3)) {
-                                    createProjectMaxLimitDialog(context);
-                                  } else {
-                                    await showInDialog(
-                                      context,
-                                      barrierDismissible: false,
-                                      backgroundColor: context.scaffoldBackgroundColor,
-                                      contentPadding: EdgeInsets.symmetric(vertical: 30),
-                                      builder: (context) => CreateProjectDialog(
-                                        onUpdate: () {
-                                          projectListApi();
-                                        },
-                                      ),
-                                    );
-                                  }
-                                });
-                              },
-                            ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              elevationButtonWithIcon(
+                                toolTipMessage: "Open Project",
+                                title: "Open Project",
+                                icon: Icons.folder_open,
+                                onPressed: openProjectFromFolder,
+                              ),
+                              16.width,
+                              elevationButtonWithIcon(
+                                toolTipMessage: language!.createNewProject,
+                                title: language!.createNewProject,
+                                icon: Icons.add,
+                                onPressed: () async {
+                                  await showInDialog(
+                                    context,
+                                    barrierDismissible: false,
+                                    backgroundColor: context.scaffoldBackgroundColor,
+                                    contentPadding: EdgeInsets.symmetric(vertical: 30),
+                                    builder: (context) => CreateProjectDialog(),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ),
                         30.height,
-                        WelcomeScreenComponent(userProjectList: userProjectList).expand(),
+                        WelcomeScreenComponent(recentProjectList: recentProjectList, onUpdate: loadRecentProjects).expand(),
                       ],
                     ),
                   ),
@@ -133,7 +129,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
               Align(
                 child: noProjectFoundWidget(),
                 alignment: Alignment.center,
-              ).visible(userProjectList.isEmpty && !appStore.isLoading),
+              ).visible(recentProjectList.isEmpty && !appStore.isLoading),
               loadingAnimation().visible(appStore.isLoading).center(),
             ],
           ),

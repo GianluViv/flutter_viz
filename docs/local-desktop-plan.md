@@ -287,19 +287,81 @@ reintroduzione futura.
   `flutter create` e mai aggiornato per questa app, fallisce già da prima — non collegato a questa
   fase, ignorato.)
 
-### Fase 3 — Collegare l'editor al servizio locale (progetti e pagine)
+### Fase 3 — Collegare l'editor al servizio locale (progetti e pagine) ✅ COMPLETATA
 **Scopo:** creare/aprire progetti multi-pagina e gestire le pagine, tutto in locale.
-- [ ] Sostituire nelle CRUD schermate le chiamate `addScreen/deleteScreen/getScreenList` con i
-      metodi di `LocalProjectService` (file: `add_screen_dialog.dart`, `add_page_dialog.dart`,
-      `screen_list_component.dart`, `screens_page_components.dart`, `screen_clone_dialog.dart`).
-- [ ] Sostituire in `create_project_dialog.dart` e `welcome_screen.dart` la lista/creazione
-      progetti con `listRecentProjects()` / `newProject()` / `openProject()`.
-- [ ] Sostituire `saveScreenApi()` (`AppCommonApiCall.dart`) e `autoSaveData()`
-      (`dashboard_screen.dart`) con `LocalProjectService.saveProject()` (autosave = flush su file,
-      con debounce; il thumbnail via `screenshotController` resta locale).
-- [ ] Sostituire `getAllScreenListApi()` con il caricamento da file → `appStore.addScreens()`.
-- **Verifica:** creare un progetto, aggiungere/rinominare/eliminare/clonare pagine, chiudere e
-      riaprire l'app: il progetto si ricarica con tutte le pagine.
+- [x] Aggiunto `Project? currentProject` e `AppStore.loadProject(Project)` (`lib/store/AppStore.dart`):
+      popola `screenList`/`projectName`/`fileName` da un `Project` aperto/creato e riusa
+      `addScreens()` esistente (che già gestiva il placeholder "New Screen" id -1 e la selezione
+      della prima schermata).
+- [x] **`WelcomeScreen` riscritta** (`lib/screen/welcome_screen.dart`) come vero picker locale:
+      elenca i progetti recenti via `LocalProjectService.listRecentProjects()`, bottone "Create New
+      Project" (dialog semplificato) e bottone "Open Project" che usa `file_picker` per aprire una
+      cartella progetto arbitraria via `openFromPath()`. **`main.dart`** ora punta `home:` a
+      `WelcomeScreen()` invece del bypass diretto a `DashboardScreen()` introdotto in Fase 0.
+- [x] **`WelcomeScreenComponent` riscritta** (`lib/components/welcome_screen_component.dart`) per
+      mostrare `List<RecentProjectEntry>` invece di `List<UserProjectData>` (rimosso il backend
+      `getUserProjectList()`); click per aprire, icona cestino per rimuovere dall'indice recenti
+      (`LocalProjectService.removeRecent()`, nuovo metodo — non tocca i file su disco). Le
+      funzionalità di rinomina/clona-progetto (`AddCloneProjectDialog`) sono state **rimosse dalla UI**
+      (fuori scopo per questa fase, che copre solo list/create/open come da piano) — il file
+      `add_clone_project_dialog.dart` resta ma è ora non referenziato (pulizia rimandata a Fase 6).
+- [x] **`CreateProjectDialog` semplificata** (`lib/components/create_project_dialog.dart`): rimossa
+      tutta la galleria "template di progetto" lato server (`getProjectList`/`addTemplateSaveAsProject`,
+      backend-only e senza senso offline), resta solo nome progetto → `LocalProjectService.newProject()`
+      + una schermata "Home Screen" di default → `appStore.loadProject()` → `DashboardScreen`.
+- [x] Sostituite le chiamate `addScreen/deleteScreen/getScreenList` con i metodi di
+      `LocalProjectService` in: `add_screen_dialog.dart` (rinomina schermata → `renameScreen`),
+      `add_page_dialog.dart` (`addScreenApi`/`updateScreenImageApi` → `addScreen`/`updateScreenData`),
+      `screen_list_component.dart` (`deleteScreenApi` → `deleteScreen`), `screens_page_components.dart`
+      (`getScreenListApi` → riapre `project.json` via `openProject()`, `deleteScreenApi` →
+      `deleteScreen`), `screen_clone_dialog.dart` (rinomina o "Save As" → `renameScreen`/`addScreen`+
+      `updateScreenData`).
+- [x] Sostituito `saveScreenApi()` (`AppCommonApiCall.dart`, usato da Ctrl+S e dal bottone salva
+      dell'header) e `autoSaveData()`/`init()` (`dashboard_screen.dart`, timer ogni 30s) con
+      `LocalProjectService.updateScreenData()`; rimossa `getAllScreenListApi()` (dead code —
+      `DashboardScreen` ora riceve le schermate già caricate da `WelcomeScreen` via
+      `appStore.loadProject()`, non le rifetcha più).
+- **Bug preesistente scoperto e corretto in corso d'opera**: `autoSaveData()` e il bottone "create
+  project" erano avvolti in `ifNotTester(...)`, un guard pensato per il concetto di utente
+  demo/tester del backend (`appStore.userEmail`/`USER_TYPE` da SharedPreferences). Con il login
+  bypassato dalla Fase 0, `USER_TYPE` non viene mai impostato → la condizione falliva sempre →
+  `ifNotTester` **non eseguiva mai il callback**, disabilitando silenziosamente l'autosave (e in
+  origine anche la creazione progetto) senza errori visibili. Rimosso l'uso di `ifNotTester` da
+  questi due punti, dato che il concetto di utente "tester" non ha senso in un'app desktop locale
+  senza licenze/backend.
+- **Verifica:** `flutter analyze` → 0 errori reali (verificato con `grep "error -"`); `flutter test
+  test/local_project_service_test.dart` → 5/5 verdi (invariati); `flutter build windows` → pulita.
+- **Nota sulla cattura schermo (falso allarme)**: un primo tentativo di verifica visiva tramite
+  screenshot GDI (`CopyFromScreen`/`PrintWindow`) mostrava un rettangolo bianco anche con un
+  `Container(color: Colors.red)` di debug al posto del `body`. Confrontando con un'app Flutter
+  Windows vanilla nello stesso ambiente (cattura riuscita al primo colpo), si è visto che
+  `CopyFromScreen` funziona normalmente — il rettangolo bianco iniziale era un artefatto di timing
+  della cattura, non un bug. Ripetendo la cattura, la `WelcomeScreen` **si vede correttamente**:
+  logo/versione, switch dark mode, bottoni "Open Project"/"Create New Project", messaggio "No
+  Project found".
+- **Verifica end-to-end confermata dall'utente in sessione live**: creato un progetto reale
+  ("prova") dalla `WelcomeScreen`; `project.json` scritto correttamente su disco con
+  `formatVersion`/`projectName`/`screens[]`; `recent.json` aggiornato; **autosave confermato
+  funzionante** (`updatedAt` successivo a `createdAt` nel `project.json` dopo ~1 minuto di editing,
+  segno che il timer da 30s ha effettivamente chiamato `updateScreenData()`).
+- **Bug reale trovato durante il test live e corretto**: il log di `flutter run -d windows` mostrava
+  `[ERROR] Unhandled Exception: MissingPluginException(No implementation found for method showToast
+  on channel PonnamKarthik/fluttertoast)` — `getToast()` (`lib/utils/AppFunctions.dart`) chiama
+  `Fluttertoast.showToast(...)` senza mai gestirne l'esito, e il pacchetto `fluttertoast` non ha
+  **nessuna** implementazione nativa per Windows/Linux, quindi ogni singola chiamata a `getToast()`
+  in tutta l'app (centinaia di call site, non solo quelli toccati in questa fase) lanciava
+  un'eccezione non gestita su desktop. Era già segnalato come rischio noto nelle note della Fase 1
+  ("da sistemare quando si rimuove la dipendenza dal backend... Fase 3/4"). **Fix minimo applicato**:
+  aggiunto un `.catchError((e) => false)` al `Future` restituito da `Fluttertoast.showToast(...)`,
+  per evitare l'eccezione non gestita senza introdurre un nuovo sistema di notifiche desktop (quello
+  resta un miglioramento più ampio, rimandato a una fase successiva di rifinitura UX). Verificato con
+  `flutter analyze` (0 errori) e `flutter test` (5/5 ancora verdi).
+- **Osservazione fuori scopo, non toccata**: lo switch dark mode (`darkModeSwitchWidget()` in
+  `lib/utils/AppWidget.dart`) chiama ancora `editProfileApi()` → `updateProfile()` REST per
+  persistere la preferenza tema lato server; fallisce silenziosamente con "No host specified in URI"
+  (già gestito da un `catchError` esistente, solo loggato — nessun crash). Rientra nella rimozione
+  del livello di rete pianificata per la Fase 4, non toccato qui per restare nello scopo di questa
+  fase.
 
 ### Fase 4 — Rimozione del gate di login/backend
 **Scopo:** boot pulito senza autenticazione. **Decisione:** livello di rete **rimosso** del tutto.

@@ -569,7 +569,12 @@ getToast(String message) {
     textColor: appStore.isDarkMode ? darkModeHighLightColor : btnBackgroundColor,
     fontSize: 16.0,
     webBgColor: appStore.isDarkMode ? '#12181B' : '#ebeefc',
-  );
+  ).catchError((e) {
+    // fluttertoast has no Windows/Linux plugin implementation, so this always
+    // throws MissingPluginException on desktop. Swallow it instead of leaving
+    // an unhandled exception in the console — see docs/local-desktop-plan.md.
+    return false;
+  });
 }
 
 logoutConfirmationDialog(BuildContext context) async {

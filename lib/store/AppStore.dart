@@ -1,5 +1,6 @@
 import 'package:flutter_viz/adminDashboard/model/template_list_model.dart';
 import 'package:flutter_viz/local/app_localizations.dart';
+import 'package:flutter_viz/local_storage/project.dart';
 import 'package:flutter_viz/model/device_screen_size.dart';
 import 'package:flutter_viz/model/media_list_model.dart';
 import 'package:flutter_viz/model/menu_widgets_model.dart';
@@ -108,6 +109,11 @@ abstract class AppStoreBase with Store {
 
   @observable
   String? projectName = "";
+
+  /// Currently open local project (folder on disk). Source of truth for
+  /// screenList/projectName once a project is loaded via [loadProject]; see
+  /// docs/local-desktop-plan.md Fase 3.
+  Project? currentProject;
 
   /// Default File name
   @observable
@@ -998,6 +1004,15 @@ abstract class AppStoreBase with Store {
   @action
   void setLoading(bool val) {
     isLoading = val;
+  }
+
+  /// Loads a local [Project] (opened or just created) into the editor state.
+  @action
+  void loadProject(Project project) {
+    currentProject = project;
+    projectName = project.name;
+    fileName = project.name;
+    addScreens(project.screens);
   }
 
   @action

@@ -1,9 +1,8 @@
+import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/network/rest_apis.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
 import 'package:flutter_viz/utils/AppFunctions.dart';
 import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -34,23 +33,17 @@ class AddScreenDialogState extends State<AddScreenDialog> {
     hideKeyboard(context);
     appStore.setLoading(true);
 
-    Map req = {
-      'user_id': (IS_TESTING_MODE) ? DUMMY_USER_ID : getIntAsync(USER_ID),
-      'name': screenController!.text,
-      'id': appStore.selectedScreenId,
-    };
-
-    await addScreen(req).then((value) {
+    try {
+      await locator<LocalProjectService>().renameScreen(appStore.currentProject!, appStore.selectedScreenId!, screenController!.text);
       appStore.setLoading(false);
-      getToast(value.message!);
       finish(context);
       appStore.updateScreenName(screenController!.text, appStore.selectedScreenId);
       appStore.fileName = screenController!.text;
       LiveStream().emit(updateScreenList);
-    }).catchError((e) {
+    } catch (e) {
       appStore.setLoading(false);
       getToast(e.toString());
-    });
+    }
   }
 
   @override

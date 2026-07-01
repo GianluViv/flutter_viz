@@ -4,16 +4,14 @@ import 'dart:convert';
 import 'package:flutter_viz/components/header_component.dart';
 import 'package:flutter_viz/components/menu_component.dart';
 import 'package:flutter_viz/components/user_guide_dialog.dart';
+import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/main.dart';
 import 'package:flutter_viz/model/screen_list_response.dart';
-import 'package:flutter_viz/network/rest_apis.dart';
 import 'package:flutter_viz/utils/AppColors.dart';
 import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/utils/AppCommonApiCall.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
 import 'package:flutter_viz/utils/AppFunctions.dart';
 import 'package:flutter_viz/widgets/screen_json_parser_class.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -37,42 +35,37 @@ class DashboardScreenState extends State<DashboardScreen> with TickerProviderSta
     init();
   }
 
-  /// Auto Save data after 60 seconds
+  /// Auto Save data after 30 seconds — flushes the current screen to
+  /// project.json via LocalProjectService instead of the old addScreen() REST call.
   void autoSaveData() async {
-    ifNotTester(() {
-      if (appStore.selectedMenu == WIDGETS_INDEX || appStore.selectedMenu == TREE_INDEX) {
-        if (appStore.selectedScreenId! > 0) {
+    if (appStore.selectedMenu == WIDGETS_INDEX || appStore.selectedMenu == TREE_INDEX) {
+      if (appStore.currentProject != null && appStore.selectedScreenId! > 0) {
+        screenshotController.capture(delay: Duration(milliseconds: 10)).then((capturedImage) async {
+          Map<String, dynamic> rootScreenDataJson = await widgetClassToJsonData();
           String? screenImage;
-          screenshotController.capture(delay: Duration(milliseconds: 10)).then((capturedImage) async {
-            Map<String, dynamic> rootScreenDataJson = await widgetClassToJsonData();
-            if (rootScreenDataJson['widgetsData'].isNotEmpty ||
-                rootScreenDataJson['appBarData'].isNotEmpty ||
-                rootScreenDataJson['bottomBarNavigationData'].isNotEmpty ||
-                rootScreenDataJson['drawerData'].isNotEmpty) {
-              screenImage = base64.encode(capturedImage!);
-            }
-            Map req = {
-              'user_id': (IS_TESTING_MODE) ? DUMMY_USER_ID : getIntAsync(USER_ID),
-              'id': appStore.selectedScreenId,
-              'data': json.encode(rootScreenDataJson),
-              'project_id': appStore.projectId,
-              'screen_image': screenImage,
-            };
+          if (rootScreenDataJson['widgetsData'].isNotEmpty ||
+              rootScreenDataJson['appBarData'].isNotEmpty ||
+              rootScreenDataJson['bottomBarNavigationData'].isNotEmpty ||
+              rootScreenDataJson['drawerData'].isNotEmpty) {
+            screenImage = base64.encode(capturedImage!);
+          }
+          String screenJsonData = json.encode(rootScreenDataJson);
 
-            addScreen(req).then((value) {
-              appStore.updateScreenNewData(json.encode(rootScreenDataJson), appStore.selectedScreenId);
-              appStore.updateScreenImage(screenImage, appStore.selectedScreenId);
-              appStore.updateSyncTime(DateTime.now().toString());
-              LiveStream().emit(LIVESTREAM_UPDATE_LAST_SYNC_TIME);
-            }).catchError((e) {
-              getToast(e.toString());
-            });
-          }).catchError((onError) {
-            print(onError);
-          });
-        }
+          await locator<LocalProjectService>().updateScreenData(
+            appStore.currentProject!,
+            appStore.selectedScreenId!,
+            screenJsonData: screenJsonData,
+            screenImage: screenImage,
+          );
+          appStore.updateScreenNewData(screenJsonData, appStore.selectedScreenId);
+          appStore.updateScreenImage(screenImage, appStore.selectedScreenId);
+          appStore.updateSyncTime(DateTime.now().toString());
+          LiveStream().emit(LIVESTREAM_UPDATE_LAST_SYNC_TIME);
+        }).catchError((onError) {
+          print(onError);
+        });
       }
-    }, false);
+    }
   }
 
   void init() async {
@@ -93,16 +86,18 @@ class DashboardScreenState extends State<DashboardScreen> with TickerProviderSta
       setValue(IS_FIRST_TIME_LOGIN, false);
     }
     appStore.isPreviewCode = false;
-    appStore.selectedWidgetList.clear();
 
-    /// Add default Screen
-    appStore.screenList.add(ScreenListData(
-      name: "New Screen",
-      id: -1,
-    ));
-    appStore.addRootView();
-    await getAllScreenListApi();
-    await allMediaListApi();
+    /// Defensive fallback: DashboardScreen is normally only reached after
+    /// WelcomeScreen loads a project via appStore.loadProject(). If it's
+    /// reached with none loaded, fall back to an empty in-memory screen.
+    if (appStore.currentProject == null) {
+      appStore.selectedWidgetList.clear();
+      appStore.screenList.add(ScreenListData(
+        name: "New Screen",
+        id: -1,
+      ));
+      appStore.addRootView();
+    }
   }
 
   @override

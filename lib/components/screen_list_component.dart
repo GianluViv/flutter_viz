@@ -1,8 +1,8 @@
 import 'package:flutter_viz/components/add_page_dialog.dart';
 import 'package:flutter_viz/components/screen_clone_dialog.dart';
+import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/main.dart';
 import 'package:flutter_viz/model/screen_list_response.dart';
-import 'package:flutter_viz/network/rest_apis.dart';
 import 'package:flutter_viz/screen/preview_screen.dart';
 import 'package:flutter_viz/utils/AppColors.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
@@ -53,21 +53,17 @@ class _ScreenListComponentState extends State<ScreenListComponent> {
     }
   }
 
-  ///delete screen api call
-  Future deleteScreenApi({int? screenId}) async {
-    Map req = {
-      'id': screenId,
-    };
-    await deleteScreen(req).then((value) {
-      if (value.status!) {
-        appStore.removeScreen(screenId);
-        getToast(value.message!);
-        searchOperation(searchController.text);
-      }
+  ///delete screen — local equivalent of the old deleteScreen() REST call.
+  Future<void> deleteScreenApi({int? screenId}) async {
+    if (appStore.currentProject == null || screenId == null) return;
+    try {
+      await locator<LocalProjectService>().deleteScreen(appStore.currentProject!, screenId);
+      appStore.removeScreen(screenId);
+      searchOperation(searchController.text);
       LiveStream().emit(getUpdatedData, true);
-    }).catchError((e) {
+    } catch (e) {
       getToast(e.toString());
-    });
+    }
   }
 
   @override

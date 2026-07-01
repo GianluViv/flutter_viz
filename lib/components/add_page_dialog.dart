@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter_viz/adminDashboard/model/template_list_model.dart';
-import 'package:flutter_viz/model/add_screen_model.dart';
+import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/model/category_template_list_model.dart';
 import 'package:flutter_viz/model/screen_list_response.dart';
 import 'package:flutter_viz/network/rest_apis.dart';
@@ -60,34 +60,21 @@ class AddPageDialogState extends State<AddPageDialog> with SingleTickerProviderS
     });
   }
 
-  /// add Screen api
+  /// Creates a new page in the current local project via LocalProjectService,
+  /// replacing the old addScreen() REST call.
   Future<void> addScreenApi({String? rootScreenData}) async {
     if (formKey.currentState!.validate()) {
       hideKeyboard(context);
       formKey.currentState!.save();
       appStore.setLoading(true);
-      Map req;
-      if (rootScreenData != null) {
-        req = {
-          'user_id': getIntAsync(USER_ID),
-          'name': pageNameController.text,
-          'data': rootScreenData,
-          'project_id': appStore.projectId,
-        };
-      } else {
-        req = {
-          'user_id': getIntAsync(USER_ID),
-          'name': pageNameController.text,
-          'project_id': appStore.projectId,
-        };
-      }
 
-      await addScreen(req).then((value) async {
-        appStore.screenList.add(ScreenListData(
-          id: value.data!.id,
-          name: req['name'],
-          screenJsonData: req['data'],
-        ));
+      try {
+        final screen = await locator<LocalProjectService>().addScreen(
+          appStore.currentProject!,
+          name: pageNameController.text,
+          screenJsonData: rootScreenData,
+        );
+        appStore.screenList.add(screen);
 
         /// Showing added screen data
         appStore.selectedDropdownScreen = appStore.screenList[appStore.screenList.length - 1];
@@ -96,39 +83,27 @@ class AddPageDialogState extends State<AddPageDialog> with SingleTickerProviderS
         LiveStream().emit(updateScreenList);
         if (rootScreenData != null) {
           Future.delayed(Duration(seconds: 1), () async {
-            await updateScreenImageApi(value);
+            await updateScreenImageApi(screen);
           });
         } else {
           appStore.setLoading(false);
           finish(context);
-          getToast(value.message!);
         }
-      }).catchError((e) {
+      } catch (e) {
         appStore.setLoading(false);
         finish(context);
         getToast(e.toString());
-      });
+      }
     }
   }
 
-  updateScreenImageApi(AddScreenModel screenModel) async {
-    String? screenImage;
+  Future<void> updateScreenImageApi(ScreenListData screen) async {
     screenshotController.capture(delay: Duration(milliseconds: 10)).then((capturedImage) async {
-      screenImage = base64.encode(capturedImage!);
-      Map req = {
-        'user_id': (IS_TESTING_MODE) ? DUMMY_USER_ID : getIntAsync(USER_ID),
-        'id': screenModel.data!.id,
-        'screen_image': screenImage,
-      };
-      await addScreen(req).then((value) {
-        appStore.setLoading(false);
-        finish(context);
-        appStore.updateScreenImage(screenImage, appStore.selectedScreenId);
-        getToast(screenModel.message!);
-      }).catchError((e) {
-        appStore.setLoading(false);
-        getToast(e.toString());
-      });
+      String screenImage = base64.encode(capturedImage!);
+      await locator<LocalProjectService>().updateScreenData(appStore.currentProject!, screen.id!, screenImage: screenImage);
+      appStore.setLoading(false);
+      finish(context);
+      appStore.updateScreenImage(screenImage, appStore.selectedScreenId);
     }).catchError((onError) {
       print(onError);
     });

@@ -1,11 +1,11 @@
 import 'package:flutter_viz/components/add_screen_dialog.dart';
+import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/network/rest_apis.dart';
+import 'package:flutter_viz/model/screen_list_response.dart';
 import 'package:flutter_viz/utils/AppColors.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
 import 'package:flutter_viz/utils/AppFunctions.dart';
 import 'package:flutter_viz/widgets/screen_json_parser_class.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -32,30 +32,28 @@ class _ScreensPageComponentsState extends State<ScreensPageComponents> {
     });
   }
 
+  /// Reloads the screen list from project.json (local equivalent of getScreenList()).
   Future<void> getScreenListApi() async {
-    await getScreenList(
-      projectId: appStore.projectId,
-      userId: (IS_TESTING_MODE) ? DUMMY_USER_ID as int? : getIntAsync(USER_ID),
-      page: -1,
-    ).then((value) async {
+    if (appStore.currentProject == null) return;
+    try {
+      final reopened = await locator<LocalProjectService>().openProject(appStore.currentProject!.directory);
+      appStore.currentProject = reopened;
       appStore.screenList.clear();
-      appStore.screenList.addAll(value.data!);
-    }).catchError((e) {
+      appStore.screenList.add(ScreenListData(name: "New Screen", id: -1));
+      appStore.screenList.addAll(reopened.screens);
+    } catch (e) {
       getToast(e.toString());
-    });
+    }
   }
 
-  Future deleteScreenApi({int? screenId}) async {
-    Map req = {
-      'id': screenId,
-    };
-
-    await deleteScreen(req).then((value) {
+  Future<void> deleteScreenApi({int? screenId}) async {
+    if (appStore.currentProject == null || screenId == null) return;
+    try {
+      await locator<LocalProjectService>().deleteScreen(appStore.currentProject!, screenId);
       LiveStream().emit(getUpdatedData, true);
-      getToast(value.message!);
-    }).catchError((e) {
+    } catch (e) {
       getToast(e.toString());
-    });
+    }
   }
 
   @override
