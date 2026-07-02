@@ -77,7 +77,7 @@ class RatingBarClass {
     unRatedColor = json['unRatedColor'] != null ? fromJsonColor(json['unRatedColor']) : DEFAULT_UNRATED_COLOR;
     axis = json['axis'] != null ? json['axis'] : AxisHorizontal;
     ratingItemCount = json['ratingItemCount'] != null ? json['ratingItemCount'] : DEFAULT_RATING_ITEM_COUNT;
-    ratingSize = json['ratingSize'] != null ? json['ratingSize'] : DEFAULT_RATING_ITEM_SIZE as double?;
+    ratingSize = json['ratingSize'] != null ? json['ratingSize'] : DEFAULT_RATING_ITEM_SIZE;
     rating = json['rating'] != null ? json['rating'] : DEFAULT_RATING;
     isExpanded = json['isExpanded'] != null ? json['isExpanded'] : false;
     flex = json['flex'] != null ? json['flex'] : DEFAULT_FLEX;
@@ -145,7 +145,7 @@ class RatingBarClass {
           color: ratedColor ?? DEFAULT_RATED_COLOR,
         ),
         itemCount: ratingItemCount ?? DEFAULT_RATING_ITEM_COUNT,
-        itemSize: ratingSize ?? DEFAULT_RATING_ITEM_SIZE as double,
+        itemSize: ratingSize ?? DEFAULT_RATING_ITEM_SIZE,
         direction: axis != null ? getAxis(axis: axis) : Axis.horizontal,
         allowHalfRating: allowHalfRating ?? false,
         onRatingUpdate: (value) {},

@@ -169,7 +169,7 @@ class RatingBarPropertyViewState extends State<RatingBarPropertyView> {
               width: widthPropertySize,
               child: getTextField(
                 controller: TextEditingController(
-                  text: ratingBarClass!.ratingSize != null ? ratingBarClass!.ratingSize.toString() : DEFAULT_RATING_ITEM_SIZE.toString(),
+                  text: ratingBarClass!.ratingSize != null ? ratingBarClass!.ratingSize.toString() : DEFAULT_RATING_ITEM_SIZE.toInt().toString(),
                 ),
                 textAlign: TextAlign.center,
                 inputFormatter: <TextInputFormatter>[

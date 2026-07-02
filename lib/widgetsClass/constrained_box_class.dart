@@ -56,8 +56,8 @@ class ConstrainedBoxClass {
   });
 
   ConstrainedBoxClass.fromJson(Map<String, dynamic> json) {
-    maxHeight = json['maxHeight'] != null ? fromJsonHeight(json['maxHeight'], maxHeightType ?? TypePX) : DEFAULT_CONSTRAINED_MAX_HEIGHT as double?;
-    maxWidth = json['maxWidth'] != null ? fromJsonWidth(json['maxWidth'], maxWidthType ?? TypePX) : DEFAULT_CONSTRAINED_MAX_WIDTH as double?;
+    maxHeight = json['maxHeight'] != null ? fromJsonHeight(json['maxHeight'], maxHeightType ?? TypePX) : DEFAULT_CONSTRAINED_MAX_HEIGHT;
+    maxWidth = json['maxWidth'] != null ? fromJsonWidth(json['maxWidth'], maxWidthType ?? TypePX) : DEFAULT_CONSTRAINED_MAX_WIDTH;
     maxWidthType = json['maxWidthType'] != null ? json['maxWidthType'] : TypePX;
     maxHeightType = json['maxHeightType'] != null ? json['maxHeightType'] : TypePX;
     padding = json['padding'] != null ? fromJsonPadding(json['padding']) : EdgeInsets.zero;
@@ -115,16 +115,16 @@ class ConstrainedBoxClass {
     if (widget != null) {
       childData = ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: fromJsonHeight(maxHeight ?? DEFAULT_CONSTRAINED_MAX_HEIGHT as double?, maxHeightType),
-          maxWidth: fromJsonHeight(maxHeight ?? DEFAULT_CONSTRAINED_MAX_WIDTH as double?, maxHeightType),
+          maxHeight: fromJsonHeight(maxHeight ?? DEFAULT_CONSTRAINED_MAX_HEIGHT, maxHeightType),
+          maxWidth: fromJsonHeight(maxHeight ?? DEFAULT_CONSTRAINED_MAX_WIDTH, maxHeightType),
         ),
         child: widget,
       );
     } else {
       childData = ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: fromJsonHeight(maxHeight ?? DEFAULT_CONSTRAINED_MAX_HEIGHT as double?, maxHeightType),
-          maxWidth: fromJsonHeight(maxHeight ?? DEFAULT_CONSTRAINED_MAX_WIDTH as double?, maxHeightType),
+          maxHeight: fromJsonHeight(maxHeight ?? DEFAULT_CONSTRAINED_MAX_HEIGHT, maxHeightType),
+          maxWidth: fromJsonHeight(maxHeight ?? DEFAULT_CONSTRAINED_MAX_WIDTH, maxHeightType),
         ),
         child: Text("Constrained Box"),
       );

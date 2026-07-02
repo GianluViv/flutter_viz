@@ -77,8 +77,8 @@ class ImageClass {
   });
 
   ImageClass.fromJson(Map<String, dynamic> json) {
-    height = json['height'] != null ? fromJsonHeight(json['height'], heightType ?? TypePX) : DEFAULT_IMAGE_HEIGHT as double?;
-    width = json['width'] != null ? fromJsonWidth(json['width'], widthType ?? TypePX) : DEFAULT_IMAGE_WIDTH as double?;
+    height = json['height'] != null ? fromJsonHeight(json['height'], heightType ?? TypePX) : DEFAULT_IMAGE_HEIGHT;
+    width = json['width'] != null ? fromJsonWidth(json['width'], widthType ?? TypePX) : DEFAULT_IMAGE_WIDTH;
     fit = json['fit'] != null ? json['fit'] : boxFitCover;
     imageType = json['imageType'] != null ? json['imageType'] : ImageTypeAsset;
     path = json['path'] != null ? json['path'] : (imageType == ImageTypeAsset ? DEFAULT_ASSET_IMAGE : DEFAULT_NETWORK_IMAGE);
@@ -164,8 +164,8 @@ class ImageClass {
   Widget getImageDefaultWidget(WidgetModel widgetModel) {
     Widget childData = Image(
       image: _getImageProvider(),
-      height: isHeightClear! ? null : fromJsonHeight(height ?? DEFAULT_IMAGE_HEIGHT as double?, heightType),
-      width: isWidthClear! ? null : fromJsonWidth(width ?? DEFAULT_IMAGE_WIDTH as double?, widthType),
+      height: isHeightClear! ? null : fromJsonHeight(height ?? DEFAULT_IMAGE_HEIGHT, heightType),
+      width: isWidthClear! ? null : fromJsonWidth(width ?? DEFAULT_IMAGE_WIDTH, widthType),
       fit: fit != null ? getBoxFit(fit) : BoxFit.cover,
     );
     return getGestureDetector(widgetModel, childData);
@@ -210,8 +210,8 @@ class ImageClass {
     return "///***If you have exported images you must have to copy those images in assets/images directory."
         "\nImage(\n"
         "image:${imageType == ImageTypeAsset ? "AssetImage(\"${path != null ? '$DEFAULT_ASSETS_IMAGE_PATH/${path!.split('/').last}' : DEFAULT_ASSET_IMAGE}\")" : "NetworkImage(\"${path ?? DEFAULT_NETWORK_IMAGE}\")"},\n"
-        "${isHeightClear! ? '' : 'height:${getHeightString(height ?? DEFAULT_IMAGE_HEIGHT as double?, heightType)},\n'}"
-        "${isWidthClear! ? '' : 'width:${getWidthString(width ?? DEFAULT_IMAGE_WIDTH as double?, widthType)},\n'}"
+        "${isHeightClear! ? '' : 'height:${getHeightString(height ?? DEFAULT_IMAGE_HEIGHT, heightType)},\n'}"
+        "${isWidthClear! ? '' : 'width:${getWidthString(width ?? DEFAULT_IMAGE_WIDTH, widthType)},\n'}"
         "fit:${fit != null ? getBoxFit(fit) : BoxFit.cover},\n"
         ")";
   }

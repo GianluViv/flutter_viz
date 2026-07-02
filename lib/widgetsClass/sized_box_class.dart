@@ -35,8 +35,8 @@ class SizedBoxClass {
   });
 
   SizedBoxClass.fromJson(Map<String, dynamic> json) {
-    height = json['height'] != null ? fromJsonHeight(json['height'], heightType ?? TypePX) : DEFAULT_SIZED_BOX_HEIGHT as double?;
-    width = json['width'] != null ? fromJsonWidth(json['width'], widthType ?? TypePX) : DEFAULT_SIZED_BOX_WIDTH as double?;
+    height = json['height'] != null ? fromJsonHeight(json['height'], heightType ?? TypePX) : DEFAULT_SIZED_BOX_HEIGHT;
+    width = json['width'] != null ? fromJsonWidth(json['width'], widthType ?? TypePX) : DEFAULT_SIZED_BOX_WIDTH;
     widthType = json['widthType'] != null ? json['widthType'] : TypePX;
     heightType = json['heightType'] != null ? json['heightType'] : TypePX;
     isExpanded = json['isExpanded'] != null ? json['isExpanded'] : false;
@@ -68,8 +68,8 @@ class SizedBoxClass {
 
   Widget getSizedBoxDefaultWidget(WidgetModel widgetModel) {
     Widget childData = SizedBox(
-      height: fromJsonHeight(height ?? DEFAULT_SIZED_BOX_HEIGHT as double?, heightType),
-      width: fromJsonWidth(width ?? DEFAULT_SIZED_BOX_WIDTH as double?, widthType),
+      height: fromJsonHeight(height ?? DEFAULT_SIZED_BOX_HEIGHT, heightType),
+      width: fromJsonWidth(width ?? DEFAULT_SIZED_BOX_WIDTH, widthType),
     );
     return getGestureDetector(widgetModel, childData);
   }
@@ -88,8 +88,8 @@ class SizedBoxClass {
   /// For view code
   getCodeAsString(WidgetModel widgetModel) {
     String sizedBoxString = "\nSizedBox(\n"
-        "${height != 0 ? 'height:${getHeightString(height ?? DEFAULT_SIZED_BOX_HEIGHT as double?, heightType)},\n' : ""}"
-        "${width != 0 ? 'width:${getWidthString(width ?? DEFAULT_SIZED_BOX_WIDTH as double?, widthType)},\n' : ""}"
+        "${height != 0 ? 'height:${getHeightString(height ?? DEFAULT_SIZED_BOX_HEIGHT, heightType)},\n' : ""}"
+        "${width != 0 ? 'width:${getWidthString(width ?? DEFAULT_SIZED_BOX_WIDTH, widthType)},\n' : ""}"
         ")";
     if (getExpanded(widgetModel, isExpanded)) {
       return "Expanded(\n"

@@ -166,7 +166,7 @@ class DividerPropertyViewState extends State<DividerPropertyView> {
               width: widthPropertySize,
               child: getTextField(
                 controller: TextEditingController(
-                  text: dividerClass.height != null ? dividerClass.height.toString() : DEFAULT_DIVIDER_HEIGHT.toString(),
+                  text: dividerClass.height != null ? dividerClass.height.toString() : DEFAULT_DIVIDER_HEIGHT.toInt().toString(),
                 ),
                 textAlign: TextAlign.center,
                 inputFormatter: <TextInputFormatter>[

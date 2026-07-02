@@ -83,8 +83,8 @@ class LottieAnimationClass {
   });
 
   LottieAnimationClass.fromJson(Map<String, dynamic> json) {
-    height = json['height'] != null ? fromJsonHeight(json['height'], heightType ?? TypePX) : DEFAULT_IMAGE_HEIGHT as double?;
-    width = json['width'] != null ? fromJsonWidth(json['width'], widthType ?? TypePX) : DEFAULT_IMAGE_WIDTH as double?;
+    height = json['height'] != null ? fromJsonHeight(json['height'], heightType ?? TypePX) : DEFAULT_IMAGE_HEIGHT;
+    width = json['width'] != null ? fromJsonWidth(json['width'], widthType ?? TypePX) : DEFAULT_IMAGE_WIDTH;
     fit = json['fit'] != null ? json['fit'] : boxFitCover;
     imageType = json['imageType'] != null ? json['imageType'] : ImageTypeAsset;
     path = json['path'] != null ? json['path'] : (imageType == ImageTypeAsset ? "images/inCompatible.json" : "https://assets2.lottiefiles.com/packages/lf20_aZTdD5.json");
@@ -168,16 +168,16 @@ class LottieAnimationClass {
     Widget childData = imageType == ImageTypeAsset
         ? Lottie.asset(
             path ?? 'images/inCompatible.json',
-            width: isWidthClear! ? null : fromJsonWidth(width ?? DEFAULT_LOTTIE_ANIMATION_WIDTH as double?, widthType),
-            height: isHeightClear! ? null : fromJsonHeight(height ?? DEFAULT_LOTTIE_ANIMATION_HEIGHT as double?, heightType),
+            width: isWidthClear! ? null : fromJsonWidth(width ?? DEFAULT_LOTTIE_ANIMATION_WIDTH, widthType),
+            height: isHeightClear! ? null : fromJsonHeight(height ?? DEFAULT_LOTTIE_ANIMATION_HEIGHT, heightType),
             fit: fit != null ? getBoxFit(fit) : BoxFit.cover,
             repeat: isRepeat ?? false,
             animate: isAnimate ?? false,
           )
         : Lottie.network(
             path ?? 'https://assets2.lottiefiles.com/packages/lf20_aZTdD5.json',
-            width: isWidthClear! ? null : fromJsonWidth(width ?? DEFAULT_LOTTIE_ANIMATION_WIDTH as double?, widthType),
-            height: isHeightClear! ? null : fromJsonHeight(height ?? DEFAULT_LOTTIE_ANIMATION_HEIGHT as double?, heightType),
+            width: isWidthClear! ? null : fromJsonWidth(width ?? DEFAULT_LOTTIE_ANIMATION_WIDTH, widthType),
+            height: isHeightClear! ? null : fromJsonHeight(height ?? DEFAULT_LOTTIE_ANIMATION_HEIGHT, heightType),
             fit: fit != null ? getBoxFit(fit) : BoxFit.cover,
             repeat: isRepeat ?? false,
             animate: isAnimate ?? false,
@@ -225,16 +225,16 @@ class LottieAnimationClass {
     return imageType == ImageTypeAsset
         ? "Lottie.asset(\n"
             "\"${path ?? 'images/inCompatible.json'}\",\n"
-            "${isHeightClear! ? '' : 'height:${getHeightString(height ?? DEFAULT_LOTTIE_ANIMATION_HEIGHT as double?, heightType)},\n'}"
-            "${isWidthClear! ? '' : 'width:${getWidthString(width ?? DEFAULT_LOTTIE_ANIMATION_WIDTH as double?, widthType)},\n'}"
+            "${isHeightClear! ? '' : 'height:${getHeightString(height ?? DEFAULT_LOTTIE_ANIMATION_HEIGHT, heightType)},\n'}"
+            "${isWidthClear! ? '' : 'width:${getWidthString(width ?? DEFAULT_LOTTIE_ANIMATION_WIDTH, widthType)},\n'}"
             "fit:${fit != null ? getBoxFit(fit) : BoxFit.cover},\n"
             "repeat: ${isRepeat ?? false},\n"
             "animate: ${isAnimate ?? false},\n"
             ")"
         : "Lottie.network(\n"
             "\"${path ?? 'https://assets2.lottiefiles.com/packages/lf20_aZTdD5.json'}\",\n"
-            "${isHeightClear! ? '' : 'height:${getHeightString(height ?? DEFAULT_LOTTIE_ANIMATION_HEIGHT as double?, heightType)},\n'}"
-            "${isWidthClear! ? '' : 'width:${getWidthString(width ?? DEFAULT_LOTTIE_ANIMATION_WIDTH as double?, widthType)},\n'}"
+            "${isHeightClear! ? '' : 'height:${getHeightString(height ?? DEFAULT_LOTTIE_ANIMATION_HEIGHT, heightType)},\n'}"
+            "${isWidthClear! ? '' : 'width:${getWidthString(width ?? DEFAULT_LOTTIE_ANIMATION_WIDTH, widthType)},\n'}"
             "fit:${fit != null ? getBoxFit(fit) : BoxFit.cover},\n"
             "repeat: ${isRepeat ?? false},\n"
             "animate: ${isAnimate ?? false},\n"

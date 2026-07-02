@@ -171,12 +171,12 @@ class PageViewClass {
     imageType = json['imageType'] != null ? json['imageType'] : ImageTypeAsset;
     image = json['image'] != null ? json['image'] : (imageType == ImageTypeAsset ? DEFAULT_PAGE_VIEW_ASSET_IMAGE : DEFAULT_PAGE_VIEW_NETWORK_IMAGE);
     count = json['count'] != null ? json['count'] : DEFAULT_PAGE_VIEW_COUNT;
-    height = json['height'] != null ? fromJsonHeight(json['height'], heightType ?? TypePX) : DEFAULT_PAGE_VIEW_HEIGHT as double?;
-    width = json['width'] != null ? fromJsonWidth(json['width'], widthType ?? TypePX) : DEFAULT_PAGE_VIEW_WIDTH as double?;
+    height = json['height'] != null ? fromJsonHeight(json['height'], heightType ?? TypePX) : DEFAULT_PAGE_VIEW_HEIGHT;
+    width = json['width'] != null ? fromJsonWidth(json['width'], widthType ?? TypePX) : DEFAULT_PAGE_VIEW_WIDTH;
     widthType = json['widthType'] != null ? json['widthType'] : TypePX;
     heightType = json['heightType'] != null ? json['heightType'] : TypePX;
-    imageHeight = json['imageHeight'] != null ? fromJsonHeight(json['imageHeight'], imageHeightType ?? TypePX) : DEFAULT_PAGE_VIEW_IMAGE_HEIGHT as double?;
-    imageWidth = json['imageWidth'] != null ? fromJsonWidth(json['imageWidth'], imageWidthType ?? TypePX) : DEFAULT_PAGE_VIEW_IMAGE_WIDTH as double?;
+    imageHeight = json['imageHeight'] != null ? fromJsonHeight(json['imageHeight'], imageHeightType ?? TypePX) : DEFAULT_PAGE_VIEW_IMAGE_HEIGHT;
+    imageWidth = json['imageWidth'] != null ? fromJsonWidth(json['imageWidth'], imageWidthType ?? TypePX) : DEFAULT_PAGE_VIEW_IMAGE_WIDTH;
     imageWidthType = json['imageWidthType'] != null ? json['imageWidthType'] : TypePX;
     imageHeightType = json['imageHeightType'] != null ? json['imageHeightType'] : TypePX;
     padding = json['padding'] != null ? fromJsonPadding(json['padding']) : EdgeInsets.zero;
@@ -412,21 +412,21 @@ class PageViewClass {
       return image != null
           ? Image.file(
               File(image!),
-              height: isImageHeightClear! ? null : fromJsonHeight(imageHeight, imageHeightType) ?? DEFAULT_PAGE_VIEW_IMAGE_HEIGHT as double?,
-              width: isImageWidthClear! ? null : fromJsonWidth(imageWidth, imageWidthType) ?? DEFAULT_PAGE_VIEW_IMAGE_WIDTH as double?,
+              height: isImageHeightClear! ? null : fromJsonHeight(imageHeight, imageHeightType) ?? DEFAULT_PAGE_VIEW_IMAGE_HEIGHT,
+              width: isImageWidthClear! ? null : fromJsonWidth(imageWidth, imageWidthType) ?? DEFAULT_PAGE_VIEW_IMAGE_WIDTH,
               fit: fit != null ? getBoxFit(fit) : BoxFit.cover,
             )
           : Image.asset(
               DEFAULT_PAGE_VIEW_ASSET_IMAGE,
-              height: isImageHeightClear! ? null : fromJsonHeight(imageHeight, imageHeightType) ?? DEFAULT_PAGE_VIEW_IMAGE_HEIGHT as double?,
-              width: isImageWidthClear! ? null : fromJsonWidth(imageWidth, imageWidthType) ?? DEFAULT_PAGE_VIEW_IMAGE_WIDTH as double?,
+              height: isImageHeightClear! ? null : fromJsonHeight(imageHeight, imageHeightType) ?? DEFAULT_PAGE_VIEW_IMAGE_HEIGHT,
+              width: isImageWidthClear! ? null : fromJsonWidth(imageWidth, imageWidthType) ?? DEFAULT_PAGE_VIEW_IMAGE_WIDTH,
               fit: fit != null ? getBoxFit(fit) : BoxFit.cover,
             );
     }
     return Image.network(
       image ?? DEFAULT_PAGE_VIEW_NETWORK_IMAGE,
-      height: isImageHeightClear! ? null : fromJsonHeight(imageHeight, imageHeightType) ?? DEFAULT_PAGE_VIEW_IMAGE_HEIGHT as double?,
-      width: isImageWidthClear! ? null : fromJsonWidth(imageWidth, imageWidthType) ?? DEFAULT_PAGE_VIEW_IMAGE_WIDTH as double?,
+      height: isImageHeightClear! ? null : fromJsonHeight(imageHeight, imageHeightType) ?? DEFAULT_PAGE_VIEW_IMAGE_HEIGHT,
+      width: isImageWidthClear! ? null : fromJsonWidth(imageWidth, imageWidthType) ?? DEFAULT_PAGE_VIEW_IMAGE_WIDTH,
       fit: fit != null ? getBoxFit(fit) : BoxFit.cover,
     );
   }
@@ -506,8 +506,8 @@ class PageViewClass {
 
   Widget getPageViewDefaultWidget(WidgetModel widgetModel) {
     Widget childData = Container(
-      height: isHeightClear! ? null : (height != null ? fromJsonHeight(height, heightType) : DEFAULT_PAGE_VIEW_HEIGHT as double?),
-      width: isWidthClear! ? null : (width != null ? fromJsonWidth(width, widthType) : DEFAULT_PAGE_VIEW_WIDTH as double?),
+      height: isHeightClear! ? null : (height != null ? fromJsonHeight(height, heightType) : DEFAULT_PAGE_VIEW_HEIGHT),
+      width: isWidthClear! ? null : (width != null ? fromJsonWidth(width, widthType) : DEFAULT_PAGE_VIEW_WIDTH),
       child: Stack(
         children: [
           PageView.builder(
@@ -556,13 +556,13 @@ class PageViewClass {
   _getImageDefaultString() {
     return imageType == ImageTypeNetwork
         ? "Image.network(\"${image ?? DEFAULT_PAGE_VIEW_NETWORK_IMAGE}\",\n"
-        "${isImageHeightClear! ? '' : 'height: ${getHeightString(imageHeight ?? DEFAULT_PAGE_VIEW_IMAGE_HEIGHT as double?, imageHeightType)},\n'}"
-        "${isImageWidthClear! ? '' : 'width: ${getWidthString(imageWidth ?? DEFAULT_PAGE_VIEW_IMAGE_WIDTH as double?, imageWidthType)},\n'}"
+        "${isImageHeightClear! ? '' : 'height: ${getHeightString(imageHeight ?? DEFAULT_PAGE_VIEW_IMAGE_HEIGHT, imageHeightType)},\n'}"
+        "${isImageWidthClear! ? '' : 'width: ${getWidthString(imageWidth ?? DEFAULT_PAGE_VIEW_IMAGE_WIDTH, imageWidthType)},\n'}"
         "fit:${fit != null ? getBoxFit(fit) : BoxFit.cover},\n"
         ")"
         : "Image.asset(\"${image != null ? 'images/${image!.split('/').last}' : DEFAULT_PAGE_VIEW_ASSET_IMAGE}\",\n"
-        "${isImageHeightClear! ? '' : 'height: ${getHeightString(imageHeight ?? DEFAULT_PAGE_VIEW_IMAGE_HEIGHT as double?, imageHeightType)},\n'}"
-        "${isImageWidthClear! ? '' : 'width: ${getWidthString(imageWidth ?? DEFAULT_PAGE_VIEW_IMAGE_WIDTH as double?, imageWidthType)},\n'}"
+        "${isImageHeightClear! ? '' : 'height: ${getHeightString(imageHeight ?? DEFAULT_PAGE_VIEW_IMAGE_HEIGHT, imageHeightType)},\n'}"
+        "${isImageWidthClear! ? '' : 'width: ${getWidthString(imageWidth ?? DEFAULT_PAGE_VIEW_IMAGE_WIDTH, imageWidthType)},\n'}"
         "fit:${fit != null ? getBoxFit(fit) : BoxFit.cover},\n"
         ")";
   }
@@ -670,8 +670,8 @@ class PageViewClass {
 
   _getStringSizedBox(String _child) {
     return "SizedBox(\n"
-        "${isHeightClear! ? '' : 'height: ${getHeightString(height ?? DEFAULT_PAGE_VIEW_HEIGHT as double?, heightType)},\n'}"
-        "${isWidthClear! ? '' : 'width: ${getWidthString(width ?? DEFAULT_PAGE_VIEW_WIDTH as double?, widthType)},\n'}"
+        "${isHeightClear! ? '' : 'height: ${getHeightString(height ?? DEFAULT_PAGE_VIEW_HEIGHT, heightType)},\n'}"
+        "${isWidthClear! ? '' : 'width: ${getWidthString(width ?? DEFAULT_PAGE_VIEW_WIDTH, widthType)},\n'}"
         "child:$_child,\n"
         ")";
   }

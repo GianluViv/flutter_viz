@@ -114,7 +114,7 @@ class LinearProgressIndicatorClass {
     Widget childData = AbsorbPointer(
       absorbing: absorbPointer(),
       child: LinearProgressIndicator(
-        minHeight: height ?? DEFAULT_PROGRESS_HEIGHT as double?,
+        minHeight: height ?? DEFAULT_PROGRESS_HEIGHT,
         backgroundColor: backgroundColor ?? DEFAULT_PROGRESSBAR_BACKGROUND_COLOR,
         valueColor: new AlwaysStoppedAnimation<Color>(valueColor ?? COMMON_BG_COLOR),
         value: progressValue ?? DEFAULT_PROGRESS_VALUE,

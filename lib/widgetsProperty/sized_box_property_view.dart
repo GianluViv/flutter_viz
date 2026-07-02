@@ -22,11 +22,11 @@ class SizedBoxPropertyViewState extends State<SizedBoxPropertyView> {
   init() async {
     sizedBoxClass = appStore.currentSelectedWidget!.widgetViewModel as SizedBoxClass?;
     widthController = TextEditingController(
-      text: sizedBoxClass.width != null ? getWidthControllerValue(sizedBoxClass.width, sizedBoxClass.widthType) : DEFAULT_SIZED_BOX_WIDTH.toString(),
+      text: sizedBoxClass.width != null ? getWidthControllerValue(sizedBoxClass.width, sizedBoxClass.widthType) : DEFAULT_SIZED_BOX_WIDTH.toInt().toString(),
     );
 
     heightController = TextEditingController(
-      text: sizedBoxClass.height != null ? getWidthControllerValue(sizedBoxClass.height, sizedBoxClass.heightType) : DEFAULT_SIZED_BOX_HEIGHT.toString(),
+      text: sizedBoxClass.height != null ? getWidthControllerValue(sizedBoxClass.height, sizedBoxClass.heightType) : DEFAULT_SIZED_BOX_HEIGHT.toInt().toString(),
     );
   }
 

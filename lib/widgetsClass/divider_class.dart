@@ -39,7 +39,7 @@ class DividerClass {
 
   DividerClass.fromJson(Map<String, dynamic> json) {
     dividerColor = json['dividerColor'] != null ? fromJsonColor(json['dividerColor']) : DEFAULT_DIVIDER_COLOR;
-    height = json['height'] != null ? json['height'] : DEFAULT_DIVIDER_HEIGHT as double?;
+    height = json['height'] != null ? json['height'] : DEFAULT_DIVIDER_HEIGHT;
     dividerThickness = json['dividerThickness'] != null ? json['dividerThickness'] : DEFAULT_DIVIDER_THICKNESS;
     dividerIndent = json['dividerIndent'] != null ? json['dividerIndent'] : DEFAULT_DIVIDER_INDENT;
     dividerEndIndent = json['dividerEndIndent'] != null ? json['dividerEndIndent'] : DEFAULT_DIVIDER_END_INDENT;
@@ -76,7 +76,7 @@ class DividerClass {
   Widget getDividerDefaultWidget(WidgetModel widgetModel) {
     Widget childData = Divider(
       color: dividerColor ?? DEFAULT_DIVIDER_COLOR,
-      height: height ?? DEFAULT_DIVIDER_HEIGHT as double?,
+      height: height ?? DEFAULT_DIVIDER_HEIGHT,
       thickness: dividerThickness ?? DEFAULT_DIVIDER_THICKNESS,
       indent: dividerIndent ?? DEFAULT_DIVIDER_INDENT,
       endIndent: dividerEndIndent ?? DEFAULT_DIVIDER_END_INDENT,
