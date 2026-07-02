@@ -1,8 +1,6 @@
 const String appName = "FlutterViz BETA";
 const font = "Inter";
 
-const VERSION_NAME = '0.9.0';
-
 const DUMMY_USER_NAME = "Rose";
 const DUMMY_USER_EMAIL = "rose54321@gmail.com";
 

@@ -266,7 +266,6 @@ Widget getHeaderLogoImage() {
         height: 40,
         width: 60,
       ),
-      Text('v $VERSION_NAME', style: secondaryTextStyle(color: appStore.isDarkMode ? darkModeSubTextColor : Colors.grey)),
     ],
   ).expand();
 }
@@ -706,12 +705,4 @@ Widget placeHolderWidget({double? height, double? width, BoxFit? fit, AlignmentG
     fit: fit ?? BoxFit.cover,
     alignment: alignment ?? Alignment.center,
   ).cornerRadiusWithClipRRect(radius ?? defaultRadius);
-}
-
-Widget versionNameWidget() {
-  return Container(
-    child: Text('v $VERSION_NAME', style: secondaryTextStyle(size: 16)),
-    width: 300,
-    alignment: Alignment.topRight,
-  );
 }

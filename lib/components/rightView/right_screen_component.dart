@@ -1,9 +1,6 @@
-import 'package:flutter_viz/components/add_page_dialog.dart';
 import 'package:flutter_viz/components/screen_clone_dialog.dart';
 import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/model/screen_list_response.dart';
-import 'package:flutter_viz/screen/screen_preview.dart';
 import 'package:flutter_viz/utils/AppColors.dart';
 import 'package:flutter_viz/utils/AppCommon.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
@@ -53,77 +50,6 @@ class _RightScreenComponentState extends State<RightScreenComponent> {
             builder: (_) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: Container(
-                        padding: EdgeInsets.only(left: 16.0, right: 8.0),
-                        margin: EdgeInsets.only(left: 16.0, right: 16.0),
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(COMMON_BUTTON_BORDER_RADIUS)),
-                          border: Border.all(color: appStore.isDarkMode ? Colors.transparent : COMMON_BORDER_COLOR, width: 1),
-                          color: appStore.isDarkMode ? darkModeSecondaryBackgroundDark : centerBackgroundColor,
-                        ),
-                        child: DropdownButtonFormField<ScreenListData>(
-                          /// `initialValue` (unlike the deprecated `value`) only applies on the
-                          /// field's first build, so key on the screen id to force the
-                          /// FormField to re-init whenever selectedDropdownScreen changes
-                          /// programmatically (e.g. AppStore.removeScreen/setScreenDetails).
-                          key: ValueKey(appStore.selectedDropdownScreen?.id),
-                          iconDisabledColor: btnBackgroundColor,
-                          isDense: true,
-                          isExpanded: true,
-                          dropdownColor: appStore.isDarkMode ? darkModeSecondaryBackgroundDark : dropDownColor,
-                          decoration: InputDecoration(focusedBorder: InputBorder.none, enabledBorder: InputBorder.none),
-                          initialValue: appStore.selectedDropdownScreen,
-                          items: appStore.screenList.map((ScreenListData screenData) {
-                            return new DropdownMenuItem<ScreenListData>(
-                              value: screenData,
-                              child: screenData.id! > 0
-                                  ? Text(screenData.name!, style: primaryTextStyle(), maxLines: 1)
-                                  : Row(
-                                      children: [
-                                        Icon(Icons.add, size: btnIconSize),
-                                        8.width,
-                                        Text(screenData.name!, style: primaryTextStyle(), maxLines: 1),
-                                      ],
-                                    ),
-                            );
-                          }).toList(),
-                          onChanged: (ScreenListData? newValue) async {
-                            savePreviousChanges(newValue!);
-                            setState(() {});
-                            if (newValue.id! < 0) {
-                              appStore.selectedDropdownScreen = newValue;
-                              await showInDialog(
-                                context,
-                                contentPadding: EdgeInsets.all(30),
-                                backgroundColor: context.scaffoldBackgroundColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(COMMON_CARD_BORDER_RADIUS),
-                                ),
-                                builder: (context) => AddPageDialog(),
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                    ).expand(),
-                    GestureDetector(
-                      child: tooltipView(
-                        message: language!.preview,
-                        child: outLineIconButton(context, runIcon()),
-                      ),
-                      onTap: () async {
-                        appStore.setPreviewCode(true);
-                        trackUserEvent(RUN_CODE);
-                        ScreenPreview().launch(context);
-                      },
-                    ),
-                  ],
-                ),
-                16.height,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

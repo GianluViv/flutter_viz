@@ -160,6 +160,49 @@ class _ScreenListComponentState extends State<ScreenListComponent> {
                                   }
                                 }).visible(appStore.selectedScreenId == item.id),
                                 8.width,
+                                clearIcon(context).onTap(() {
+                                  showInDialog(
+                                    context,
+                                    builder: (context) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(language!.areYouClearScreenData, style: primaryTextStyle()),
+                                          30.height,
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              dialogGrayBorderButton(
+                                                text: language!.cancel,
+                                                onTap: () {
+                                                  finish(context);
+                                                },
+                                              ),
+                                              16.width,
+                                              SizedBox(
+                                                height: 36,
+                                                width: 110,
+                                                child: TextButton(
+                                                  child: Text(language!.clear, style: TextStyle(color: Colors.red, fontSize: btnTextSize)),
+                                                  style: TextButton.styleFrom(
+                                                    backgroundColor: Colors.red.withValues(alpha: 0.1),
+                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(COMMON_BUTTON_BORDER_RADIUS), side: BorderSide(color: Colors.red, width: 0.5)),
+                                                  ),
+                                                  onPressed: () {
+                                                    trackUserEvent(CLEAR_DATA);
+                                                    finish(context);
+                                                    appStore.resetView();
+                                                  },
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }).visible(appStore.selectedScreenId == item.id),
+                                8.width,
                                 deleteIcon(context).onTap(() async {
                                   deleteConfirmationDialog(
                                     context: context,

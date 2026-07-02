@@ -1,9 +1,7 @@
 #include "my_application.h"
 
 #include <flutter_linux/flutter_linux.h>
-#ifdef GDK_WINDOWING_X11
-#include <gdk/gdkx.h>
-#endif
+#include <unistd.h>
 
 #include "flutter/generated_plugin_registrant.h"
 
@@ -25,31 +23,58 @@ static void my_application_activate(GApplication* application) {
   GtkWindow* window =
       GTK_WINDOW(gtk_application_window_new(GTK_APPLICATION(application)));
 
-  // Use a header bar when running in GNOME as this is the common style used
-  // by applications and is the setup most users will be using (e.g. Ubuntu
-  // desktop).
-  // If running on X and not using GNOME then just use a traditional title bar
-  // in case the window manager does more exotic layout, e.g. tiling.
-  // If running on Wayland assume the header bar will work (may need changing
-  // if future cases occur).
-  gboolean use_header_bar = TRUE;
-#ifdef GDK_WINDOWING_X11
-  GdkScreen* screen = gtk_window_get_screen(window);
-  if (GDK_IS_X11_SCREEN(screen)) {
-    const gchar* wm_name = gdk_x11_screen_get_window_manager_name(screen);
-    if (g_strcmp0(wm_name, "GNOME Shell") != 0) {
-      use_header_bar = FALSE;
+  // Use the native/server-side window decorations (a compact title bar) rather
+  // than a GTK client-side-decoration HeaderBar, so the borders and title bar
+  // stay slim and consistent with the window manager's own style.
+  gtk_window_set_title(window, "FlutterViz");
+
+  // Resolve the bundled app icon and set it as the window icon.
+  // On Wayland+GNOME the taskbar/dock icon comes from the .desktop file (matched
+  // via StartupWMClass), not the GTK window icon, so we also write / refresh a
+  // .desktop file at every launch so the correct icon always shows in the taskbar.
+  {
+    char exe_buf[4096] = {};
+    ssize_t len = readlink("/proc/self/exe", exe_buf, sizeof(exe_buf) - 1);
+    if (len > 0) {
+      gchar* exe_dir = g_path_get_dirname(exe_buf);
+      gchar* icon_path = g_build_filename(
+          exe_dir, "data", "flutter_assets", "images", "app_icon.png", nullptr);
+
+      // GTK window icon (used in Alt-Tab switcher, window decorations, X11 taskbar).
+      GError* err = nullptr;
+      gtk_window_set_icon_from_file(window, icon_path, &err);
+      if (err) { g_error_free(err); err = nullptr; }
+
+      // .desktop file for GNOME Shell dock / Wayland taskbars. Written to
+      // ~/.local/share/applications/ so the desktop environment can match the
+      // running window (via StartupWMClass) and display our icon.
+      gchar* apps_dir = g_build_filename(
+          g_get_home_dir(), ".local", "share", "applications", nullptr);
+      g_mkdir_with_parents(apps_dir, 0755);
+
+      gchar* desktop_path =
+          g_build_filename(apps_dir, "com.example.flutter_viz.desktop", nullptr);
+
+      gchar* desktop_content = g_strdup_printf(
+          "[Desktop Entry]\n"
+          "Version=1.0\n"
+          "Type=Application\n"
+          "Name=FlutterViz\n"
+          "Exec=%s\n"
+          "Icon=%s\n"
+          "Categories=Development;\n"
+          "StartupWMClass=flutter_viz\n"
+          "NoDisplay=true\n",
+          exe_buf, icon_path);
+
+      g_file_set_contents(desktop_path, desktop_content, -1, nullptr);
+
+      g_free(desktop_content);
+      g_free(desktop_path);
+      g_free(apps_dir);
+      g_free(icon_path);
+      g_free(exe_dir);
     }
-  }
-#endif
-  if (use_header_bar) {
-    GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
-    gtk_widget_show(GTK_WIDGET(header_bar));
-    gtk_header_bar_set_title(header_bar, "flutter_viz");
-    gtk_header_bar_set_show_close_button(header_bar, TRUE);
-    gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
-  } else {
-    gtk_window_set_title(window, "flutter_viz");
   }
 
   gtk_window_set_default_size(window, 1280, 720);
