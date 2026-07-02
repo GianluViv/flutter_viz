@@ -70,6 +70,12 @@ class _MenuComponentState extends State<MenuComponent> {
       index: MEDIA_INDEX,
       isOnHover: false,
     ));
+    appStore.menuList.add(MenuWidgetsModel(
+      menuName: "IA",
+      svgFileName: "ai.svg",
+      index: AI_INDEX,
+      isOnHover: false,
+    ));
   }
 
   @override
@@ -190,7 +196,14 @@ class _MenuComponentState extends State<MenuComponent> {
                       ),
                       onTap: () async {
                         setState(() {
-                          appStore.selectedMenu = appStore.menuList[position].index;
+                          final tappedIndex = appStore.menuList[position].index;
+                          // The IA button acts as a toggle: tapping it again
+                          // closes the panel and returns to the screen list.
+                          if (tappedIndex == AI_INDEX && appStore.selectedMenu == AI_INDEX) {
+                            appStore.selectedMenu = SCREEN_LIST_INDEX;
+                          } else {
+                            appStore.selectedMenu = tappedIndex;
+                          }
                           if (appStore.selectedMenu == WIDGETS_INDEX) {
                             if (appStore.isLanguageChanged) {
                               showInDialog(

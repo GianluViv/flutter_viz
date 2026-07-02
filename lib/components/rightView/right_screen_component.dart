@@ -1,5 +1,3 @@
-import 'package:flutter_viz/components/screen_clone_dialog.dart';
-import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/main.dart';
 import 'package:flutter_viz/utils/AppColors.dart';
 import 'package:flutter_viz/utils/AppCommon.dart';
@@ -7,7 +5,6 @@ import 'package:flutter_viz/utils/AppConstant.dart';
 import 'package:flutter_viz/utils/AppFunctions.dart';
 import 'package:flutter_viz/utils/AppWidget.dart';
 import 'package:flutter_viz/widgets/widgets.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -32,143 +29,11 @@ class _RightScreenComponentState extends State<RightScreenComponent> {
     });
   }
 
-  ///Local equivalent of the old deleteScreen() REST call.
-  Future deleteScreenApi({int? screenId}) async {
-    if (appStore.currentProject == null || screenId == null) return;
-    await locator<LocalProjectService>().deleteScreen(appStore.currentProject!, screenId);
-    appStore.removeScreen(screenId);
-    LiveStream().emit(getUpdatedData, true);
-    LiveStream().emit(updateScreenList);
-  }
-
   _getView() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         16.height,
-        Observer(
-            builder: (_) => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      child: tooltipView(
-                        message: language!.editScreenName,
-                        child: outLineIconButton(
-                          context,
-                          editIcon(
-                            context,
-                            () async {
-                              await showInDialog(
-                                context,
-                                builder: (context) => ScreenCloneDialog(isEdit: true),
-                              );
-                              setState(() {});
-                            },
-                          ),
-                        ),
-                      ),
-                    ).visible(appStore.selectedScreenId! > 0),
-                    GestureDetector(
-                      child: tooltipView(
-                        message: language!.clone,
-                        child: outLineIconButton(context, cloneIcon(context)),
-                      ),
-                      onTap: () async {
-                        bool? res = await showInDialog(
-                          context,
-                          builder: (context) {
-                            return ScreenCloneDialog();
-                          },
-                        );
-                        if (res ?? false) {
-                          setState(() {});
-                        }
-                      },
-                    ).visible(appStore.selectedScreenId! > 0),
-                    GestureDetector(
-                      child: tooltipView(
-                        message: language!.viewSourceCode,
-                        child: outLineIconButton(context, sourceCodeIcon(context)),
-                      ),
-                      onTap: () {
-                        viewSourceCode(context);
-                      },
-                    ).visible(appStore.selectedScreenId! > 0),
-                    GestureDetector(
-                      child: tooltipView(
-                        message: language!.clearCurrentScreenData,
-                        child: outLineIconButton(context, clearIcon(context)),
-                      ),
-                      onTap: () {
-                        showInDialog(
-                          context,
-                          builder: (context) {
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(language!.areYouClearScreenData, style: primaryTextStyle()),
-                                30.height,
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    dialogGrayBorderButton(
-                                      text: language!.cancel,
-                                      onTap: () {
-                                        finish(context);
-                                      },
-                                    ),
-                                    16.width,
-                                    SizedBox(
-                                      height: 36,
-                                      width: 110,
-                                      child: TextButton(
-                                        child: Text(language!.clear, style: TextStyle(color: Colors.red, fontSize: btnTextSize)),
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: Colors.red.withValues(alpha: 0.1),
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(COMMON_BUTTON_BORDER_RADIUS), side: BorderSide(color: Colors.red, width: 0.5)),
-                                        ),
-                                        onPressed: () {
-                                          trackUserEvent(CLEAR_DATA);
-                                          finish(context);
-                                          appStore.resetView();
-                                        },
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    ).visible(appStore.selectedScreenId! > 0),
-                    GestureDetector(
-                      child: tooltipView(
-                        message: language!.deleteScreen,
-                        child: deleteIconOutline(context),
-                      ),
-                      onTap: () {
-                        deleteConfirmationDialog(
-                          context: context,
-                          messageText: language!.areYouWantDeleteScreen,
-                          onAccept: () {
-                            finish(context);
-                            trackUserEvent(DELETE_SCREEN);
-                            deleteScreenApi(screenId: appStore.selectedDropdownScreen!.id);
-                          },
-                        );
-                      },
-                    ).visible(appStore.selectedScreenId! > 0),
-                  ],
-                ).paddingOnly(left: 16),
-                16.height,
-                Divider(color: COMMON_BORDER_COLOR),
-              ],
-            ),
-          ),
         Observer(builder: (_) {
           if (appStore.currentSelectedWidget != null) {
             return Container(

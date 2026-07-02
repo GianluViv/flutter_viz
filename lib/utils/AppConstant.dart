@@ -31,6 +31,7 @@ const int TREE_INDEX = 2;
 const int WIDGETS_INFO_INDEX = 5;
 const int FAQS_INDEX = 6;
 const int MEDIA_INDEX = 7;
+const int AI_INDEX = 8;
 const int COMPONENT_INDEX = -1;
 const int SHARE_INDEX = -1;
 const int HELP_INDEX = -1;

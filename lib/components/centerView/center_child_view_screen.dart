@@ -1,3 +1,4 @@
+import 'package:flutter_viz/components/ai_panel_component.dart';
 import 'package:flutter_viz/components/faqs_component.dart';
 import 'package:flutter_viz/components/media_component.dart';
 import 'package:flutter_viz/components/predefine_list_component.dart';
@@ -238,6 +239,41 @@ class _CenterChildViewScreenState extends State<CenterChildViewScreen> {
         child: MediaComponent(),
         width: getChildWidgetsWidth(context, isExpanded: widget.isExpanded),
         height: MediaQuery.of(context).size.height,
+      );
+    } else if (appStore.selectedMenu == AI_INDEX) {
+      /// IA panel — keep the live preview visible so "reload" updates it live.
+      return Stack(
+        children: [
+          Positioned(
+            top: 0,
+            bottom: 0,
+            left: getLeftWidgetsWidth(context),
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              curve: widget.isExpanded ? Curves.easeIn : Curves.easeOut,
+              child: CenterBodyComponent(),
+              width: getCenterScreenWidth(context, isExpanded: widget.isExpanded),
+            ),
+          ),
+          Positioned(
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: Container(
+              child: RightScreenComponent(),
+              width: getRightPropertyViewWidth(context),
+            ),
+          ),
+          Positioned(
+            left: 0,
+            top: 0,
+            bottom: 0,
+            child: Container(
+              child: AiPanelComponent(),
+              width: getLeftWidgetsWidth(context),
+            ),
+          ),
+        ],
       );
     } else {
       return SizedBox();
