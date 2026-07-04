@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_viz/main.dart';
+
 const colorPrimary = Color(0xffffffff);
 const scaffoldSecondaryDark = Color(0xFFf2f2f3);
 const appShadowColorDark = Color(0x1A3E3942);
@@ -23,14 +25,31 @@ const primaryTextColor = Color(0xFF000000);
 
 ///primary color button
 const btnWhiteTextColor = Color(0xFFFFFFFF);
-const btnBackgroundColor = Color(0xFF3a57e8);
+/// User-selectable accent tones (theme). Selected index persisted as ACCENT_COLOR_INDEX.
+const List<Color> accentPalette = [
+  Color(0xFF3A57E8), // Indaco (default)
+  Color(0xFF0E9F6E), // Verde
+  Color(0xFF7C3AED), // Viola
+  Color(0xFFF97316), // Arancio
+  Color(0xFFE11D63), // Rosa
+];
+
+Color get _accent => accentPalette[appStore.selectedAccentIndex.clamp(0, accentPalette.length - 1)];
+
+Color _shiftLightness(Color c, double delta) {
+  final hsl = HSLColor.fromColor(c);
+  return hsl.withLightness((hsl.lightness + delta).clamp(0.0, 1.0)).toColor();
+}
+
+/// Primary accent — follows the selected tone (was a const color).
+Color get btnBackgroundColor => _accent;
 
 /// Left Side view color
-const leftExpansionTileBackgroundColor = Color(0xffebeefc);
+Color get leftExpansionTileBackgroundColor => HSLColor.fromColor(_accent).withSaturation(0.85).withLightness(0.95).toColor();
 
 /// button hover color
-const primaryButtonHoverColor = Color(0xff2e46ba);
-const highLightButtonHoverColor = Color(0xffd8ddfa);
+Color get primaryButtonHoverColor => _shiftLightness(_accent, -0.10);
+Color get highLightButtonHoverColor => HSLColor.fromColor(_accent).withLightness(0.90).toColor();
 
 /// button shadow color
 const primaryButtonShadow = Color(0x4D3a57e8);
@@ -45,8 +64,7 @@ const dropDownColor = Color(0xffffffff);
 const iconColor = Color(0xFF5C5C5C);
 
 const mouseHoverColor = Colors.green;
-//const selectedViewSelectionColor = Colors.blue;
-const selectedViewSelectionColor = Color(0xff3a57e8);
+Color get selectedViewSelectionColor => _accent;
 
 const headerBackgroundColor = Color(0xFFFFFFFF);
 const headerLineColor = Color(0xFFE5E5E5);

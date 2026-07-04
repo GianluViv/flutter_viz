@@ -3,6 +3,7 @@ import 'package:flutter_viz/local/languages.dart';
 import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/screen/welcome_screen.dart';
 import 'package:flutter_viz/store/AppStore.dart';
+import 'package:flutter_viz/templates/template_library_service.dart';
 import 'package:flutter_viz/utils/AppColors.dart';
 import 'package:flutter_viz/utils/AppCommon.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
@@ -70,6 +71,9 @@ void main() async {
       appStore.setDarkMode(false);
     }
   }
+
+  appStore.setAccentColor(getIntAsync(ACCENT_COLOR_INDEX, defaultValue: 0));
+
   await PackageInfo.fromPlatform().then((PackageInfo packageInformation) {
     packageInfo = packageInformation;
   });
@@ -96,6 +100,9 @@ class _MyAppState extends State<MyApp> {
       child: Observer(builder: (context) {
         return MaterialApp(
           title: appName,
+          // Reading the accent here makes this top-level Observer rebuild the
+          // whole app when the accent tone changes (like isDarkMode does).
+          color: btnBackgroundColor,
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
@@ -115,4 +122,5 @@ class _MyAppState extends State<MyApp> {
 
 setupServiceLocator() {
   locator.registerLazySingleton<LocalProjectService>(() => LocalProjectService());
+  locator.registerLazySingleton<TemplateLibraryService>(() => TemplateLibraryService());
 }

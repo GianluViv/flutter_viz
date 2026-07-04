@@ -65,6 +65,11 @@ dependencies:
   # Zip export
   archive: ^4.0.9
 
+  # Embedded terminal (in-app "IA" panel): xterm renders the terminal,
+  # flutter_pty spawns a real desktop shell (Linux/Windows/macOS).
+  xterm: ^4.0.0
+  flutter_pty: ^0.4.1
+
   flutter_localizations:
     sdk: flutter
 

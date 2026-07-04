@@ -5,7 +5,9 @@ import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/main.dart';
 import 'package:flutter_viz/model/download_model.dart';
 import 'package:flutter_viz/screen/preview_screen.dart';
+import 'package:flutter_viz/screen/screen_preview.dart';
 import 'package:flutter_viz/screen/welcome_screen.dart';
+import 'package:flutter_viz/templates/save_template_dialog.dart';
 import 'package:flutter_viz/utils/AppColors.dart';
 import 'package:flutter_viz/utils/AppCommon.dart';
 import 'package:flutter_viz/utils/AppCommonApiCall.dart';
@@ -210,7 +212,37 @@ class _HeaderComponentState extends State<HeaderComponent> {
                       ),
                     );
                   }),
+                  16.width,
+                  OnHover(builder: (isHovered) {
+                    return elevationButtonHighLightColor(
+                      isHovered: isHovered,
+                      child: highLightIcon(isHovered, icon: Icons.bookmark_add_outlined),
+                      toolTipMessage: "Salva come template",
+                      onPressed: () async {
+                        await showInDialog(
+                          context,
+                          contentPadding: EdgeInsets.all(24),
+                          backgroundColor: context.scaffoldBackgroundColor,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(COMMON_CARD_BORDER_RADIUS)),
+                          builder: (context) => SaveTemplateDialog(),
+                        );
+                      },
+                    );
+                  }),
                   Spacer(),
+                  OnHover(builder: (isHovered) {
+                    return elevationButtonHighLightColor(
+                      isHovered: isHovered,
+                      child: highLightIcon(isHovered, icon: Icons.play_arrow),
+                      toolTipMessage: "Simula pagina",
+                      onPressed: () async {
+                        appStore.setPreviewCode(true);
+                        trackUserEvent(RUN_CODE);
+                        ScreenPreview().launch(context);
+                      },
+                    );
+                  }),
+                  16.width,
                   OnHover(builder: (isHovered) {
                     return elevationButtonHighLightColor(
                       isHovered: isHovered,
@@ -231,6 +263,8 @@ class _HeaderComponentState extends State<HeaderComponent> {
                       },
                     );
                   }),
+                  16.width,
+                  accentColorPickerWidget(),
                   16.width,
                   darkModeSwitchWidget(),
                 ],

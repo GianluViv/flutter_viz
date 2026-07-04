@@ -32,6 +32,12 @@ const int WIDGETS_INFO_INDEX = 5;
 const int FAQS_INDEX = 6;
 const int MEDIA_INDEX = 7;
 const int AI_INDEX = 8;
+
+/// Drag-to-resize bounds (px) for the shared left column. See
+/// `AppStore.leftPanelWidth` / `getLeftWidgetsWidth`.
+const double kMinLeftPanelWidth = 240;
+const double kMaxLeftPanelWidth = 720;
+const double kDefaultLeftPanelWidth = 340;
 const int COMPONENT_INDEX = -1;
 const int SHARE_INDEX = -1;
 const int HELP_INDEX = -1;
@@ -260,6 +266,9 @@ const String SAVE_SCREEN = 'Save Screen';
 const String DOWNLOAD_CODE = 'Download File Code';
 const String DOWNLOAD_PROJECT_CODE = 'Download Project Code';
 const String USER_PRE_BUILD_TEMPLATES = 'Use Templates';
+
+/// Prefs key: index into accentPalette for the selected app accent tone.
+const String ACCENT_COLOR_INDEX = 'accent_color_index';
 
 /// Screen Name
 const String TUTORIAL_SCREEN = 'Tutorial View Screen';

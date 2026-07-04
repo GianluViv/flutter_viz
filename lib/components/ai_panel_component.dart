@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_viz/local_storage/ai_terminal_service.dart';
 import 'package:flutter_viz/local_storage/local_project_service.dart';
 import 'package:flutter_viz/local_storage/project.dart';
 import 'package:flutter_viz/main.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:path/path.dart' as p;
+import 'package:xterm/xterm.dart';
 
 /// Left-hand "IA" panel: hands the current screen off to Claude Code as an
 /// editable JSON file, then reloads the AI's changes back into the live preview.
@@ -67,6 +69,7 @@ class _AiPanelComponentState extends State<AiPanelComponent> {
       await catalogFile.writeAsString(const JsonEncoder.withIndent('  ').convert(buildWidgetCatalog()));
 
       await _writeGuide(project);
+      await _writeSkill(project);
 
       getToast("Pronto per l'IA → ${file.path}");
     } catch (e) {
@@ -110,44 +113,16 @@ class _AiPanelComponentState extends State<AiPanelComponent> {
     await guide.writeAsString(_guideContent);
   }
 
-  /// Opens the OS terminal in [path]. Tries a few emulators per platform and
-  /// stops at the first that launches, so the app doesn't need to know which
-  /// terminal the user has installed.
-  Future<void> _openTerminalHere(String path) async {
-    final List<List<String>> candidates;
-    if (Platform.isWindows) {
-      candidates = [
-        ['wt.exe', '-d', path], // Windows Terminal, if installed
-        ['cmd.exe', '/c', 'start', 'cmd.exe'], // fallback: classic console
-      ];
-    } else if (Platform.isMacOS) {
-      candidates = [
-        ['open', '-a', 'Terminal', path],
-      ];
-    } else {
-      candidates = [
-        ['x-terminal-emulator'],
-        ['gnome-terminal'],
-        ['konsole'],
-        ['xfce4-terminal'],
-        ['xterm'],
-      ];
-    }
-
-    for (final cmd in candidates) {
-      try {
-        await Process.start(
-          cmd.first,
-          cmd.sublist(1),
-          workingDirectory: path,
-          mode: ProcessStartMode.detached,
-        );
-        return;
-      } catch (_) {
-        // Try the next candidate.
-      }
-    }
-    getToast("Nessun terminale disponibile su questo sistema");
+  /// Writes the `flutterviz-designer` skill into the project's `.claude/skills/`
+  /// folder. The embedded terminal runs `claude` in the project directory, so a
+  /// project-local skill is discovered automatically. This is the single source
+  /// of truth for both the editing protocol and the design guidance; `CLAUDE.md`
+  /// (always loaded) is just a short pointer to it.
+  Future<void> _writeSkill(Project project) async {
+    final skillDir = Directory(p.join(project.directory.path, '.claude', 'skills', 'flutterviz-designer'));
+    if (!await skillDir.exists()) await skillDir.create(recursive: true);
+    final skillFile = File(p.join(skillDir.path, 'SKILL.md'));
+    await skillFile.writeAsString(_skillContent);
   }
 
   @override
@@ -156,78 +131,83 @@ class _AiPanelComponentState extends State<AiPanelComponent> {
       final project = appStore.currentProject;
       return Container(
         height: context.height(),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(color: context.scaffoldBackgroundColor),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Assistente IA", style: boldTextStyle(size: 18)),
-              8.height,
-              Text(
-                "Modifica la pagina corrente con Claude Code, poi ricarica l'anteprima.",
-                style: secondaryTextStyle(),
-              ),
-              16.height,
-              _stepText("1", "Apri un terminale nella cartella del progetto e lancia  claude"),
-              _stepText("2", "«Prepara pagina per l'IA»: esporta la pagina in  ai/${_screenFileName()}  e scrive un CLAUDE.md con lo schema."),
-              _stepText("3", "Chiedi a Claude di modificare quel file JSON."),
-              _stepText("4", "«Ricarica dall'IA»: rilegge il file e aggiorna l'anteprima."),
-              16.height,
-              if (project != null) ...[
-                Text("Cartella progetto", style: secondaryTextStyle(size: 12)),
-                4.height,
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(child: SelectableText(project.directory.path, style: primaryTextStyle(size: 13))),
-                    8.width,
-                    OutlinedButton.icon(
-                      onPressed: () => _openTerminalHere(project.directory.path),
-                      icon: Icon(Icons.terminal, size: btnIconSize),
-                      label: Text("Apri terminale qui"),
-                    ),
-                  ],
-                ),
-                16.height,
-              ],
-              ElevatedButton.icon(
-                onPressed: (project == null || _busy) ? null : _prepareForAi,
-                icon: Icon(Icons.upload_file, size: btnIconSize),
-                label: Text("Prepara pagina per l'IA"),
-                style: ElevatedButton.styleFrom(backgroundColor: btnBackgroundColor, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 44)),
-              ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Assistente IA", style: boldTextStyle(size: 18)),
+            12.height,
+            if (project != null) ...[
+              Text("Cartella progetto", style: secondaryTextStyle(size: 12)),
+              4.height,
+              SelectableText(project.directory.path, style: primaryTextStyle(size: 13), maxLines: 2),
               12.height,
-              OutlinedButton.icon(
-                onPressed: (project == null || _busy) ? null : _reloadFromAi,
-                icon: Icon(Icons.refresh, size: btnIconSize),
-                label: Text("Ricarica dall'IA"),
-                style: OutlinedButton.styleFrom(minimumSize: Size(double.infinity, 44)),
-              ),
-              16.height,
-              if (_busy) LinearProgressIndicator(),
-              16.height,
-              Text(
-                "Nota: durante la sessione IA evita di modificare la pagina qui dentro — l'IA lavora su un file separato e «Ricarica» sovrascrive lo stato corrente con la sua versione.",
-                style: secondaryTextStyle(size: 12),
-              ),
             ],
-          ),
+            ElevatedButton.icon(
+              onPressed: (project == null || _busy) ? null : _prepareForAi,
+              icon: Icon(Icons.smart_toy_outlined, size: btnIconSize),
+              label: Text("Prepara pagina per IA"),
+              style: ElevatedButton.styleFrom(backgroundColor: btnBackgroundColor, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 44)),
+            ),
+            if (_busy) ...[
+              8.height,
+              LinearProgressIndicator(),
+            ],
+            12.height,
+            // The embedded terminal fills all remaining vertical space between
+            // the two buttons. Its shell lives in AiTerminalService, so the
+            // session survives menu toggles / widget rebuilds.
+            Expanded(
+              child: (project == null)
+                  ? _terminalPlaceholder(context, "Apri un progetto per usare il terminale.")
+                  : _buildTerminal(context, project),
+            ),
+            12.height,
+            OutlinedButton.icon(
+              onPressed: (project == null || _busy) ? null : _reloadFromAi,
+              icon: Icon(Icons.refresh, size: btnIconSize),
+              label: Text("Ricarica da IA"),
+              style: OutlinedButton.styleFrom(minimumSize: Size(double.infinity, 44)),
+            ),
+            8.height,
+            Text(
+              "Nota: l'IA lavora su un file separato in ai/. «Ricarica da IA» sovrascrive lo stato corrente con la sua versione — evita di modificare la pagina a mano durante la sessione.",
+              style: secondaryTextStyle(size: 11),
+            ),
+          ],
         ),
       );
     });
   }
 
-  Widget _stepText(String n, String text) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("$n. ", style: boldTextStyle()),
-          Expanded(child: Text(text, style: primaryTextStyle(size: 13))),
-        ],
+  Widget _buildTerminal(BuildContext context, Project project) {
+    final terminal = AiTerminalService.instance.terminalFor(project.directory.path);
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E1E1E),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: context.dividerColor),
       ),
+      child: TerminalView(
+        terminal,
+        padding: EdgeInsets.all(8),
+        textStyle: TerminalStyle(fontSize: 13),
+        autofocus: false,
+      ),
+    );
+  }
+
+  Widget _terminalPlaceholder(BuildContext context, String message) {
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: context.cardColor,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: context.dividerColor),
+      ),
+      child: Text(message, style: secondaryTextStyle()),
     );
   }
 }
@@ -271,29 +251,75 @@ Map<String, dynamic> buildWidgetCatalog() {
 }
 
 const String _guideContent = '''
-# FlutterViz — istruzioni per l'IA
+# FlutterViz — progetto UI builder
 
 Questa è la cartella di un progetto **FlutterViz** (UI builder visuale).
-Modifica **solo** i file JSON dentro `ai/`. Non toccare `project.json`,
-`media/`, `export/` né il file `ai/_catalog.json`.
 
-## Cosa modificare
+Per **creare, modificare o migliorare** le pagine dell'app usa la skill
+**`flutterviz-designer`** (in `.claude/skills/flutterviz-designer/SKILL.md`):
+contiene sia il protocollo tecnico completo (formato dei nodi, catalogo widget,
+nomi esatti delle proprietà) sia i principi di design da applicare.
 
-`ai/` contiene un file JSON per ogni pagina esportata (es. `ai/HomeScreen.json`).
-Ogni file è **l'albero dei widget** di quella pagina. Dopo le modifiche l'utente
-preme «Ricarica dall'IA» nell'app per applicarle.
+In sintesi, da tenere sempre a mente:
+- modifica **solo** i file JSON dentro `ai/`, **sul posto**, senza crearne di
+  nuovi né rinominarli;
+- leggi **sempre** `ai/_catalog.json` prima di aggiungere o modificare widget;
+- non toccare `project.json`, `media/`, `export/`, `ai/_catalog.json`;
+- al termine l'utente preme «Ricarica da IA» nell'app per applicare le modifiche.
+''';
 
-## Il catalogo — leggilo SEMPRE per primo
+/// The `flutterviz-designer` skill. Written verbatim to
+/// `<project>/.claude/skills/flutterviz-designer/SKILL.md` on every "Prepara".
+/// Single source of truth: technical editing protocol + design guidance.
+const String _skillContent = '''
+---
+name: flutterviz-designer
+description: Progetta e modifica le pagine di un progetto FlutterViz editando i file JSON in `ai/`. Usala ogni volta che l'utente chiede di creare, aggiungere, modificare, migliorare o "sistemare" una schermata dell'app. Copre il protocollo tecnico (formato dei nodi, catalogo widget, nomi esatti delle proprietà) e i principi di design (spaziatura, gerarchia, colore, layout).
+---
 
-`ai/_catalog.json` è generato dall'app e descrive **tutti i widget disponibili**.
-È la fonte di verità: se l'utente chiede widget non presenti in pagina (es.
-«aggiungi tre pulsanti in verticale»), prendi da qui il `subType` corretto e le
-proprietà. Per ogni widget il catalogo indica:
+# FlutterViz — Designer & protocollo di editing
+
+Sei un **UI/UX designer esperto** che lavora dentro **FlutterViz**, un UI builder
+visuale per Flutter. Il tuo compito è modificare l'albero dei widget di una
+pagina — salvato come JSON in `ai/<schermata>.json` — per due tipi di richiesta:
+- **richieste precise** («cambia il titolo», «aggiungi tre bottoni in colonna»):
+  eseguile in modo puntuale, senza stravolgere il resto;
+- **richieste aperte** («rendi più bella questa pagina», «sistema il layout»):
+  qui agisci da designer, applicando la PARTE 2 di questa skill.
+
+## Flusso di lavoro — leggi i file in quest'ordine
+
+1. **`ai/_catalog.json`** — SEMPRE per primo. È generato dall'app e descrive tutti
+   i widget disponibili con i nomi reali. Non fidarti della memoria: i nomi qui
+   sono la verità.
+2. **`ai/<schermata>.json`** — il file da modificare, **in place**.
+3. Applichi le modifiche → l'utente preme «Ricarica da IA» nell'app per vederle.
+
+---
+
+# PARTE 1 — Protocollo tecnico
+
+Regole che, se violate, fanno **sparire silenziosamente** le modifiche.
+
+## File — cosa toccare e cosa no
+
+- Modifica **solo** i JSON dentro `ai/`. Non toccare `project.json`, `media/`,
+  `export/`, né `ai/_catalog.json`.
+- Modifica **sempre il file già esistente richiesto, sul posto (in place)**.
+  - **NON creare nuovi file** (né `.json`, né `.dart`, né copie/varianti come
+    `HomeScreen_new.json` o `HomeScreen.modified.json`).
+  - **NON rinominare né spostare** il file.
+  - L'utente ricarica esattamente quel file: se scrivi altrove, le modifiche
+    **non** compaiono nell'anteprima.
+
+## Il catalogo — la fonte di verità
+
+`ai/_catalog.json` descrive **tutti i widget disponibili**. Per ogni widget:
 - la chiave = il `subType` reale (es. `Text`, `Row`, `Container`, `TextButton`);
 - `type` : il valore da mettere nel campo `type` del nodo;
 - `isContainer` : `true` se può avere figli (`childData`);
-- `properties` : **l'elenco completo dei nomi di proprietà validi** per quel
-  widget. Usa **solo** questi nomi.
+- `properties` : **l'elenco completo dei nomi di proprietà validi**. Usa **solo**
+  questi nomi;
 - `defaultProperties` : alcuni valori di default (utile per vedere i formati).
 
 ⚠️ I nomi delle proprietà **cambiano da widget a widget** e non sono
@@ -301,12 +327,12 @@ indovinabili. Esempi reali di differenze:
 - colore del testo: `Text` usa `textColor`, ma `TextField` usa `fontColor`;
 - sfondo: `Container` usa `bgColor`, `TextButton` usa `backgroundColor`;
 - spessore linea del `Divider`: `dividerThickness` (non `thickness`).
-Prima di scrivere una proprietà, **controlla che il nome sia in `properties`**;
+Prima di scrivere una proprietà, **verifica che il nome sia in `properties`**;
 se non c'è, viene ignorata.
 
-⚠️ Usa **solo** i `subType` che esistono nel catalogo. Nomi come
-`WidgetTypeText`, `Padding` o `ElevatedButton` **non** esistono e vengono
-ignorati. (Il pulsante è `TextButton`, non "ElevatedButton".)
+⚠️ Usa **solo** i `subType` che esistono nel catalogo. Nomi come `WidgetTypeText`,
+`Padding` o `ElevatedButton` **non** esistono e vengono ignorati. (Il pulsante è
+`TextButton`, non "ElevatedButton".)
 
 ## Forma di un nodo widget
 
@@ -322,31 +348,106 @@ ignorati. (Il pulsante è `TextButton`, non "ElevatedButton".)
 
 Regole del nodo:
 - il campo dell'id si chiama **`widgetId`** (non `id`) e deve essere **univoco**
-  in tutta la pagina; per un nuovo nodo genera un id nuovo.
-- l'oggetto proprietà sta sotto una chiave **uguale al `subType`**.
+  in tutta la pagina; per un nuovo nodo genera un id nuovo;
+- l'oggetto proprietà sta sotto una chiave **uguale al `subType`**;
 - `childData` è la lista dei figli: presente solo per i contenitori
   (`isContainer: true`), assente/vuota per le foglie.
 
 ## Chiavi di primo livello del file
 
-- `widgetsData`  → nodo radice dell'albero (di solito un contenitore).
-- `scaffoldData` → proprietà dello Scaffold (sfondo, safeArea, scroll).
+- `widgetsData`  → nodo radice dell'albero (di solito un contenitore);
+- `scaffoldData` → proprietà dello Scaffold (sfondo, safeArea, scroll);
 - `appBarData`, `bottomBarNavigationData`, `drawerData` → slot opzionali
   (oggetti vuoti `{}` se non usati). Non rinominarle.
 
 ## Formati dei valori (vedi `defaultProperties` nel catalogo)
 
-- colori: stringa `#AARRGGBB` (8 cifre hex, alpha inclusa) — es. `#ff3a57e8`.
-- padding / margin / border radius: oggetto `{ "left":0, "top":0, "right":0, "bottom":0 }`.
-- peso del font: campo **`fWeight`** con valori tipo `"400 - Normal"`, `"700 - Bold"`
-  (non `"bold"`).
-- allineamenti: stringhe enum **capitalizzate** (es. `textAlign: "Left"|"Center"|"Right"`,
-  `mainAxisAlignment: "Center"`, `crossAxisAlignment: "Stretch"`).
+- colori: stringa `#AARRGGBB` (8 cifre hex, alpha inclusa) — es. `#ff3a57e8`;
+- padding / margin / border radius: oggetto
+  `{ "left":0, "top":0, "right":0, "bottom":0 }`;
+- peso del font: campo **`fWeight`** con valori tipo `"400 - Normal"`,
+  `"700 - Bold"` (non `"bold"`);
+- allineamenti: stringhe enum **capitalizzate** (es.
+  `textAlign: "Left"|"Center"|"Right"`, `mainAxisAlignment: "Center"`,
+  `crossAxisAlignment: "Stretch"`).
 
-## Regole finali
+---
 
+# PARTE 2 — Design (l'occhio da esperto)
+
+Quando la richiesta riguarda l'aspetto, non limitarti a "far funzionare" il JSON:
+applica questi principi. L'obiettivo è una UI **pulita, coerente, gerarchica**,
+in linea con **Material Design**.
+
+## Spaziatura — la cosa che fa la differenza
+
+- Usa una **scala coerente**: 4, 8, 12, 16, 24, 32. Niente valori a caso (13, 17…).
+- Margine esterno della pagina/contenuto: **16–24**.
+- Spazio tra elementi **correlati**: 8. Tra **gruppi** distinti: 24.
+- Preferisci `padding` sui contenitori a spinte manuali. Il respiro (whitespace)
+  è design: meglio meno elementi ben distanziati che tutto ammassato.
+
+## Gerarchia tipografica
+
+Massimo 2–3 livelli, distinti per **dimensione + peso**, non per colore:
+- Titolo pagina/sezione: ~22–28, `fWeight` `"700 - Bold"`;
+- Sottotitolo: ~16–18, `"500 - Medium"`/`"600 - SemiBold"`;
+- Corpo: ~14, `"400 - Normal"`;
+- Caption/etichette secondarie: ~12, colore più tenue.
+Non usare 5 dimensioni diverse: crea rumore, non gerarchia.
+
+## Colore
+
+- **Un solo colore d'accento** (brand) + neutri (bianco/grigi/quasi-nero).
+  Massimo 2–3 colori saturi in tutta la pagina.
+- L'accento serve alle **azioni primarie** e a pochi elementi chiave, non a tutto.
+- **Contrasto**: testo scuro su sfondo chiaro (o viceversa). Evita grigio chiaro
+  su bianco per testo importante. Punta a un contrasto AA (≈4.5:1 sul corpo).
+- Coerenza chiaro/scuro: se lo sfondo è scuro, adegua tutti i testi.
+- Ricorda il formato `#AARRGGBB` e tieni l'alpha `ff` per i colori pieni.
+
+## Layout e composizione
+
+- **Allineamento**: scegli un bordo e sii coerente. Per testo/contenuto, di
+  default `crossAxisAlignment: "Start"`; centra solo scelte deliberate (hero, empty
+  state).
+- **Prossimità**: ciò che è correlato sta vicino; separa i gruppi con più spazio,
+  non con bordi ovunque.
+- `mainAxisAlignment` per **distribuire** i figli (`"SpaceBetween"` per una barra
+  con estremi opposti, `"Center"` per centrare un gruppo).
+- Larghezza piena vs. contenuto: usa `Expanded`/`crossAxisAlignment: "Stretch"`
+  per bottoni/campi a tutta larghezza dove ha senso.
+- Non annidare contenitori inutili: ogni livello deve avere uno scopo.
+
+## Componenti — convenzioni Material
+
+- **Bottoni**: azione primaria piena (accento), secondaria outlined/testo. Un
+  solo primario per vista. Angoli e altezza coerenti tra loro.
+- **Card/superfici**: `borderRadius` coerente (tipicamente 8–12), ombre/elevazioni
+  **leggere**, padding interno ≥ 16.
+- **Liste/griglie**: spaziatura uniforme tra gli item, allineamento costante.
+- **Touch target**: elementi interattivi ampi abbastanza (≈44–48 di altezza).
+- **Icone**: dimensione coerente, allineate al testo che accompagnano.
+
+## Metodo di lavoro sul design
+
+1. Individua la **gerarchia**: cos'è primario, secondario, terziario?
+2. Sistema prima **struttura e spaziatura**, poi tipografia, poi colore, infine
+   i dettagli.
+3. **Riusa** valori già presenti nella pagina (stessi padding, stesso accento):
+   la coerenza vale più della varietà.
+4. Fai modifiche **mirate e motivabili**; non riscrivere tutto l'albero se la
+   richiesta è locale.
+
+---
+
+# Regole finali
+
+- Modifica **solo il file richiesto, in place** — non creare altri file.
 - Mantieni il JSON valido e non rinominare le chiavi di primo livello.
-- Per ogni proprietà usa esattamente le chiavi che vedi in `defaultProperties`.
+- Usa esattamente le chiavi di proprietà presenti in `properties`/`defaultProperties`.
 - Puoi cambiare testi/colori/proprietà e aggiungere/rimuovere/riordinare i figli
   dentro `childData`.
+- Alla fine, riepiloga brevemente all'utente cosa hai cambiato e perché (in ottica
+  di design), così può decidere se «Ricaricare da IA».
 ''';

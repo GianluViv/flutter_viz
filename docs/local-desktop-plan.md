@@ -574,3 +574,41 @@ Passi per la reintroduzione:
 standard e non dipende dai plugin dell'editor — la rimozione riguarda solo l'anteprima live
 nell'editor, non la validità del codice che l'utente esporterebbe.
 ```
+
+---
+
+## 7. Appunto: nuovi widget suggeriti da aggiungere alla palette *(backlog, 04/07/2026)*
+
+Widget Flutter **non ancora presenti** nella palette (~48 widget attuali) che varrebbe la pena
+aggiungere. Ordinati per valore.
+
+> Nota preliminare: alcuni "widget" mancano **di proposito** perché modellati come *proprietà* e non
+> come nodi dell'albero — `Expanded`/`Flexible` (flag `isExpanded`), `Padding`/`Center`/`Align`
+> (proprietà di allineamento/padding), `SafeArea`/`SingleChildScrollView` (flag su scaffold/Column).
+> Aggiungerli come widget sarebbe ridondante.
+
+| Priorità | Widget | Perché | Note |
+|:--------:|--------|--------|------|
+| 🔴 Alta | **CircularProgressIndicator** | Esiste solo il `LinearProgressIndicator`; manca la controparte più usata | Ricalca quasi 1:1 il lineare |
+| 🔴 Alta | **ExpansionTile** | Pattern comune (FAQ/impostazioni a fisarmonica); nessun equivalente | Container di children |
+| 🔴 Alta | **FloatingActionButton** | Elemento Material fondamentale; **la costante `WidgetTypeFAB` esiste già in `AppConstant.dart:105` ma è morta** (nessuna classe/property view) → aggancio da completare | Va collegato allo Scaffold (come app bar/drawer) |
+| 🟠 Media | **Wrap** | C'è `ChipView` ma nessun contenitore che manda a capo tag/chip in flusso | Layout container |
+| 🟠 Media | **NavigationRail** | Il fork è ora **app desktop**: è *il* pattern di navigazione laterale desktop/tablet, più adatto del `BottomNavigationBar` | Rilevante per il target del fork |
+| 🟠 Media | **DataTable** | Densità dati tabellare, tipica di UI desktop | |
+| 🟡 Bassa | **Tooltip** | Ha senso su desktop (hover del mouse) | Wrapper |
+| 🟡 Bassa | **AspectRatio / FittedBox** | Media responsivo | |
+| 🟡 Bassa | **PopupMenuButton / Stepper / Badge (M3)** | Menu contestuali, wizard multi-step, contatori notifiche | |
+
+**Da NON aggiungere** (non calzano col modello "pagina statica"): `AlertDialog`, `SnackBar`,
+`BottomSheet`, `MenuBar` — sono overlay/runtime, non elementi dell'albero.
+
+**Sforzo per widget:** ogni widget è ~4 punti di intervento coordinati da tenere in sync (vedi
+convenzione "Per-widget Class pattern" in `CLAUDE.md`):
+1. `lib/widgetsClass/<widget>_class.dart` — render dal vivo **+** generazione codice Dart (`getCodeAsString`);
+2. `lib/widgetsProperty/<widget>_property_view.dart` — pannello proprietà;
+3. wiring nel dispatcher `lib/widgets/widgets.dart` (`getWidgets`, `getWidgetsClassData`, casting…);
+4. voce in `AppConstant.dart` (`WidgetType*`) + registrazione nella palette.
+
+**Consiglio di partenza:** iniziare da **CircularProgressIndicator** (rapido, ricalca il lineare) e
+**FloatingActionButton** (costante già presente), poi **ExpansionTile** e **NavigationRail**
+(quest'ultimo valorizza la natura desktop del progetto).

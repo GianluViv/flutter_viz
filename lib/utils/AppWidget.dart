@@ -637,6 +637,38 @@ Widget addButtonRounded() {
   );
 }
 
+/// Row of 5 accent-tone swatches; tapping one switches the app's theme accent.
+Widget accentColorPickerWidget() {
+  return Observer(builder: (_) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(accentPalette.length, (i) {
+        final bool selected = appStore.selectedAccentIndex == i;
+        return GestureDetector(
+          onTap: () => appStore.setAccentColor(i),
+          child: tooltipView(
+            message: "Tema colore",
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 3),
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                color: accentPalette[i],
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: selected ? (appStore.isDarkMode ? Colors.white : Colors.black87) : Colors.transparent,
+                  width: 2,
+                ),
+              ),
+              child: selected ? Icon(Icons.check, size: 14, color: Colors.white) : null,
+            ),
+          ),
+        );
+      }),
+    );
+  });
+}
+
 Widget darkModeSwitchWidget() {
   return FlutterSwitch(
     value: appStore.isDarkMode,

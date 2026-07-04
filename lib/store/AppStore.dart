@@ -91,6 +91,12 @@ abstract class AppStoreBase with Store {
   @observable
   int? selectedMenu = 0;
 
+  /// Width (px) of the resizable left column, shared by every left-hand panel
+  /// (widget palette, tree, media, IA, …). Driven by the drag handle in
+  /// `center_child_view_screen.dart`; read by `getLeftWidgetsWidth`.
+  @observable
+  double leftPanelWidth = kDefaultLeftPanelWidth;
+
   @observable
   int? selectedScreenId = 0;
 
@@ -203,6 +209,16 @@ abstract class AppStoreBase with Store {
 
   @observable
   bool isDarkMode = true;
+
+  /// Index into accentPalette (AppColors) for the app's accent tone.
+  @observable
+  int selectedAccentIndex = 0;
+
+  @action
+  Future<void> setAccentColor(int index) async {
+    selectedAccentIndex = index;
+    await setValue(ACCENT_COLOR_INDEX, index);
+  }
 
   @observable
   String profileImage = '';
@@ -1438,6 +1454,12 @@ abstract class AppStoreBase with Store {
     selectedLanguageDataModel = getSelectedLanguageModel();
 
     language = await AppLocalizations().load(Locale(selectedLanguageCode!));
+  }
+
+  /// Clamp + apply a new width for the left column (drag handle).
+  @action
+  void setLeftPanelWidth(double width) {
+    leftPanelWidth = width.clamp(kMinLeftPanelWidth, kMaxLeftPanelWidth);
   }
 
   @action

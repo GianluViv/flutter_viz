@@ -300,6 +300,22 @@ mixin _$AppStore on AppStoreBase, Store {
     });
   }
 
+  late final _$leftPanelWidthAtom =
+      Atom(name: 'AppStoreBase.leftPanelWidth', context: context);
+
+  @override
+  double get leftPanelWidth {
+    _$leftPanelWidthAtom.reportRead();
+    return super.leftPanelWidth;
+  }
+
+  @override
+  set leftPanelWidth(double value) {
+    _$leftPanelWidthAtom.reportWrite(value, super.leftPanelWidth, () {
+      super.leftPanelWidth = value;
+    });
+  }
+
   late final _$selectedScreenIdAtom =
       Atom(name: 'AppStoreBase.selectedScreenId', context: context);
 
@@ -735,6 +751,22 @@ mixin _$AppStore on AppStoreBase, Store {
     });
   }
 
+  late final _$selectedAccentIndexAtom =
+      Atom(name: 'AppStoreBase.selectedAccentIndex', context: context);
+
+  @override
+  int get selectedAccentIndex {
+    _$selectedAccentIndexAtom.reportRead();
+    return super.selectedAccentIndex;
+  }
+
+  @override
+  set selectedAccentIndex(int value) {
+    _$selectedAccentIndexAtom.reportWrite(value, super.selectedAccentIndex, () {
+      super.selectedAccentIndex = value;
+    });
+  }
+
   late final _$profileImageAtom =
       Atom(name: 'AppStoreBase.profileImage', context: context);
 
@@ -765,6 +797,14 @@ mixin _$AppStore on AppStoreBase, Store {
     _$userEmailAtom.reportWrite(value, super.userEmail, () {
       super.userEmail = value;
     });
+  }
+
+  late final _$setAccentColorAsyncAction =
+      AsyncAction('AppStoreBase.setAccentColor', context: context);
+
+  @override
+  Future<void> setAccentColor(int index) {
+    return _$setAccentColorAsyncAction.run(() => super.setAccentColor(index));
   }
 
   late final _$setLoggedInAsyncAction =
@@ -1413,6 +1453,17 @@ mixin _$AppStore on AppStoreBase, Store {
   }
 
   @override
+  void setLeftPanelWidth(double width) {
+    final _$actionInfo = _$AppStoreBaseActionController.startAction(
+        name: 'AppStoreBase.setLeftPanelWidth');
+    try {
+      return super.setLeftPanelWidth(width);
+    } finally {
+      _$AppStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 isProjectDownloading: ${isProjectDownloading},
@@ -1433,6 +1484,7 @@ codeViewData: ${codeViewData},
 widgetCodeData: ${widgetCodeData},
 selectedProperty: ${selectedProperty},
 selectedMenu: ${selectedMenu},
+leftPanelWidth: ${leftPanelWidth},
 selectedScreenId: ${selectedScreenId},
 projectId: ${projectId},
 projectName: ${projectName},
@@ -1460,6 +1512,7 @@ valueErrorMsg: ${valueErrorMsg},
 selectedLanguageCode: ${selectedLanguageCode},
 isLanguageChanged: ${isLanguageChanged},
 isDarkMode: ${isDarkMode},
+selectedAccentIndex: ${selectedAccentIndex},
 profileImage: ${profileImage},
 userEmail: ${userEmail}
     ''';

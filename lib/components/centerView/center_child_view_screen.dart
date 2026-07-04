@@ -11,6 +11,7 @@ import 'package:flutter_viz/components/centerView/center_body_component.dart';
 import 'package:flutter_viz/components/leftView/left_component_list_component.dart';
 import 'package:flutter_viz/components/leftView/left_widget_list_component.dart';
 import 'package:flutter_viz/components/rightView/right_screen_component.dart';
+import 'package:flutter_viz/utils/AppColors.dart';
 import 'package:flutter_viz/utils/AppCommon.dart';
 import 'package:flutter_viz/utils/AppConstant.dart';
 import 'package:flutter/cupertino.dart';
@@ -280,10 +281,73 @@ class _CenterChildViewScreenState extends State<CenterChildViewScreen> {
     }
   }
 
+  /// Menus that render the resizable left column. Others (FAQ, widget info,
+  /// empty state) are full-width and get no drag handle. The `-1` menus
+  /// (PRE_COMPONENTS/COMPONENT/SCREEN) are unreachable via `selectedMenu`.
+  static const Set<int> _leftPanelMenus = {
+    SCREEN_LIST_INDEX,
+    WIDGETS_INDEX,
+    TREE_INDEX,
+    MEDIA_INDEX,
+    AI_INDEX,
+  };
+
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
-      return getChildView(context);
+      final child = getChildView(context);
+      if (!_leftPanelMenus.contains(appStore.selectedMenu)) return child;
+
+      // Single overlaid drag handle sitting on the left column's right edge.
+      // Reading getLeftWidgetsWidth (an observable) keeps it glued to the edge
+      // as the width changes, and this whole builder is already reactive.
+      const double hitWidth = 10;
+      return Stack(
+        children: [
+          child,
+          Positioned(
+            top: 0,
+            bottom: 0,
+            left: getLeftWidgetsWidth(context) - hitWidth / 2,
+            width: hitWidth,
+            child: LeftPanelResizeHandle(),
+          ),
+        ],
+      );
     });
+  }
+}
+
+/// Thin vertical grip that drag-resizes the shared left column via
+/// [AppStore.setLeftPanelWidth]. Placement is handled by the caller.
+class LeftPanelResizeHandle extends StatefulWidget {
+  @override
+  State<LeftPanelResizeHandle> createState() => _LeftPanelResizeHandleState();
+}
+
+class _LeftPanelResizeHandleState extends State<LeftPanelResizeHandle> {
+  bool _hovering = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.resizeLeftRight,
+      onEnter: (_) => setState(() => _hovering = true),
+      onExit: (_) => setState(() => _hovering = false),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onHorizontalDragUpdate: (details) {
+          appStore.setLeftPanelWidth(appStore.leftPanelWidth + details.delta.dx);
+        },
+        child: Center(
+          child: Observer(
+            builder: (_) => Container(
+              width: 2,
+              color: _hovering ? btnBackgroundColor : Colors.transparent,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

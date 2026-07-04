@@ -160,7 +160,7 @@ double getChildWidgetsWidth(BuildContext context, {bool isExpanded = true}) {
 }
 
 double getLeftWidgetsWidth(BuildContext context) {
-  return 340;
+  return appStore.leftPanelWidth;
 }
 
 double getCenterScreenWidth(BuildContext context, {bool isExpanded = true}) {
