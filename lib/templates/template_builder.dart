@@ -11,6 +11,7 @@ import 'package:flutter_viz/widgetsClass/circle_image_class.dart';
 import 'package:flutter_viz/widgetsClass/column_class.dart';
 import 'package:flutter_viz/widgetsClass/container_class.dart';
 import 'package:flutter_viz/widgetsClass/divider_class.dart';
+import 'package:flutter_viz/widgetsClass/fab_class.dart';
 import 'package:flutter_viz/widgetsClass/icon_button_class.dart';
 import 'package:flutter_viz/widgetsClass/list_tile_class.dart';
 import 'package:flutter_viz/widgetsClass/root_view_class.dart';
@@ -78,6 +79,9 @@ WidgetModel tColumn({
     if (padding != null) c.padding = padding;
     c.isExpanded = expanded;
     c.flex = flex;
+    // Templates control their own layout; opt out of the palette's centered default.
+    c.isAlignX = false;
+    c.isAlignY = false;
   });
 }
 
@@ -98,6 +102,8 @@ WidgetModel tRow({
     if (padding != null) c.padding = padding;
     c.isExpanded = expanded;
     c.flex = flex;
+    c.isAlignX = false;
+    c.isAlignY = false;
   });
 }
 
@@ -146,6 +152,8 @@ WidgetModel tContainer({
     c.alignment = alignment;
     c.isExpanded = expanded;
     c.flex = flex;
+    c.isAlignX = false;
+    c.isAlignY = false;
   });
 }
 
@@ -428,6 +436,7 @@ String buildScreenJson({
   required WidgetModel root,
   Color scaffoldColor = Colors.white,
   WidgetModel? appBar,
+  WidgetModel? fab,
 }) {
   final Map<String, dynamic> rootJson = {
     JSON_WIDGET_DATA: _nodeToJson(root),
@@ -447,6 +456,14 @@ String buildScreenJson({
         : <String, dynamic>{},
     JSON_BOTTOM_BAR_NAVIGATION_DATA: <String, dynamic>{},
     JSON_DRAWER_DATA: <String, dynamic>{},
+    JSON_FAB_DATA: fab != null
+        ? {
+            JSON_WIDGET_ID: fab.id,
+            JSON_TYPE: fab.widgetType,
+            JSON_SUB_TYPE: fab.widgetSubType,
+            WidgetTypeFAB: (fab.widgetViewModel as FabClass).toJson(),
+          }
+        : <String, dynamic>{},
   };
   return jsonEncode(rootJson);
 }

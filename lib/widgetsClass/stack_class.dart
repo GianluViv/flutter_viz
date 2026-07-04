@@ -45,10 +45,10 @@ class StackClass {
 
   StackClass({
     this.padding,
-    this.horizontalAlignment,
-    this.verticalAlignment,
-    this.isAlignX = false,
-    this.isAlignY = false,
+    this.horizontalAlignment = DEFAULT_HORIZONTAL_ALIGNMENT,
+    this.verticalAlignment = DEFAULT_VERTICAL_ALIGNMENT,
+    this.isAlignX = true,
+    this.isAlignY = true,
     this.height,
     this.width,
     this.widthType = TypePX,

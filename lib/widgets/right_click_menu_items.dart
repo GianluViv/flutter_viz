@@ -190,6 +190,14 @@ generateLayoutMenuItem() {
     return items;
   }
 
+  if (appStore.currentSelectedWidget!.widgetType == WidgetTypeFABLayout) {
+    /// FloatingActionButton view
+    items.add(titleMenuItem());
+    items.add(lineMenuItem());
+    items.add(deleteWidgetMenuItem());
+    return items;
+  }
+
   if (appStore.currentSelectedWidget!.widgetType == WidgetTypeLeftDrawerLayout) {
     /// LeftDrawer view
     items.add(titleMenuItem());

@@ -71,17 +71,31 @@ void main() {
     expect(code.contains('strokeWidth'), isTrue);
   });
 
-  testWidgets('FloatingActionButton round-trips (build, reload, code-gen)', (tester) async {
+  testWidgets('FloatingActionButton loads into the scaffold FAB slot', (tester) async {
     language = LanguageEn();
     final fab = tNode(WidgetTypeFAB);
-    final screenJson = buildScreenJson(root: tColumn(children: [fab]));
+    final screenJson = buildScreenJson(root: tColumn(children: [tText('x')]), fab: fab);
 
     await applyScreenJsonToView(screenJson);
-    final loaded = appStore.selectedWidgetList[0].subWidgetsList!.first!;
-    expect(loaded.widgetSubType, WidgetTypeFAB);
 
-    final code = getWidgetsClassData(loaded, isCodeAsString: true) as String;
+    // Attached to the scaffold slot, not to the widget tree.
+    expect(appStore.fabClass, isNotNull);
+    expect(appStore.fabClass!.widgetSubType, WidgetTypeFAB);
+    expect(appStore.fabClass!.widgetType, WidgetTypeFABLayout);
+
+    // Emits both the FAB and its page-relative location on export.
+    final code = getWidgetsClassData(appStore.fabClass!, isCodeAsString: true) as String;
     expect(code.contains('FloatingActionButton('), isTrue);
-    expect(code.contains('onPressed'), isTrue);
+  });
+
+  test('layout widgets default to centered alignment (0,0 active)', () {
+    language = LanguageEn();
+    for (final sub in [WidgetTypeContainer, WidgetTypeRow, WidgetTypeColumn, WidgetTypeStack, WidgetTypeCard]) {
+      final Map<String, dynamic> json = getWidgets(sub).widgetViewModel.toJson();
+      expect(json['isAlignX'], true, reason: sub);
+      expect(json['isAlignY'], true, reason: sub);
+      expect(json['horizontalAlignment'], 0, reason: sub);
+      expect(json['verticalAlignment'], 0, reason: sub);
+    }
   });
 }

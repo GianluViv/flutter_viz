@@ -10,6 +10,7 @@ import 'package:flutter_viz/widgets/screen_json_parser_class.dart';
 import 'package:flutter_viz/widgets/widgets.dart';
 import 'package:flutter_viz/widgetsClass/app_bar_class.dart';
 import 'package:flutter_viz/widgetsClass/bottom_navigation_bar_class.dart';
+import 'package:flutter_viz/widgetsClass/fab_class.dart';
 import 'package:flutter_viz/widgetsClass/left_drawer_class.dart';
 import 'package:flutter_viz/widgetsClass/root_view_class.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class _ViewScreenState extends State<ViewScreen> {
 
   WidgetModel? appBarClass;
   WidgetModel? bottomNavigationClass;
+  WidgetModel? fabViewClass;
   WidgetModel? drawerClass;
   WidgetModel? rootView;
 
@@ -41,6 +43,7 @@ class _ViewScreenState extends State<ViewScreen> {
   void applyScreenJsonToView(String? screenJsonData) async {
     appBarClass = null;
     bottomNavigationClass = null;
+    fabViewClass = null;
     drawerClass = null;
     rootView = null;
     selectedWidgetList.clear();
@@ -137,6 +140,20 @@ class _ViewScreenState extends State<ViewScreen> {
         bottomNavigationClass = null;
       }
 
+      /// Set Floating Action Button Json Data
+      if (rootScreenJsonData.fabData != null && rootScreenJsonData.fabData!.widgetId!.isNotEmpty) {
+        fabViewClass = WidgetModel(
+          id: rootScreenJsonData.fabData!.widgetId,
+          title: getWidgetTitle(rootScreenJsonData.fabData!.subType),
+          displayWidget: getDisplayWidget(getWidgetsIcon(rootScreenJsonData.fabData!.subType), getWidgetTitle(WidgetTypeRootView)),
+          widgetSubType: rootScreenJsonData.fabData!.subType,
+          widgetViewModel: rootScreenJsonData.fabData!.fab,
+          widgetType: rootScreenJsonData.fabData!.type,
+        );
+      } else {
+        fabViewClass = null;
+      }
+
       /// Set Drawer Json Data to Original Drawer View
       if (rootScreenJsonData.drawerData != null) {
         if (rootScreenJsonData.drawerData!.widgetId!.isNotEmpty) {
@@ -231,6 +248,8 @@ class _ViewScreenState extends State<ViewScreen> {
       appBar: (appBarClass != null) ? (appBarClass!.widgetViewModel as AppBarClass).getAppBarWidget() as PreferredSizeWidget? : null,
       bottomNavigationBar: (bottomNavigationClass != null) ? (bottomNavigationClass!.widgetViewModel as BottomNavigationBarClass).getBottomNavigationBarWidget() : null,
       drawer: (drawerClass != null) ? (drawerClass!.widgetViewModel as LeftDrawerClass).getLeftDrawerWidget() : null,
+      floatingActionButton: (fabViewClass != null) ? (fabViewClass!.widgetViewModel as FabClass).getFabWidget() : null,
+      floatingActionButtonLocation: (fabViewClass != null) ? (fabViewClass!.widgetViewModel as FabClass).getFabLocation() : null,
     );
   }
 }

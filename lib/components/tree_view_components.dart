@@ -98,6 +98,17 @@ class _TreeViewComponentsState extends State<TreeViewComponents> {
       rootNode.children.add(bnBarNode);
     }
 
+    /// Floating Action Button Nodes
+    if (appStore.fabClass != null) {
+      Node fabNode = Node(
+        label: appStore.fabClass!.widgetSubType!,
+        key: appStore.fabClass!.id!,
+        expanded: true,
+        children: [],
+      );
+      rootNode.children.add(fabNode);
+    }
+
     nodeChildren.add(rootNode);
     treeViewController = TreeViewController(children: nodeChildren);
   }
