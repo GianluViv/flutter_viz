@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/widgetsClass/app_bar_class.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/widgetsClass/app_bar_class.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

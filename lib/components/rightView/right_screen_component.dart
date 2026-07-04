@@ -1,10 +1,10 @@
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/widgets/widgets.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppCommon.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/utils/AppWidget.dart';
+import 'package:vivido/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';

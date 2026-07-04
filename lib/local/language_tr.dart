@@ -1,8 +1,8 @@
-import 'package:flutter_viz/local/languages.dart';
+import 'package:vivido/local/languages.dart';
 
 class LanguageTr extends BaseLanguage {
   @override
-  String get appName => "Flutterviz";
+  String get appName => "Vivido";
 
   @override
   String get cancel => "İptal";
@@ -424,8 +424,6 @@ class LanguageTr extends BaseLanguage {
   @override
   String get desktopOnly => "Sadece masaüstü";
 
-  @override
-  String get createYourFlutterVizAccount => "FlutterViz hesabınızı oluşturun.";
 
   @override
   String get signUp => "Üye olmak";
@@ -443,7 +441,7 @@ class LanguageTr extends BaseLanguage {
   String get language => "Dilim";
 
   @override
-  String get youAreSignInButItSeemsInMobileDevice => "İmzaladın! Ancak bir mobil cihazdasınız veya en aza indirilmiş ekranda. En iyi deneyim için bir masaüstünde flutterviz kullanın.";
+  String get youAreSignInButItSeemsInMobileDevice => "İmzaladın! Ancak bir mobil cihazdasınız veya en aza indirilmiş ekranda. En iyi deneyim için bir masaüstünde Vivido kullanın.";
 
   @override
   String get personalInfo => "Kişisel bilgi";
@@ -1559,8 +1557,6 @@ class LanguageTr extends BaseLanguage {
   @override
   String get areYouWantToBack => "Geri dönmek istediğinize emin misiniz?";
 
-  @override
-  String get welcomeToFlutterViz => "Flutterviz'e Hoşgeldiniz";
 
   @override
   String get lastEdited => "Son düzenlenmiş";

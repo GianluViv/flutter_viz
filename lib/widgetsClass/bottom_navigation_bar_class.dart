@@ -1,7 +1,7 @@
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/model/bottom_navigation_bar_item_model.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/model/bottom_navigation_bar_item_model.dart';
+import 'package:vivido/utils/AppCommon.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavigationBarClass {

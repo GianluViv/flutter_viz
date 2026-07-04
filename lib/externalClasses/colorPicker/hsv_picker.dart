@@ -1,9 +1,9 @@
 /// The components of HSV Color Picker
 ///
 /// Try to create a Color Picker with other layout on your own :)
-import 'package:flutter_viz/externalClasses/colorPicker/colorPickerUtils.dart';
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
+import 'package:vivido/externalClasses/colorPicker/colorPickerUtils.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/utils/AppColors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 

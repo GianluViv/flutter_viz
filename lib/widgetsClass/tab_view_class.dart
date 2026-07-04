@@ -1,6 +1,6 @@
-import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/utils/AppCommon.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 
 class TabViewClass {

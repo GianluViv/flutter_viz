@@ -1,9 +1,9 @@
-import 'package:flutter_viz/externalClasses/on_hover.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/utils/web_interop/web_interop.dart';
+import 'package:vivido/externalClasses/on_hover.dart';
+import 'package:vivido/utils/AppCommon.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/utils/AppWidget.dart';
+import 'package:vivido/utils/web_interop/web_interop.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 

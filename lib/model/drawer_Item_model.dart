@@ -1,4 +1,4 @@
-import 'package:flutter_viz/model/bottom_navigation_bar_item_model.dart';
+import 'package:vivido/model/bottom_navigation_bar_item_model.dart';
 
 class DrawerItemModel {
   IconResponse? icon;

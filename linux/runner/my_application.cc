@@ -26,7 +26,7 @@ static void my_application_activate(GApplication* application) {
   // Use the native/server-side window decorations (a compact title bar) rather
   // than a GTK client-side-decoration HeaderBar, so the borders and title bar
   // stay slim and consistent with the window manager's own style.
-  gtk_window_set_title(window, "FlutterViz");
+  gtk_window_set_title(window, "Vivido");
 
   // Resolve the bundled app icon and set it as the window icon.
   // On Wayland+GNOME the taskbar/dock icon comes from the .desktop file (matched
@@ -53,17 +53,17 @@ static void my_application_activate(GApplication* application) {
       g_mkdir_with_parents(apps_dir, 0755);
 
       gchar* desktop_path =
-          g_build_filename(apps_dir, "com.example.flutter_viz.desktop", nullptr);
+          g_build_filename(apps_dir, "com.example.vivido.desktop", nullptr);
 
       gchar* desktop_content = g_strdup_printf(
           "[Desktop Entry]\n"
           "Version=1.0\n"
           "Type=Application\n"
-          "Name=FlutterViz\n"
+          "Name=Vivido\n"
           "Exec=%s\n"
           "Icon=%s\n"
           "Categories=Development;\n"
-          "StartupWMClass=flutter_viz\n"
+          "StartupWMClass=vivido\n"
           "NoDisplay=true\n",
           exe_buf, icon_path);
 

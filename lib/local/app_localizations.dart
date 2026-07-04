@@ -1,9 +1,9 @@
-import 'package:flutter_viz/local/language_ar.dart';
-import 'package:flutter_viz/local/language_en.dart';
-import 'package:flutter_viz/local/language_es.dart';
-import 'package:flutter_viz/local/language_fr.dart';
-import 'package:flutter_viz/local/language_vi.dart';
-import 'package:flutter_viz/local/languages.dart';
+import 'package:vivido/local/language_ar.dart';
+import 'package:vivido/local/language_en.dart';
+import 'package:vivido/local/language_es.dart';
+import 'package:vivido/local/language_fr.dart';
+import 'package:vivido/local/language_vi.dart';
+import 'package:vivido/local/languages.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 

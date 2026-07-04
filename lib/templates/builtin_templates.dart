@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_viz/model/widget_model.dart';
-import 'package:flutter_viz/templates/page_template.dart';
-import 'package:flutter_viz/templates/template_builder.dart';
-import 'package:flutter_viz/templates/template_theme.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
+import 'package:vivido/model/widget_model.dart';
+import 'package:vivido/templates/page_template.dart';
+import 'package:vivido/templates/template_builder.dart';
+import 'package:vivido/templates/template_theme.dart';
+import 'package:vivido/utils/AppConstant.dart';
 
 /// Built-in page templates, authored as real widget trees. Every template uses
 /// [kTemplateBaseColor] as its brand color so the wizard's theme picker can
-/// recolor it. Layouts are inspired by the classic FlutterViz starter screens
+/// recolor it. Layouts are inspired by the classic Vivido starter screens
 /// (Login, Register, Welcome, Profile, Settings, List, Detail, Contact, About).
 
 const Color _brand = kTemplateBaseColor;
@@ -17,7 +17,7 @@ const Color _textGrey = Color(0xFF9E9E9E);
 const Color _cardBg = Color(0xFFF7F8FC);
 
 const String _avatar = 'https://i.pravatar.cc/300';
-const String _photo = 'https://picsum.photos/seed/flutterviz/600/400';
+const String _photo = 'https://picsum.photos/seed/vivido/600/400';
 
 List<PageTemplate> builtinTemplates() {
   return [
@@ -102,13 +102,13 @@ String _welcome() {
     padding: _pad(28, 48),
     children: [
       tRow(mainAxisAlignment: AxisAlignmentCenter, children: [
-        tText('Flutter', fontSize: 26, fontWeight: FontWeightTypeBold, color: _textDark),
-        tText('Viz', fontSize: 26, fontWeight: FontWeightTypeBold, color: _brand),
+        tText('Viv', fontSize: 26, fontWeight: FontWeightTypeBold, color: _textDark),
+        tText('ido', fontSize: 26, fontWeight: FontWeightTypeBold, color: _brand),
       ]),
       tSizedBox(height: 28),
-      tText('Welcome to FlutterViz', fontSize: 20, fontWeight: FontWeightTypeBold, color: _textDark, textAlign: TextAlign.center),
+      tText('Welcome to Vivido', fontSize: 20, fontWeight: FontWeightTypeBold, color: _textDark, textAlign: TextAlign.center),
       tSizedBox(height: 10),
-      tText('To make attractive UI designs using FlutterViz.', color: _textGrey, textAlign: TextAlign.center),
+      tText('To make attractive UI designs using Vivido.', color: _textGrey, textAlign: TextAlign.center),
       tSizedBox(height: 28),
       tRow(mainAxisAlignment: AxisAlignmentCenter, children: [tImage(networkUrl: _photo, width: 240, height: 180)]),
       tSizedBox(height: 36),

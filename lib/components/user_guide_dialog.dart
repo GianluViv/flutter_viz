@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import 'package:flutter_viz/model/walk_through_model.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/model/walk_through_model.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 

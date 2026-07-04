@@ -289,7 +289,6 @@ abstract class BaseLanguage {
 
   String get youAreSignInButItSeemsInMobileDevice;
 
-  String get createYourFlutterVizAccount;
 
   String get signUp;
 
@@ -1028,7 +1027,6 @@ abstract class BaseLanguage {
 
   String get areYouWantToBack;
 
-  String get welcomeToFlutterViz;
 
   String get lastEdited;
 

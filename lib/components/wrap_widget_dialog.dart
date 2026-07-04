@@ -1,6 +1,6 @@
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/model/widget_model.dart';
-import 'package:flutter_viz/widgets/widgets.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/model/widget_model.dart';
+import 'package:vivido/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nb_utils/nb_utils.dart';
 

@@ -1,13 +1,13 @@
-# FlutterViz UI Builder (Open Source)
+# Vivido — Flutter UI Builder (Open Source)
 
-> **Note:** This is a fork of FlutterViz targeting a **fully local desktop app** (Linux/Windows) —
+> **Note:** Vivido is a fork of FlutterViz targeting a **fully local desktop app** (Linux/Windows) —
 > no login, no backend, no Firebase. Projects are stored as plain folders on disk. See
 > [docs/local-desktop-plan.md](docs/local-desktop-plan.md) for the full migration write-up and
-> [CLAUDE.md](CLAUDE.md) for codebase notes. The original web/backend-connected version this was
+> [CLAUDE.md](CLAUDE.md) for codebase notes. The original web/backend-connected FlutterViz this was
 > forked from lives on the [`backend` branch](https://github.com/iqonic-design/flutter_viz/tree/backend)
 > of the upstream repository.
 
-**FlutterViz** is a visual UI builder built using Flutter. It lets you design Flutter UIs with a
+**Vivido** is a visual UI builder built using Flutter. It lets you design Flutter UIs with a
 drag-and-drop interface and export clean Dart code — running entirely as a **local desktop app**,
 with no login, backend or cloud.
 

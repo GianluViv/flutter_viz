@@ -1,4 +1,4 @@
-import 'package:flutter_viz/widgets/widgets.dart';
+import 'package:vivido/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class WidgetModel {

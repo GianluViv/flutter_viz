@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_viz/templates/builtin_templates.dart';
-import 'package:flutter_viz/templates/page_template.dart';
+import 'package:vivido/templates/builtin_templates.dart';
+import 'package:vivido/templates/page_template.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 /// Local, backend-free store for page templates. Combines the in-code
 /// [builtinTemplates] with user templates persisted to
-/// `<AppData>/FlutterViz/templates.json`.
+/// `<AppData>/Vivido/templates.json`.
 ///
 /// This is the local replacement for the old remote `category-template-list`
 /// REST endpoint; see docs/local-desktop-plan.md and the "local template
@@ -19,7 +19,7 @@ class TemplateLibraryService {
   Future<Directory> get _appDataDirectory async {
     if (_appDataDirectoryOverride != null) return _appDataDirectoryOverride!;
     final supportDir = await getApplicationSupportDirectory();
-    return Directory(p.join(supportDir.path, 'FlutterViz'));
+    return Directory(p.join(supportDir.path, 'Vivido'));
   }
 
   /// Redirects storage to a test-controlled folder.

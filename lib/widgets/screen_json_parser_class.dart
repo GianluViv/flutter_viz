@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:flutter_viz/model/download_model.dart';
-import 'package:flutter_viz/model/root_screen_json_data.dart';
-import 'package:flutter_viz/model/screen_json_data.dart';
-import 'package:flutter_viz/model/widget_model.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
+import 'package:vivido/model/download_model.dart';
+import 'package:vivido/model/root_screen_json_data.dart';
+import 'package:vivido/model/screen_json_data.dart';
+import 'package:vivido/model/widget_model.dart';
+import 'package:vivido/utils/AppCommon.dart';
+import 'package:vivido/utils/AppConstant.dart';
 
 import '../main.dart';
 import 'widgets.dart';

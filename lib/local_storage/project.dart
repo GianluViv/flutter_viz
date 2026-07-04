@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter_viz/model/screen_list_response.dart';
+import 'package:vivido/model/screen_list_response.dart';
 import 'package:path/path.dart' as p;
 
 /// Bumped whenever the on-disk `project.json` shape changes in a
@@ -25,7 +25,7 @@ class ProjectMediaItem {
   Map<String, dynamic> toJson() => {'name': name, 'path': path};
 }
 
-/// A FlutterViz project stored as a folder on disk:
+/// A Vivido project stored as a folder on disk:
 /// ```
 /// <directory>/
 ///  ├─ project.json

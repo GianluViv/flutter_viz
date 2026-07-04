@@ -1,10 +1,10 @@
-import 'package:flutter_viz/model/widget_model.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/widgets/right_click_menu_items.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/model/widget_model.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/utils/AppWidget.dart';
+import 'package:vivido/widgets/right_click_menu_items.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_treeview/flutter_treeview.dart';
 import 'package:nb_utils/nb_utils.dart';

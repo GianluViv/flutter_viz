@@ -401,17 +401,17 @@ List<LanguageDataModel> languageList() {
 
 getHeaderLogo() {
   if (appStore.isDarkMode) {
-    return "images/flutterVizlogo.png";
+    return "images/vivido_logo.png";
   } else {
-    return "images/flutterVizlogo.png";
+    return "images/vivido_logo.png";
   }
 }
 
 String get getAppLogo {
   if (appStore.isDarkMode) {
-    return "images/flutterViz_white.png";
+    return "images/vivido_white.png";
   } else {
-    return "images/flutterViz.png";
+    return "images/vivido.png";
   }
 }
 

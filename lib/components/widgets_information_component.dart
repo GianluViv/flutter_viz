@@ -1,8 +1,8 @@
-import 'package:flutter_viz/model/models.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/utils/DataProvider.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/model/models.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppWidget.dart';
+import 'package:vivido/utils/DataProvider.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,7 +47,7 @@ class WidgetsInformationComponentState extends State<WidgetsInformationComponent
               alignment: Alignment.topLeft,
               children: [
                 Image.asset(
-                  'images/flutterviz_bg.jpg',
+                  'images/vivido_bg.jpg',
                   height: 140,
                   width: context.width(),
                   fit: BoxFit.cover,

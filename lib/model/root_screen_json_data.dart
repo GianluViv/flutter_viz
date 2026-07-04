@@ -1,9 +1,9 @@
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/widgetsClass/app_bar_class.dart';
-import 'package:flutter_viz/widgetsClass/bottom_navigation_bar_class.dart';
-import 'package:flutter_viz/widgetsClass/fab_class.dart';
-import 'package:flutter_viz/widgetsClass/left_drawer_class.dart';
-import 'package:flutter_viz/widgetsClass/root_view_class.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/widgetsClass/app_bar_class.dart';
+import 'package:vivido/widgetsClass/bottom_navigation_bar_class.dart';
+import 'package:vivido/widgetsClass/fab_class.dart';
+import 'package:vivido/widgetsClass/left_drawer_class.dart';
+import 'package:vivido/widgetsClass/root_view_class.dart';
 
 import 'screen_json_data.dart';
 

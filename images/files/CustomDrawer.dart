@@ -1,5 +1,5 @@
-import 'package:flutter_viz/externalClasses/custom_drawer_item_model.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
+import 'package:vivido/externalClasses/custom_drawer_item_model.dart';
+import 'package:vivido/utils/AppConstant.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatefulWidget {

@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:archive/archive.dart';
-import 'package:flutter_viz/local_storage/project.dart';
-import 'package:flutter_viz/model/screen_list_response.dart';
+import 'package:vivido/local_storage/project.dart';
+import 'package:vivido/model/screen_list_response.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-/// Lightweight entry in the "recent projects" index (`<AppData>/FlutterViz/recent.json`).
+/// Lightweight entry in the "recent projects" index (`<AppData>/Vivido/recent.json`).
 /// Kept separate from [Project] so listing recent projects never has to open
 /// every project.json on disk.
 class RecentProjectEntry {
@@ -39,12 +39,12 @@ class LocalProjectService {
   Directory? _appDataDirectoryOverride;
 
   /// Root folder for app-level data — the recent-projects index
-  /// (`<AppData>/FlutterViz`). Kept separate from [defaultProjectsDirectory]:
+  /// (`<AppData>/Vivido`). Kept separate from [defaultProjectsDirectory]:
   /// this is internal bookkeeping, not something the user browses to.
   Future<Directory> get appDataDirectory async {
     if (_appDataDirectoryOverride != null) return _appDataDirectoryOverride!;
     final supportDir = await getApplicationSupportDirectory();
-    return Directory(p.join(supportDir.path, 'FlutterViz'));
+    return Directory(p.join(supportDir.path, 'Vivido'));
   }
 
   /// Redirects [appDataDirectory] and [defaultProjectsDirectory] to a
@@ -59,12 +59,12 @@ class LocalProjectService {
     return Directory(home ?? Directory.current.path);
   }
 
-  /// Folder proposed when creating a new project — `<user home>/FlutterViz`,
+  /// Folder proposed when creating a new project — `<user home>/Vivido`,
   /// so it's easy for the user to find rather than buried under AppData.
   /// Always overridable per-project via [newProject]'s `location` parameter.
   Future<Directory> get defaultProjectsDirectory async {
     if (_appDataDirectoryOverride != null) return Directory(p.join(_appDataDirectoryOverride!.path, 'projects'));
-    return Directory(p.join(_userHomeDirectory.path, 'FlutterViz'));
+    return Directory(p.join(_userHomeDirectory.path, 'Vivido'));
   }
 
   Future<File> _recentIndexFile() async {

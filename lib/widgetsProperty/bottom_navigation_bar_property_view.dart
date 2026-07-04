@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/model/bottom_navigation_bar_item_model.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/widgetsClass/bottom_navigation_bar_class.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/model/bottom_navigation_bar_item_model.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/utils/AppWidget.dart';
+import 'package:vivido/widgetsClass/bottom_navigation_bar_class.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';

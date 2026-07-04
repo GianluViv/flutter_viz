@@ -1,8 +1,8 @@
-import 'package:flutter_viz/local/languages.dart';
+import 'package:vivido/local/languages.dart';
 
 class LanguageFr extends BaseLanguage {
   @override
-  String get appName => "Flutterviz";
+  String get appName => "Vivido";
 
   @override
   String get cancel => "Annuler";
@@ -424,8 +424,6 @@ class LanguageFr extends BaseLanguage {
   @override
   String get desktopOnly => "Bureau seulement";
 
-  @override
-  String get createYourFlutterVizAccount => "Créez votre compte Flutterviz.";
 
   @override
   String get signUp => "S'inscrire";
@@ -444,7 +442,7 @@ class LanguageFr extends BaseLanguage {
 
   @override
   String get youAreSignInButItSeemsInMobileDevice =>
-      "Vous êtes connecté! Mais il semble que vous êtes sur un appareil mobile ou sur un écran minimisé. Pour une meilleure expérience, utilisez Flutterviz sur un bureau à la place.";
+      "Vous êtes connecté! Mais il semble que vous êtes sur un appareil mobile ou sur un écran minimisé. Pour une meilleure expérience, utilisez Vivido sur un bureau à la place.";
 
   @override
   String get personalInfo => "Informations personnelles";
@@ -1567,8 +1565,6 @@ class LanguageFr extends BaseLanguage {
   @override
   String get areYouWantToBack => "Êtes-vous sûr de vouloir retour?";
 
-  @override
-  String get welcomeToFlutterViz => "Bienvenue à flutterviz";
 
   @override
   String get lastEdited => "Dernier édité";

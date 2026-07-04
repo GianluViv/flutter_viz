@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_viz/main.dart';
+import 'package:vivido/main.dart';
 
 const colorPrimary = Color(0xffffffff);
 const scaffoldSecondaryDark = Color(0xFFf2f2f3);

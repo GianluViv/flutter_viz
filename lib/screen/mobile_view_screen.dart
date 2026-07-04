@@ -1,4 +1,4 @@
- import 'package:flutter_viz/utils/AppCommon.dart';
+ import 'package:vivido/utils/AppCommon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -14,7 +14,7 @@ class MobileViewScreen extends StatelessWidget {
         Column(
           children: [
             Image.asset(
-              'images/flutterviz_bg.jpg',
+              'images/vivido_bg.jpg',
               fit: BoxFit.fill,
               width: context.width(),
               height: context.height() * 0.3,

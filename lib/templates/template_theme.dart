@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
+import 'package:vivido/utils/AppCommon.dart';
 
 /// The primary/brand color every built-in template is authored with. Choosing a
 /// different theme in the wizard recolors occurrences of this value to the

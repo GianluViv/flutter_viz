@@ -1,19 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_viz/local_storage/ai_terminal_service.dart';
-import 'package:flutter_viz/local_storage/local_project_service.dart';
-import 'package:flutter_viz/local_storage/project.dart';
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/model/widget_model.dart';
-import 'package:flutter_viz/widgets/ai_widget_schema.g.dart';
-import 'package:flutter_viz/widgets/screen_json_parser_class.dart';
-import 'package:flutter_viz/widgets/widgets.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/local_storage/ai_terminal_service.dart';
+import 'package:vivido/local_storage/local_project_service.dart';
+import 'package:vivido/local_storage/project.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppCommon.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/model/widget_model.dart';
+import 'package:vivido/widgets/ai_widget_schema.g.dart';
+import 'package:vivido/widgets/screen_json_parser_class.dart';
+import 'package:vivido/widgets/widgets.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -113,13 +113,13 @@ class _AiPanelComponentState extends State<AiPanelComponent> {
     await guide.writeAsString(_guideContent);
   }
 
-  /// Writes the `flutterviz-designer` skill into the project's `.claude/skills/`
+  /// Writes the `vivido-designer` skill into the project's `.claude/skills/`
   /// folder. The embedded terminal runs `claude` in the project directory, so a
   /// project-local skill is discovered automatically. This is the single source
   /// of truth for both the editing protocol and the design guidance; `CLAUDE.md`
   /// (always loaded) is just a short pointer to it.
   Future<void> _writeSkill(Project project) async {
-    final skillDir = Directory(p.join(project.directory.path, '.claude', 'skills', 'flutterviz-designer'));
+    final skillDir = Directory(p.join(project.directory.path, '.claude', 'skills', 'vivido-designer'));
     if (!await skillDir.exists()) await skillDir.create(recursive: true);
     final skillFile = File(p.join(skillDir.path, 'SKILL.md'));
     await skillFile.writeAsString(_skillContent);
@@ -251,12 +251,12 @@ Map<String, dynamic> buildWidgetCatalog() {
 }
 
 const String _guideContent = '''
-# FlutterViz — progetto UI builder
+# Vivido — progetto UI builder
 
-Questa è la cartella di un progetto **FlutterViz** (UI builder visuale).
+Questa è la cartella di un progetto **Vivido** (UI builder visuale).
 
 Per **creare, modificare o migliorare** le pagine dell'app usa la skill
-**`flutterviz-designer`** (in `.claude/skills/flutterviz-designer/SKILL.md`):
+**`vivido-designer`** (in `.claude/skills/vivido-designer/SKILL.md`):
 contiene sia il protocollo tecnico completo (formato dei nodi, catalogo widget,
 nomi esatti delle proprietà) sia i principi di design da applicare.
 
@@ -268,18 +268,18 @@ In sintesi, da tenere sempre a mente:
 - al termine l'utente preme «Ricarica da IA» nell'app per applicare le modifiche.
 ''';
 
-/// The `flutterviz-designer` skill. Written verbatim to
-/// `<project>/.claude/skills/flutterviz-designer/SKILL.md` on every "Prepara".
+/// The `vivido-designer` skill. Written verbatim to
+/// `<project>/.claude/skills/vivido-designer/SKILL.md` on every "Prepara".
 /// Single source of truth: technical editing protocol + design guidance.
 const String _skillContent = '''
 ---
-name: flutterviz-designer
-description: Progetta e modifica le pagine di un progetto FlutterViz editando i file JSON in `ai/`. Usala ogni volta che l'utente chiede di creare, aggiungere, modificare, migliorare o "sistemare" una schermata dell'app. Copre il protocollo tecnico (formato dei nodi, catalogo widget, nomi esatti delle proprietà) e i principi di design (spaziatura, gerarchia, colore, layout).
+name: vivido-designer
+description: Progetta e modifica le pagine di un progetto Vivido editando i file JSON in `ai/`. Usala ogni volta che l'utente chiede di creare, aggiungere, modificare, migliorare o "sistemare" una schermata dell'app. Copre il protocollo tecnico (formato dei nodi, catalogo widget, nomi esatti delle proprietà) e i principi di design (spaziatura, gerarchia, colore, layout).
 ---
 
-# FlutterViz — Designer & protocollo di editing
+# Vivido — Designer & protocollo di editing
 
-Sei un **UI/UX designer esperto** che lavora dentro **FlutterViz**, un UI builder
+Sei un **UI/UX designer esperto** che lavora dentro **Vivido**, un UI builder
 visuale per Flutter. Il tuo compito è modificare l'albero dei widget di una
 pagina — salvato come JSON in `ai/<schermata>.json` — per due tipi di richiesta:
 - **richieste precise** («cambia il titolo», «aggiungi tre bottoni in colonna»):

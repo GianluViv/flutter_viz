@@ -1,7 +1,7 @@
 /// Block Color Picker
 library block_colorpicker;
 
-import 'package:flutter_viz/externalClasses/colorPicker/colorPickerUtils.dart';
+import 'package:vivido/externalClasses/colorPicker/colorPickerUtils.dart';
 import 'package:flutter/material.dart';
 
 const List<Color> _defaultColors = [

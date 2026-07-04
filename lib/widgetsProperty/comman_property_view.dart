@@ -1,15 +1,15 @@
 import 'dart:io';
 
-import 'package:flutter_viz/externalClasses/colorPicker/colorpicker.dart';
-import 'package:flutter_viz/externalClasses/icon_picker.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/utils/AppCommonApiCall.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/utils/CustomExpansion.dart' as custom;
-import 'package:flutter_viz/utils/MaterialIcons.dart';
+import 'package:vivido/externalClasses/colorPicker/colorpicker.dart';
+import 'package:vivido/externalClasses/icon_picker.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppCommon.dart';
+import 'package:vivido/utils/AppCommonApiCall.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/utils/AppWidget.dart';
+import 'package:vivido/utils/CustomExpansion.dart' as custom;
+import 'package:vivido/utils/MaterialIcons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -267,7 +267,7 @@ const DEFAULT_PROGRESS_STROKE_WIDTH = 4.0;
 /// Left Drawer
 const DEFAULT_DRAWER_ELEVATION = 16.0;
 const DEFAULT_DRAWER_FONT_COLOR = Color(0xFFFFFFFF);
-const DEFAULT_DRAWER_ASSET_IMAGE = "images/flutterVizlogo.png";
+const DEFAULT_DRAWER_ASSET_IMAGE = "images/vivido_logo.png";
 const DEFAULT_DRAWER_NETWORK_IMAGE = "https://image.freepik.com/free-photo/pleasant-looking-serious-man-stands-profile-has-confident-expression-wears-casual-white-t-shirt_273609-16959.jpg";
 
 /// Common Image Type

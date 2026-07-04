@@ -1,9 +1,9 @@
-import 'package:flutter_viz/model/menu_widgets_model.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/widgets/handle_keyboard_event.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/model/menu_widgets_model.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppWidget.dart';
+import 'package:vivido/widgets/handle_keyboard_event.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';

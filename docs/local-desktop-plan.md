@@ -612,3 +612,48 @@ convenzione "Per-widget Class pattern" in `CLAUDE.md`):
 **Consiglio di partenza:** iniziare da **CircularProgressIndicator** (rapido, ricalca il lineare) e
 **FloatingActionButton** (costante già presente), poi **ExpansionTile** e **NavigationRail**
 (quest'ultimo valorizza la natura desktop del progetto).
+
+---
+
+## 8. Appunto: rendere l'editor pratico anche per lo sviluppo *desktop* *(backlog, 04/07/2026)*
+
+Oggi l'app è di fatto **mobile-first**. Analisi ancorata al codice del perché, e cosa servirebbe per
+renderla adatta anche a progettare UI desktop. (Alcuni widget qui elencati si sovrappongono a §7 —
+`NavigationRail`, `DataTable`, `Tooltip` — che resta la fonte di verità per l'elenco palette.)
+
+### 8.1 Perché oggi è mobile-first (nel codice)
+- **Canvas = telaio-telefono fisso.** La lista device in `lib/components/centerView/center_body_component.dart`
+  (`init()`) è tutta smartphone (max iPad 800×1100); default `DEVICE_WIDTH=350`/`DEVICE_HEIGHT=650`
+  (`lib/utils/AppConstant.dart`). Nessun preset desktop (1280×720, 1440×900) né finestra ridimensionabile.
+- **Nessun modello di responsività.** Il sizing percentuale (`fromJsonWidth`/`fromJsonHeight` in
+  `lib/utils/AppCommon.dart`) è relativo ai global mutabili `deviceWidth`/`deviceHeight` = **un solo
+  frame**. Nessun concetto di breakpoint: `grep LayoutBuilder` nei `widgetsClass/` → zero. Ogni
+  schermata è un unico `Scaffold` rigido.
+- **Palette centrata su pattern mobile.** I widget "di pagina" first-class sono `AppBar` +
+  `BottomNavigationBar` + `Drawer`. Mancano `NavigationRail`, `MenuBar`/menu, `DataTable`,
+  master-detail/split-pane, pannelli ridimensionabili.
+- **Interazione e codice generati "touch".** Nessun hover/right-click/tooltip/focus-traversal nel
+  modello; la generazione produce uno `Scaffold` mobile, senza setup finestra desktop
+  (`setWindowMinSize`, `MenuBar`, menu nativi).
+
+### 8.2 Cosa servirebbe, in ordine di valore
+
+| # | Priorità | Intervento | Perché è pratico per desktop | Sforzo |
+|:-:|:--------:|-----------|------------------------------|:------:|
+| 1 | 🔴 Alta | **Preset canvas desktop + finestra ridimensionabile** — aggiungere Desktop 1280/1440/1920 e una modalità "free resize" alla lista device di `center_body_component.dart` | Sblocca subito il design di layout larghi senza toccare il formato dati | **S** |
+| 2 | 🔴 Alta | **Modello responsivo / breakpoint** — la vera lacuna: schermata con varianti per larghezza → generare `LayoutBuilder`/`Responsive` nel codice. Richiede di rivedere il sizing percentuale legato ai global `deviceWidth`/`deviceHeight` | È *il* requisito desktop: la stessa pagina deve rifluire (sidebar↔drawer, 1↔3 colonne) | **L** |
+| 3 | 🟠 Media | **Widget desktop in palette**: `NavigationRail`, `MenuBar`/menu, `DataTable`, `Wrap`, split-pane/master-detail, `Tooltip` (vedi §7) | Mattoni dell'UI desktop, oggi assenti | **M** (≈4 punti di sync/widget) |
+| 4 | 🟠 Media | **Interazioni desktop** nel preview e nel generato: hover, context-menu (tasto destro), tooltip, scorciatoie, focus/tab traversal | Un'app desktop senza hover/menu contestuali "sa di mobile" | **M** |
+| 5 | 🟠 Media | **Chrome della finestra generata**: opzione `MenuBar` nativo, `setWindowMinSize`/titolo, scaffold esportato con layout adattivo di default | Rende l'app *esportata* un vero programma desktop, non un telefono ingrandito | **M** |
+| 6 | 🟡 Bassa | **Densità/temi desktop**: `VisualDensity.comfortable/compact`, target mouse più piccoli, tipografia desktop | Coerenza look-and-feel | **S** |
+
+### 8.3 Raccomandazione (MVP pragmatico)
+Il collo di bottiglia concettuale è il **punto 2** (responsività): senza, aggiungere widget desktop
+dà solo layout fissi larghi. Ma per un primo slice ad alto valore/sforzo:
+1. **#1 preset desktop + free-resize** (poche ore, nessun cambio di formato dati) — permette di
+   *provare* subito il design desktop.
+2. **#3 NavigationRail** come primo widget desktop (già in backlog §7, valorizza la natura desktop).
+3. Poi **#2** come progetto dedicato, previa **decisione di design**: (A) "screen con varianti per
+   breakpoint" (più potente, cambia `project.json`) vs (B) "widget `Responsive` con figli per fascia"
+   (meno invasivo, resta un nodo dell'albero — più aderente al modello attuale). Da decidere prima di
+   scrivere codice.

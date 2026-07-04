@@ -1,11 +1,11 @@
-import 'package:flutter_viz/externalClasses/custom_credit_card_view.dart';
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/model/widget_model.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/widgets/widgets.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/externalClasses/custom_credit_card_view.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/model/widget_model.dart';
+import 'package:vivido/utils/AppCommon.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/widgets/widgets.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 
 class CreditCardViewClass {

@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:flutter_viz/local_storage/local_project_service.dart';
-import 'package:flutter_viz/model/media_list_model.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppCommonApiCall.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/local_storage/local_project_service.dart';
+import 'package:vivido/model/media_list_model.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppCommonApiCall.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/utils/AppWidget.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -69,7 +69,7 @@ class MediaComponentState extends State<MediaComponent> {
                 alignment: Alignment.topLeft,
                 children: [
                   Image.asset(
-                    'images/flutterviz_bg.jpg',
+                    'images/vivido_bg.jpg',
                     height: 140,
                     width: context.width(),
                     fit: BoxFit.cover,

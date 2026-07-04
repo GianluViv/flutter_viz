@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:flutter_viz/model/bottom_navigation_bar_item_model.dart';
-import 'package:flutter_viz/model/drawer_Item_model.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/widgetsClass/left_drawer_class.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/model/bottom_navigation_bar_item_model.dart';
+import 'package:vivido/model/drawer_Item_model.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/utils/AppWidget.dart';
+import 'package:vivido/widgetsClass/left_drawer_class.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

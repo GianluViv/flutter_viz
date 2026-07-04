@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/widgetsClass/fab_class.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/widgetsClass/fab_class.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nb_utils/nb_utils.dart';

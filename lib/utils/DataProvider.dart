@@ -1,5 +1,5 @@
-import 'package:flutter_viz/model/faq_model.dart';
-import 'package:flutter_viz/model/models.dart';
+import 'package:vivido/model/faq_model.dart';
+import 'package:vivido/model/models.dart';
 
 import '../main.dart';
 
@@ -161,7 +161,7 @@ List<WidgetsInformationModel> getWidgetInfo() {
   list.add(WidgetsInformationModel(
     title: language!.titleRotatedBox,
     description: language!.desRotatedBox,
-    image: 'images/flutterVizlogo.png',
+    image: 'images/vivido_logo.png',
     url: 'https://api.flutter.dev/flutter/widgets/RotatedBox-class.html',
   ));
   list.add(WidgetsInformationModel(
@@ -239,7 +239,7 @@ List<WidgetsInformationModel> getWidgetInfo() {
   list.add(WidgetsInformationModel(
     title: language!.titleImageIcon,
     description: language!.desImageIcon,
-    image: 'images/flutterVizlogo.png',
+    image: 'images/vivido_logo.png',
     url: 'https://api.flutter.dev/flutter/widgets/ImageIcon-class.html',
   ));
   list.add(WidgetsInformationModel(
@@ -292,7 +292,7 @@ List<WidgetsInformationModel> getWidgetInfo() {
   list.add(WidgetsInformationModel(
     description: language!.desSingleChildScrollView,
     title: language!.titleSingleChildScrollView,
-    image: 'images/flutterVizlogo.png',
+    image: 'images/vivido_logo.png',
     url: 'https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html',
   ));
   return list;

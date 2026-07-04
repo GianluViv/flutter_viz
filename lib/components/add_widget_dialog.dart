@@ -1,7 +1,7 @@
-import 'package:flutter_viz/model/widget_model.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/widgets/widgets.dart';
+import 'package:vivido/model/widget_model.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';

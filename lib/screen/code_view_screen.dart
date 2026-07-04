@@ -1,10 +1,10 @@
-import 'package:flutter_viz/components/code_view.dart';
-import 'package:flutter_viz/components/code_view_header_component.dart';
-import 'package:flutter_viz/components/pubSpec_file_details.dart';
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
+import 'package:vivido/components/code_view.dart';
+import 'package:vivido/components/code_view_header_component.dart';
+import 'package:vivido/components/pubSpec_file_details.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 

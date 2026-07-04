@@ -1,8 +1,8 @@
-import 'package:flutter_viz/local/languages.dart';
+import 'package:vivido/local/languages.dart';
 
 class LanguageDe extends BaseLanguage {
   @override
-  String get appName => "Flatterviz.";
+  String get appName => "Vivido";
 
   @override
   String get cancel => "Abbrechen";
@@ -424,8 +424,6 @@ class LanguageDe extends BaseLanguage {
   @override
   String get desktopOnly => "Nur des Desktops";
 
-  @override
-  String get createYourFlutterVizAccount => "Erstellen Sie Ihr FlutterViz-Konto.";
 
   @override
   String get signUp => "Anmeldung";
@@ -1553,8 +1551,6 @@ class LanguageDe extends BaseLanguage {
   @override
   String get areYouWantToBack => "Bist du sicher, dass du wieder da bist?";
 
-  @override
-  String get welcomeToFlutterViz => "Willkommen bei Flutterviz.";
 
   @override
   String get lastEdited => "Zuletzt bearbeitet";

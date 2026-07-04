@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter_viz/local_storage/local_project_service.dart';
-import 'package:flutter_viz/model/media_list_model.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/widgets/screen_json_parser_class.dart';
+import 'package:vivido/local_storage/local_project_service.dart';
+import 'package:vivido/model/media_list_model.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/widgets/screen_json_parser_class.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;

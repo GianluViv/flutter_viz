@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter_viz/components/header_component.dart';
-import 'package:flutter_viz/components/menu_component.dart';
-import 'package:flutter_viz/components/user_guide_dialog.dart';
-import 'package:flutter_viz/local_storage/local_project_service.dart';
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/model/screen_list_response.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/widgets/screen_json_parser_class.dart';
+import 'package:vivido/components/header_component.dart';
+import 'package:vivido/components/menu_component.dart';
+import 'package:vivido/components/user_guide_dialog.dart';
+import 'package:vivido/local_storage/local_project_service.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/model/screen_list_response.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppCommon.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/widgets/screen_json_parser_class.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 

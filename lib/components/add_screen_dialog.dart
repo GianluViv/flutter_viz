@@ -1,8 +1,8 @@
-import 'package:flutter_viz/local_storage/local_project_service.dart';
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
+import 'package:vivido/local_storage/local_project_service.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/utils/AppWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 

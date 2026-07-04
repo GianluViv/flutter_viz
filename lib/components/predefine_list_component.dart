@@ -1,4 +1,4 @@
-import 'package:flutter_viz/model/pre_define_component_model.dart';
+import 'package:vivido/model/pre_define_component_model.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 

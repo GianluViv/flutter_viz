@@ -1,8 +1,8 @@
 library icon_picker;
 
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/MaterialIcons.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/MaterialIcons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

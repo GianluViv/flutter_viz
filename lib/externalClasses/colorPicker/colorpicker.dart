@@ -3,9 +3,9 @@
 /// You can create your own layout by importing `hsv_picker.dart`.
 library hsv_picker;
 
-import 'package:flutter_viz/externalClasses/colorPicker/colorPickerUtils.dart';
-import 'package:flutter_viz/externalClasses/colorPicker/hsv_picker.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
+import 'package:vivido/externalClasses/colorPicker/colorPickerUtils.dart';
+import 'package:vivido/externalClasses/colorPicker/hsv_picker.dart';
+import 'package:vivido/utils/AppWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nb_utils/nb_utils.dart';

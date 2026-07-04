@@ -1,7 +1,7 @@
-import 'package:flutter_viz/components/add_widget_dialog.dart';
-import 'package:flutter_viz/components/wrap_widget_dialog.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
+import 'package:vivido/components/add_widget_dialog.dart';
+import 'package:vivido/components/wrap_widget_dialog.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppFunctions.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';

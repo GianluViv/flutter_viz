@@ -1,18 +1,18 @@
 import 'dart:convert';
 
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/model/root_screen_json_data.dart';
-import 'package:flutter_viz/model/screen_json_data.dart';
-import 'package:flutter_viz/model/widget_model.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/widgets/screen_json_parser_class.dart';
-import 'package:flutter_viz/widgets/widgets.dart';
-import 'package:flutter_viz/widgetsClass/app_bar_class.dart';
-import 'package:flutter_viz/widgetsClass/bottom_navigation_bar_class.dart';
-import 'package:flutter_viz/widgetsClass/fab_class.dart';
-import 'package:flutter_viz/widgetsClass/left_drawer_class.dart';
-import 'package:flutter_viz/widgetsClass/root_view_class.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/model/root_screen_json_data.dart';
+import 'package:vivido/model/screen_json_data.dart';
+import 'package:vivido/model/widget_model.dart';
+import 'package:vivido/utils/AppCommon.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/widgets/screen_json_parser_class.dart';
+import 'package:vivido/widgets/widgets.dart';
+import 'package:vivido/widgetsClass/app_bar_class.dart';
+import 'package:vivido/widgetsClass/bottom_navigation_bar_class.dart';
+import 'package:vivido/widgetsClass/fab_class.dart';
+import 'package:vivido/widgetsClass/left_drawer_class.dart';
+import 'package:vivido/widgetsClass/root_view_class.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 

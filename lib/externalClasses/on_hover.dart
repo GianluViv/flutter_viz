@@ -1,4 +1,4 @@
-import 'package:flutter_viz/utils/AppConstant.dart';
+import 'package:vivido/utils/AppConstant.dart';
 import 'package:flutter/material.dart';
 
 class OnHover extends StatefulWidget {

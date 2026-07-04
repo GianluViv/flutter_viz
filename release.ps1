@@ -31,7 +31,7 @@ Write-Host "Done. Release folder ready at: $releaseDir" -ForegroundColor Green
 # Pacchettizza in un unico exe portabile (richiede Enigma Virtual Box installato).
 # Eseguito come processo figlio separato: se il tool manca, lo script termina con
 # "exit 1" al suo interno, e questo non deve interrompere anche release.ps1.
-$portableExe = Join-Path $root "release_portable\flutter_viz.exe"
+$portableExe = Join-Path $root "release_portable\vivido.exe"
 powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\pack_portable_exe.ps1") -ReleaseDir $releaseDir -OutputExe $portableExe
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Exe portabile pronto: $portableExe" -ForegroundColor Green

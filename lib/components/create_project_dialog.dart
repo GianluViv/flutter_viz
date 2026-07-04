@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter_viz/local_storage/local_project_service.dart';
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/screen/dashboard_screen.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/local_storage/local_project_service.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/screen/dashboard_screen.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/utils/AppWidget.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -25,7 +25,7 @@ class CreateProjectDialogState extends State<CreateProjectDialog> {
 
   TextEditingController projectNameController = TextEditingController();
 
-  /// Default location proposed for the new project (`<user home>/FlutterViz`);
+  /// Default location proposed for the new project (`<user home>/Vivido`);
   /// overridden by [selectedLocation] if the user browses to a different folder.
   String defaultLocationPath = '';
   Directory? selectedLocation;

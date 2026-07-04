@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:flutter_viz/externalClasses/custom_drawer.dart';
-import 'package:flutter_viz/externalClasses/custom_drawer_item_model.dart';
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/model/drawer_Item_model.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/externalClasses/custom_drawer.dart';
+import 'package:vivido/externalClasses/custom_drawer_item_model.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/model/drawer_Item_model.dart';
+import 'package:vivido/utils/AppCommon.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 
 class LeftDrawerClass {

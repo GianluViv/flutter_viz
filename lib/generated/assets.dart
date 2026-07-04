@@ -28,10 +28,10 @@ class Assets {
   static const String imagesFacebook = 'images/facebook.png';
   static const String imagesFeedback = 'images/feedback.png';
   static const String imagesFeedbackIcon = 'images/feedback_icon.png';
-  static const String imagesFlutterViz = 'images/flutterViz.png';
-  static const String imagesFlutterVizWhite = 'images/flutterViz_white.png';
-  static const String imagesFlutterVizlogo = 'images/flutterVizlogo.png';
-  static const String imagesFluttervizBg = 'images/flutterviz_bg.jpg';
+  static const String imagesVivido = 'images/vivido.png';
+  static const String imagesVividoWhite = 'images/vivido_white.png';
+  static const String imagesVividoLogo = 'images/vivido_logo.png';
+  static const String imagesVividoBg = 'images/vivido_bg.jpg';
   static const String imagesForgotPasswordConfirmation = 'images/forgot_password_confirmation.json';
   static const String imagesGif1 = 'images/gif1.gif';
   static const String imagesGif2 = 'images/gif2.gif';

@@ -1,7 +1,7 @@
-import 'package:flutter_viz/model/widget_model.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/widgets/widgets.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/model/widget_model.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/widgets/widgets.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 
 class OpacityClass {

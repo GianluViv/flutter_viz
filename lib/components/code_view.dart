@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter_viz/utils/syntax_highlighter.dart';
+import 'package:vivido/utils/syntax_highlighter.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

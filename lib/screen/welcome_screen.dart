@@ -1,16 +1,16 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter_viz/components/create_project_dialog.dart';
-import 'package:flutter_viz/components/welcome_screen_component.dart';
-import 'package:flutter_viz/local_storage/local_project_service.dart';
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/screen/dashboard_screen.dart';
-import 'package:flutter_viz/screen/mobile_view_screen.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
+import 'package:vivido/components/create_project_dialog.dart';
+import 'package:vivido/components/welcome_screen_component.dart';
+import 'package:vivido/local_storage/local_project_service.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/screen/dashboard_screen.dart';
+import 'package:vivido/screen/mobile_view_screen.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/utils/AppWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';

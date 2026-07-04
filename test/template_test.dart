@@ -2,15 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_viz/local/language_en.dart';
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/model/root_screen_json_data.dart';
-import 'package:flutter_viz/templates/builtin_templates.dart';
-import 'package:flutter_viz/templates/template_builder.dart';
-import 'package:flutter_viz/templates/template_theme.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/widgets/screen_json_parser_class.dart';
-import 'package:flutter_viz/widgets/widgets.dart';
+import 'package:vivido/local/language_en.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/model/root_screen_json_data.dart';
+import 'package:vivido/templates/builtin_templates.dart';
+import 'package:vivido/templates/template_builder.dart';
+import 'package:vivido/templates/template_theme.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/widgets/screen_json_parser_class.dart';
+import 'package:vivido/widgets/widgets.dart';
 
 void main() {
   // getWidgets() reads the global localization; initialize it for tests.

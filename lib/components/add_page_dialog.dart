@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-import 'package:flutter_viz/local_storage/local_project_service.dart';
-import 'package:flutter_viz/model/screen_list_response.dart';
-import 'package:flutter_viz/templates/page_template.dart';
-import 'package:flutter_viz/templates/template_library_service.dart';
-import 'package:flutter_viz/templates/template_theme.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/widgets/screen_json_parser_class.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/local_storage/local_project_service.dart';
+import 'package:vivido/model/screen_list_response.dart';
+import 'package:vivido/templates/page_template.dart';
+import 'package:vivido/templates/template_library_service.dart';
+import 'package:vivido/templates/template_theme.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/utils/AppWidget.dart';
+import 'package:vivido/widgets/screen_json_parser_class.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';

@@ -1,8 +1,8 @@
-import 'package:flutter_viz/local/languages.dart';
+import 'package:vivido/local/languages.dart';
 
 class LanguageId extends BaseLanguage {
   @override
-  String get appName => "Flutterviz.";
+  String get appName => "Vivido";
 
   @override
   String get cancel => "Membatalkan";
@@ -423,8 +423,6 @@ class LanguageId extends BaseLanguage {
   @override
   String get desktopOnly => "Hanya desktop";
 
-  @override
-  String get createYourFlutterVizAccount => "Buat akun FlutterViz Anda.";
 
   @override
   String get signUp => "Mendaftar";
@@ -443,7 +441,7 @@ class LanguageId extends BaseLanguage {
 
   @override
   String get youAreSignInButItSeemsInMobileDevice =>
-      "Anda masuk! Tapi sepertinya Anda berada di perangkat seluler atau di layar yang diminimalkan. Untuk pengalaman terbaik gunakan FlutterViz di desktop sebagai gantinya.";
+      "Anda masuk! Tapi sepertinya Anda berada di perangkat seluler atau di layar yang diminimalkan. Untuk pengalaman terbaik gunakan Vivido di desktop sebagai gantinya.";
 
   @override
   String get personalInfo => "Informasi pribadi";
@@ -1558,8 +1556,6 @@ class LanguageId extends BaseLanguage {
   @override
   String get areYouWantToBack => "Apakah Anda yakin ingin kembali?";
 
-  @override
-  String get welcomeToFlutterViz => "Selamat datang di FlutterViz.";
 
   @override
   String get lastEdited => "Terakhir diedit.";

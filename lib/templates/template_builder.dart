@@ -1,27 +1,27 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_viz/model/widget_model.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/widgets/widgets.dart';
-import 'package:flutter_viz/widgetsClass/Icon_class.dart';
-import 'package:flutter_viz/widgetsClass/Image_class.dart';
-import 'package:flutter_viz/widgetsClass/app_bar_class.dart';
-import 'package:flutter_viz/widgetsClass/circle_image_class.dart';
-import 'package:flutter_viz/widgetsClass/column_class.dart';
-import 'package:flutter_viz/widgetsClass/container_class.dart';
-import 'package:flutter_viz/widgetsClass/divider_class.dart';
-import 'package:flutter_viz/widgetsClass/fab_class.dart';
-import 'package:flutter_viz/widgetsClass/icon_button_class.dart';
-import 'package:flutter_viz/widgetsClass/list_tile_class.dart';
-import 'package:flutter_viz/widgetsClass/root_view_class.dart';
-import 'package:flutter_viz/widgetsClass/row_class.dart';
-import 'package:flutter_viz/widgetsClass/sized_box_class.dart';
-import 'package:flutter_viz/widgetsClass/text_button_class.dart';
-import 'package:flutter_viz/widgetsClass/text_class.dart';
-import 'package:flutter_viz/widgetsClass/text_field_class.dart';
+import 'package:vivido/model/widget_model.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/widgets/widgets.dart';
+import 'package:vivido/widgetsClass/Icon_class.dart';
+import 'package:vivido/widgetsClass/Image_class.dart';
+import 'package:vivido/widgetsClass/app_bar_class.dart';
+import 'package:vivido/widgetsClass/circle_image_class.dart';
+import 'package:vivido/widgetsClass/column_class.dart';
+import 'package:vivido/widgetsClass/container_class.dart';
+import 'package:vivido/widgetsClass/divider_class.dart';
+import 'package:vivido/widgetsClass/fab_class.dart';
+import 'package:vivido/widgetsClass/icon_button_class.dart';
+import 'package:vivido/widgetsClass/list_tile_class.dart';
+import 'package:vivido/widgetsClass/root_view_class.dart';
+import 'package:vivido/widgetsClass/row_class.dart';
+import 'package:vivido/widgetsClass/sized_box_class.dart';
+import 'package:vivido/widgetsClass/text_button_class.dart';
+import 'package:vivido/widgetsClass/text_class.dart';
+import 'package:vivido/widgetsClass/text_field_class.dart';
 
-/// A small, type-safe DSL for authoring FlutterViz page templates as real
+/// A small, type-safe DSL for authoring Vivido page templates as real
 /// [WidgetModel] trees, plus a serializer that turns such a tree into the exact
 /// `screenJsonData` string that [applyScreenJsonToView] consumes.
 ///

@@ -1,22 +1,22 @@
 import 'dart:io';
 
-import 'package:flutter_viz/externalClasses/on_hover.dart';
-import 'package:flutter_viz/local_storage/local_project_service.dart';
-import 'package:flutter_viz/main.dart';
-import 'package:flutter_viz/model/download_model.dart';
-import 'package:flutter_viz/screen/preview_screen.dart';
-import 'package:flutter_viz/screen/screen_preview.dart';
-import 'package:flutter_viz/screen/welcome_screen.dart';
-import 'package:flutter_viz/templates/save_template_dialog.dart';
-import 'package:flutter_viz/utils/AppColors.dart';
-import 'package:flutter_viz/utils/AppCommon.dart';
-import 'package:flutter_viz/utils/AppCommonApiCall.dart';
-import 'package:flutter_viz/utils/AppConstant.dart';
-import 'package:flutter_viz/utils/AppFunctions.dart';
-import 'package:flutter_viz/utils/AppWidget.dart';
-import 'package:flutter_viz/widgets/screen_json_parser_class.dart';
-import 'package:flutter_viz/widgets/widgets.dart';
-import 'package:flutter_viz/widgetsProperty/comman_property_view.dart';
+import 'package:vivido/externalClasses/on_hover.dart';
+import 'package:vivido/local_storage/local_project_service.dart';
+import 'package:vivido/main.dart';
+import 'package:vivido/model/download_model.dart';
+import 'package:vivido/screen/preview_screen.dart';
+import 'package:vivido/screen/screen_preview.dart';
+import 'package:vivido/screen/welcome_screen.dart';
+import 'package:vivido/templates/save_template_dialog.dart';
+import 'package:vivido/utils/AppColors.dart';
+import 'package:vivido/utils/AppCommon.dart';
+import 'package:vivido/utils/AppCommonApiCall.dart';
+import 'package:vivido/utils/AppConstant.dart';
+import 'package:vivido/utils/AppFunctions.dart';
+import 'package:vivido/utils/AppWidget.dart';
+import 'package:vivido/widgets/screen_json_parser_class.dart';
+import 'package:vivido/widgets/widgets.dart';
+import 'package:vivido/widgetsProperty/comman_property_view.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -90,7 +90,7 @@ class _HeaderComponentState extends State<HeaderComponent> {
           final fileName = rawName.split('/').last;
           if (files.containsKey(fileName)) continue;
           String fileContent = await loadFileContent(rawName);
-          fileContent = fileContent.replaceAll("package:flutter_viz/externalClasses/", '');
+          fileContent = fileContent.replaceAll("package:vivido/externalClasses/", '');
           files[fileName] = fileContent;
         }
       }

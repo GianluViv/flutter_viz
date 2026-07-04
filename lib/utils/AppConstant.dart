@@ -1,4 +1,4 @@
-const String appName = "FlutterViz BETA";
+const String appName = "Vivido";
 const font = "Inter";
 
 const DUMMY_USER_NAME = "Rose";
