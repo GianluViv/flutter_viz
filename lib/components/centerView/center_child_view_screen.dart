@@ -14,7 +14,6 @@ import 'package:vivido/components/rightView/right_screen_component.dart';
 import 'package:vivido/utils/AppColors.dart';
 import 'package:vivido/utils/AppCommon.dart';
 import 'package:vivido/utils/AppConstant.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
